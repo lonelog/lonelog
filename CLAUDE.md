@@ -8,14 +8,16 @@ This is a **Quarto documentation project** for **Lonelog** — a standard notati
 
 ## Building the Documentation
 
+Each language is its own Quarto project in `docs/<lang>/`, with its own `_quarto.yml`. Run the commands below from that folder. Output goes to `output/<lang>/`, which is committed and packaged by the release workflow (`.github/workflows/release.yml`, triggered by `v.*` tags).
+
 ### Build Individual Files
 
 To render a specific document in all configured formats:
 
 ```bash
-quarto render lonelog.md
-quarto render lonelog-it.md
-quarto render lonelog-fr.md
+cd docs/en && quarto render lonelog.md
+cd docs/it && quarto render lonelog-it.md
+cd docs/fr && quarto render lonelog-fr.md
 ```
 
 To render a specific document to a single format:
@@ -47,19 +49,31 @@ quarto render
 
 ### Core Documentation Files
 
-- **`lonelog.md`** - Main English documentation
-- **`lonelog-it.md`** - Italian translation
-- **`lonelog-fr.md`** - French translation
+- **`docs/en/lonelog.md`** - Main English documentation (the source for translations)
+- **`docs/it/lonelog-it.md`** - Italian translation
+- **`docs/fr/lonelog-fr.md`** - French translation (FR also translates some add-ons, with an `-fr` suffix)
 
-### Module Files
+### Add-on Files
 
-Module files extend the core notation with optional systems:
+Add-ons extend the core notation for one kind of play. All live in `docs/en/`:
 
-- **`lonelog-combat-module.md`** - Tactical combat notation
-- **`lonelog-dungeon-crawling-module.md`** - Dungeon exploration notation
-- **`lonelog-resource-tracking-module.md`** - Resource management notation
+- **`lonelog-combat-addon.md`** - Tactical combat
+- **`lonelog-dungeon-crawling-addon.md`** - Room state and dungeon exploration
+- **`lonelog-resource-tracking-addon.md`** - Inventory, supply and wealth
+- **`lonelog-dice-notation-addon.md`** - Dice expression grammar
+- **`lonelog-cards-addon.md`** - Playing cards, tarot, oracle decks
+- **`lonelog-wargaming-addon.md`** - Units, battles and campaigns
+- **`lonelog-addon-guidelines.md`** / **`lonelog-addon-template.md`** - Rules and a starter file for add-on authors
 
-These modules are separate documents that reference the core Lonelog system. They use `parent: Lonelog v1.0.0` in their frontmatter.
+Each add-on's frontmatter has `parent: Lonelog vX.Y.Z` (currently v1.7.0) and `requires:`.
+
+### Companion Notations
+
+Separate notations that share Lonelog's symbols: **`partylog.md`** (group play; adds `!` for GM and world events), **`lorelog.md`** (worldbuilding logs) and **`maplog.md`** (drawing maps during play).
+
+### Devlog
+
+Release notes live in the repo root as `devlog-YYYY-MM-DD-<slug>.md`, one file per release cycle.
 
 ### Language Variants
 
@@ -153,14 +167,21 @@ When adding or updating translations:
 3. **Test all formats**: Verify that PDF, EPUB, and ODT outputs render correctly for each language
 4. **Check TOC titles**: The template automatically localizes TOC titles based on the `lang` field
 
-## Working with Modules
+## Working with Add-ons
 
-Modules are standalone documents that extend the core notation. When creating or editing modules:
+Add-ons are standalone documents that extend the core notation. Follow `docs/en/lonelog-addon-guidelines.md`. In short:
 
-1. **Use descriptive titles**: e.g., "Lonelog: Combat Module"
-2. **Set status**: Use `status: Draft` or `status: Final` in frontmatter
-3. **Reference parent**: Include `parent: Lonelog v1.0.0` to indicate dependency
-4. **Keep them optional**: Modules should be independently useful and not required for core notation
+1. **Use descriptive titles**: e.g., "Lonelog: Combat Add-on"
+2. **Reference parent**: `parent: Lonelog v1.7.0`; when core changes, bump it and the add-on's own version, and add a version-history line
+3. **Extend, don't replace**: no new symbols that clash with `@`, `?`, `d:`, `tbl:`, `->`, `=>` or Partylog's `!`
+4. **Follow core's tag rules**: counts are `×N` values, one-at-a-time states are `category:value`, fields don't depend on order, owned things are named after the owner
+5. **Keep them optional**: add-ons should be independently useful and not required for core notation
+
+## Writing Conventions
+
+- **Never put tags inside Markdown table cells.** A tag contains `|`; escaping it as `\|` works on GitHub, but Pandoc prints the backslash in PDF/EPUB. Use a list instead.
+- **Keep explanations out of code blocks.** Notation examples should contain only notation; put commentary in prose, a list or a table.
+- **No log may become invalid.** Retired forms are deprecated but stay readable; list them in core Appendix E.3.
 
 ## Legacy Files
 

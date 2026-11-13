@@ -2,7 +2,7 @@
 title: Maplog
 subtitle: "A Visual Notation for Mapping During Play"
 author: Roberto Bisceglie
-version: 0.2.0
+version: 0.2.2
 license: CC BY-SA 4.0
 lang: en
 tbl-colwidths: false
@@ -22,13 +22,13 @@ Maplog is a set of marks for drawing maps while you play. It gives doors, stairs
 
 Maplog draws **what is there**: walls, openings, level changes, traps, fixtures. It does not track **what has happened**: which rooms are cleared, what you have taken, where the party stands. That changes every scene and belongs in your notes.
 
-If you use Lonelog, the Dungeon Crawling Add-on already covers state with the Room tag (`[R:3|cleared, looted]`) and the Dungeon Status Block. Its advice is to let the map handle space and the tags handle state. Maplog is the map half of that split.
+If you use Lonelog, the Dungeon Crawling Add-on already covers state with the Room tag (`[R:3|status:cleared, looted]`) and the Dungeon Status Block. Its advice is to let the map handle space and the tags handle state. Maplog is the map half of that split.
 
 ### 1.3 Standalone, and Compatible with Lonelog
 
 Maplog is **fully standalone**. You do not need Lonelog to use it. It works with any game system and any note-taking habit, or none.
 
-It is also **compatible with Lonelog**. Room IDs on the map are the IDs in your Room tags, and the connections the Add-on records in text (`exits N:R2`, `E:R7(secret)`, `D:R8`) are the openings Maplog draws. Maplog adds nothing to Lonelog's text notation. Section 12 has the details.
+It is also **compatible with Lonelog**. Room IDs on the map are the IDs in your Room tags, and the connections the Add-on records in text (`exits:N R2, E R7 secret, D R8`) are the openings Maplog draws. Maplog adds nothing to Lonelog's text notation. Section 12 has the details.
 
 ### 1.4 What Maplog Covers
 
@@ -341,14 +341,14 @@ A site map is the map of a place you enter: a dungeon, a cave, a ruin, a buildin
 This map is drawn from a short Lonelog log, so you can see the notes and the drawing side by side.
 
 ```
-[R:1|cleared, looted|entry cave|exits N:R2, E:R3]
+[R:1|status:cleared, looted|entry cave|exits:N R2, E R3]
 => Two pillars hold up the roof, and a pit gapes by the way in.
-[R:2|cleared|guard room|exits S:R1, W:R5]
+[R:2|status:cleared|guard room|exits:S R1, W R5]
 => A statue of a knight faces the door.
-[R:5|locked|heavy door|exits E:R2]
-[R:3|active, trapped|library|exits W:R1, E:R6(secret), D:R8]
+[R:5|status:locked|heavy door|exits:E R2]
+[R:3|status:active, trapped|library|exits:W R1, E R6 secret, D R8]
 => A trapped chest, and stairs down to the second level.
-[R:4|unexplored|marked on the guard's map]
+[R:4|status:unexplored|marked on the guard's map]
 ```
 
 ![A dungeon of five rooms, drawn with Maplog marks](assets/maplog/example-dungeon.png){width=100%}
@@ -417,7 +417,7 @@ When one map leads to another, write the connection on both. If a hex holds a du
 | The map (Maplog)                               | The log (Lonelog)                                             |
 |------------------------------------------------|---------------------------------------------------------------|
 | Where rooms are, and their shape               | What a room is: `library`                                     |
-| How rooms connect, and through what            | Optionally, the same connections: `exits N:R2, E:R3`          |
+| How rooms connect, and through what            | Optionally, the same connections: `exits:N R2, E R3`          |
 | That a door is locked                          | Why, and whether you have the key: `locked`                   |
 | Where a trap is                                | Whether you know of it, set it off or disarmed it: `trapped`  |
 | What you are not sure of (dashed)              | Where the rumour came from                                    |
@@ -428,12 +428,12 @@ When one map leads to another, write the connection on both. If a hex holds a du
 
 | Lonelog | Maplog |
 |---|---|
-| `exits N:R2` | an opening on the north wall, leading to R2 |
-| `E:R7(secret)` | a secret door (`S`) on the east wall |
-| `exits U:R8`, `exits D:R8` | stairs up or down, with the destination beside them if R8 is on another level |
-| R5 is `locked` | a locked door on the way into R5 |
-| R5 is `collapsed` | collapsed openings on the way into R5 |
-| R4 is `unexplored` | R4 drawn dashed, if you have not seen it |
+| `exits:N R2` | an opening on the north wall, leading to R2 |
+| `exits:E R7 secret` | a secret door (`S`) on the east wall |
+| `exits:U R8`, `exits:D R8` | stairs up or down, with the destination beside them if R8 is on another level |
+| R5 is `status:locked` | a locked door on the way into R5 |
+| R5 is `status:collapsed` | collapsed openings on the way into R5 |
+| R4 is `status:unexplored` | R4 drawn dashed, if you have not seen it |
 
 The Add-on marks a lock or a collapse as a status of the room. Maplog draws it on the door or passage you would use to get in. It is the same fact, drawn where you would meet it.
 
@@ -450,9 +450,9 @@ Nothing new is needed on the Lonelog side.
 
 ### 12.5 Keeping Map and Log in Step
 
-- **Draw when you write the `exits`.** When a new connection goes in the log, it goes on the map too.
+- **Draw when you write the `exits:`.** When a new connection goes in the log, it goes on the map too.
 - **Let the log hold state.** Do not track cleared rooms on the map. The Dungeon Status Block does that, and it is easier to rewrite than a map.
-- **Notes still work.** If you cannot stop to draw, write a reminder such as `(note: add R9 to map)`.
+- **Notes still work.** If you cannot stop to draw, write a reminder such as `(todo: add R9 to map)`.
 - **When they disagree, fix one.** Decide which is right and correct the other.
 
 ### 12.6 Using Maplog Without Lonelog
@@ -596,6 +596,8 @@ Several marks are adapted from *DUNGEON.PPT* by Roger S. G. Sorolla (2011), rele
 
 **Version History:**
 
+- v 0.2.2: Room tag examples follow the Dungeon Crawling Add-on v1.2.0: `status:` and `exits:N R2`.
+- v 0.2.1: Reminder example uses Lonelog v1.7's `todo:` meta-note label.
 - v 0.2.0: Refocused on drawing the map; room state left to the log. Added boundaries, door attributes, level changes, pits and traps, fixtures, and the overland set (terrain, relief, routes, sites, settlements).
 - v 0.1.0: First draft
 

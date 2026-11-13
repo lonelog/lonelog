@@ -2,16 +2,16 @@
 title: "Lonelog: Card Notation Add-on"
 subtitle: "A Standard Notation for Playing Cards in Session Logs"
 author: Roberto Bisceglie
-version: 1.0.0
+version: 1.1.0
 license: CC BY-SA 4.0
 lang: en
-parent: Lonelog v1.4.0
+parent: Lonelog v1.7.0
 requires: Core Notation (§3)
 ---
 
 ## Overview
 
-Core Lonelog already acknowledges card draws as a valid resolution mechanic. What it doesn't define is a compact, unambiguous shorthand for card identities.
+Core Lonelog already acknowledges card draws as a valid way to resolve uncertainty or generate content. What it doesn't define is a compact, unambiguous shorthand for card identities.
 
 Without a standard, logs fill with inconsistent spellings: "Q of spades", "queen♠", "Queen Spades", "QS". Tarot draws fare worse — "reversed Tower" and "The Tower (rev.)" and "XVI r" are all the same card. For tools that parse logs, and for players who share them, the inconsistency creates friction.
 
@@ -29,17 +29,21 @@ This add-on defines a compact notation for three types of card draws:
 
 | Element | Purpose | Example in a log |
 |---------|---------|-----------------|
-| `{rank}{suit}` | Compact standard card identity | `d: draw=Qs -> Dark omen` |
-| `M{n}` | Major Arcana by number | `d: draw=M12r -> Blocked` |
-| `{rank}{suit}` with tarot suits | Minor Arcana | `d: draw=KnCu` |
-| `r` suffix | Reversed orientation (Tarot) | `d: draw=M16r` |
-| Position labels in spreads | Named positions in a multi-card spread | `d: Past=5s, Present=Ks` |
+| `{rank}{suit}` | Compact standard card identity | `tbl: draw=Qs -> Dark omen` |
+| `M{n}` | Major Arcana by number | `tbl: draw=M12r -> Blocked` |
+| `{rank}{suit}` with tarot suits | Minor Arcana | `tbl: draw=KnCu` |
+| `r` suffix | Reversed orientation (Tarot) | `tbl: draw=M16r` |
+| Position labels in spreads | Named positions in a multi-card spread | `tbl: Past=5s, Present=Ks` |
 
-**No new core symbols.** Card draws use `d:` and `->` exactly as defined in core Lonelog. The card identity uses `=` as the drawn result; `->` carries the interpreted outcome.
+The add-on also uses two ordinary core tags for what a deck and a hand hold: a `[Deck:]` tag counts the cards left and lists the ones out of play, and a `hand:` category on the character lists the cards held (see *Deck State and Hands*).
+
+**No new core symbols.** Card draws use `tbl:`, `d:` and `->` exactly as defined in core Lonelog. The card identity uses `=` as the drawn result; `->` carries the interpreted outcome.
 
 ### Design Principles
 
-**Cards follow the same pattern as dice.** `=` records the drawn card, `->` carries the interpreted outcome, `=>` carries the narrative consequence. `d: draw=Qs -> Dark omen` is the same structure as `d: Strike 2d6+2=9 -> Hit`.
+**Cards follow the same pattern as dice.** `=` records the drawn card, `->` carries the interpreted outcome, `=>` carries the narrative consequence. `tbl: draw=Qs -> Dark omen` is the same structure as `tbl: Loot d100=42 -> A broken sword`.
+
+**Content or verdict decides the prefix** (core Lonelog §3.2.2). Most draws give content — an image, an omen, a place, an encounter — and use `tbl:`. A draw that gives a verdict — a fate card answering yes or no, a card played against a target — uses `d:`.
 
 **Compact but readable.** `Qs` over "Queen of Spades". Abbreviations should be recoverable without a lookup table by anyone who knows the card system.
 
@@ -51,26 +55,29 @@ This add-on defines a compact notation for three types of card draws:
 
 ### How card draws fit into a log entry
 
-Card draws follow the same structure as dice rolls. The card drawn is the raw result and uses `=`; the interpreted outcome uses `->`.
+Card draws follow the same structure as dice rolls. The card drawn is the raw result and uses `=`; the interpreted outcome uses `->`. Draws that give content use `tbl:`:
 
 ```
-d: draw=Qs
-d: draw=M12r -> The obstacle is myself.
+tbl: draw=Qs
+tbl: draw=M12r -> The obstacle is myself.
 => The Hanged Man reversed. I've been the obstacle all along.
 ```
 
-For oracle reads that answer a question, pair with `?`:
+For oracle reads that answer a question, pair with `?`. When the card gives an image to interpret, it's still `tbl:`; when your deck or method turns it into a yes or no, it's `d:`:
 
 ```
 ? Can I trust the merchant?
-d: draw=Jc -> Scheming youth
+tbl: draw=Jc -> Scheming youth
 => No.
+
+? Is the bridge still standing?
+d: draw=Qh vs red -> Yes
 ```
 
 For spreads, label each position with `=`:
 
 ```
-d: Past=5s, Present=Ks, Future=ACu
+tbl: Past=5s, Present=Ks, Future=ACu
 ```
 
 ---
@@ -78,9 +85,9 @@ d: Past=5s, Present=Ks, Future=ACu
 Or split across lines when each card needs its own consequence:
 
 ```
-d: Past=5s
-d: Present=Ks
-d: Future=ACu
+tbl: Past=5s
+tbl: Present=Ks
+tbl: Future=ACu
 => Conflict led here. Authority holds the present. Something new waits at the end.
 ```
 
@@ -104,15 +111,17 @@ Jokers: `Jkr` (generic), `RJkr` (red joker), `BJkr` (black joker).
 
 When the game cares about color but not suit: `R` (red — hearts or diamonds), `B` (black — clubs or spades).
 
+**Card identities always follow `=`.** Write `draw=4d` or `Past=4d`, never a bare `4d`. That keeps a card apart from a dice expression: `4d` after `=` is the four of diamonds, while `4d6` on its own is four six-sided dice. The rule holds in compact form too.
+
 In a log:
 
 ```
 @ Search the body
-d: draw=3h -> Minor find
+tbl: draw=3h -> Minor find
 => A folded note, damp and illegible.
 
 @ Fate check
-d: draw=Jkr -> Chaos surge
+tbl: draw=Jkr -> Chaos surge
 => Everything changes.
 ```
 
@@ -140,16 +149,14 @@ Format: `M{n}` where `n` is the card's number (0–21).
 
 Reversed: append `r`.
 
-```
-d: draw=M0       The Fool, upright
-d: draw=M16r     The Tower, reversed
-```
+- `tbl: draw=M0` — The Fool, upright
+- `tbl: draw=M16r` — The Tower, reversed
 
 When space allows, add the name as an inline description:
 
 ```
-d: draw=M12 // The Hanged Man
-d: draw=M16r // The Tower reversed
+tbl: draw=M12 // The Hanged Man
+tbl: draw=M16r // The Tower reversed
 ```
 
 #### Minor Arcana
@@ -169,16 +176,14 @@ KWa     King of Wands
 
 Reversed: append `r`.
 
-```
-d: draw=5Swr    Five of Swords, reversed
-d: draw=KnCu    Knight of Cups, upright
-```
+- `tbl: draw=5Swr` — Five of Swords, reversed
+- `tbl: draw=KnCu` — Knight of Cups, upright
 
 In a log:
 
 ```
 ? What force opposes me here?
-d: draw=KSw -> Adversary: principle, not malice
+tbl: draw=KSw -> Adversary: principle, not malice
 => The King of Swords — cold logic. He acts on conviction, not cruelty.
 ```
 
@@ -186,19 +191,19 @@ d: draw=KSw -> Adversary: principle, not malice
 
 ### Oracle Decks
 
-Oracle decks use proprietary card names that cannot be standardized. Use the card's name as free text with `=`, optionally with an inline description naming the deck.
+Oracle decks use proprietary card names that cannot be standardized. Use the card's name as free text with `=`, optionally with an inline description naming the deck. A deck that answers yes/no questions, like Mythic's fate cards, gives a verdict and uses `d:`.
 
 ```
-d: draw // Ironsworn Oracle=Darkness and Shadow
+tbl: draw // Ironsworn Oracle=Darkness and Shadow
 d: draw // Mythic Fate=Exceptional Yes -> Yes, and...
-d: draw // Crow's Eye Oracle=The Lantern -> Safe passage
+tbl: draw // Crow's Eye Oracle=The Lantern -> Safe passage
 ```
 
-For decks you use repeatedly, a short deck tag in the `d:` label keeps things scannable:
+For decks you use repeatedly, a short deck tag in the label keeps things scannable:
 
 ```
-d: Crow=The Lantern -> Safe passage
-d: Crow=The Abyss -> Something follows
+tbl: Crow=The Lantern -> Safe passage
+tbl: Crow=The Abyss -> Something follows
 ```
 
 ---
@@ -210,29 +215,59 @@ A spread is a multi-card draw where each card occupies a named position. Write p
 **Single-line (compact, for short spreads):**
 
 ```
-d: Past=5s, Present=Ks, Future=ACu
+tbl: Past=5s, Present=Ks, Future=ACu
 ```
 
 **Multi-line (when each card needs interpretation space):**
 
 ```
-d: Past=M16r -> Collapse that was delayed, not avoided.
+tbl: Past=M16r -> Collapse that was delayed, not avoided.
 => The Tower reversed. I should have fallen sooner.
 
-d: Present=KWa -> I am the force at work here.
+tbl: Present=KWa -> I am the force at work here.
 => The King of Wands. The fire is mine to wield or waste.
 
-d: Future=ACu -> Something new if I let go.
+tbl: Future=ACu -> Something new if I let go.
 => The Ace of Cups. Grief first, then an opening.
 ```
 
 **Labeled spread with deck name:**
 
 ```
-d: Celtic Past=7Wa, Celtic Present=M12, Celtic Future=3Cu
+tbl: Celtic Past=7Wa, Celtic Present=M12, Celtic Future=3Cu
 ```
 
 ---
+
+### Deck State and Hands
+
+Many card-driven games care about what is left in the deck. Track it with a `[Deck:]` tag, using core Lonelog's update rules: the count of cards left is `×N`, and the cards out of play are an `out:` category.
+
+```
+[Deck:Main|×52]
+tbl: draw=Qs -> Dark omen
+[Deck:Main|×-1|out:+Qs]
+tbl: draw=M16 -> Collapse
+[Deck:Main|×-1|out:+M16]
+```
+
+When you reshuffle, reset both:
+
+```
+=> I shuffle the discards back in.
+[Deck:Main|×52|out:none]
+```
+
+A **hand** is a category on whoever holds it. Add cards as you draw them and remove them as you play them:
+
+```
+[PC:Kael|hand:Ah, Kd, 7c]
+[PC:Kael|hand:+Qs]
+@ Play the Ace against the guard
+[PC:Kael|hand:-Ah]
+```
+
+Use several `[Deck:]` tags when a game uses several decks: `[Deck:Encounters|×20]`, `[Deck:Fate|×22]`.
 
 ### Common Patterns by System
 
@@ -240,7 +275,7 @@ d: Celtic Past=7Wa, Celtic Present=M12, Celtic Future=3Cu
 
 ```
 @ Explore the next hex
-d: draw=7d -> Forest path
+tbl: draw=7d -> Forest path
 => Tall pines, no trail. I mark it as unmapped.
 ```
 
@@ -248,15 +283,16 @@ d: draw=7d -> Forest path
 
 ```
 ? What is the mood of this place?
-d: draw=M18 // The Moon -> Illusion, hidden things
+tbl: draw=M18 // The Moon -> Illusion, hidden things
 => Nothing here is what it seems.
 ```
 
-**Fate deck for *Ironsworn* variants:**
+**Oracle roll plus a complication card:**
 
 ```
-d: Oracle 2d10=47 -> Yes, and...
-d: draw=Ks -> Complication: authority figure
+? Is the bridge still standing? (Likely)
+d: d100=47 vs 75 -> Yes
+tbl: draw=Ks -> Complication: authority figure
 => The bridge is there, but a city guard holds the crossing.
 ```
 
@@ -264,14 +300,14 @@ d: draw=Ks -> Complication: authority figure
 
 ```
 ? Does my contact show up?
-d: draw=M6r // The Lovers reversed -> Divided loyalties
+tbl: draw=M6r // The Lovers reversed -> Divided loyalties
 => He's here, but he brought someone I didn't expect.
 ```
 
 **Horror game — Joker as catastrophe trigger:**
 
 ```
-d: draw=RJkr -> The Worst Thing
+tbl: draw=RJkr -> The Worst Thing
 => The lights go out across the whole building. Something found the generator.
 ```
 
@@ -410,33 +446,33 @@ For logs that use a single oracle deck throughout, establish a short deck prefix
 ```
 [Session: ...] [Oracle: Crow's Eye]
 
-d: draw=The Lantern -> Safe passage
-d: draw=The Abyss -> Something follows
+tbl: draw=The Lantern -> Safe passage
+tbl: draw=The Abyss -> Something follows
 ```
 
 For mixed-deck sessions, name the deck inline:
 
 ```
-d: draw // Crow's Eye=The Lantern
-d: draw // Ironsworn Oracle=Darkness and Shadow
+tbl: draw // Crow's Eye=The Lantern
+tbl: draw // Ironsworn Oracle=Darkness and Shadow
 ```
 
 ---
 
 ## 4. Spread Notation
 
-A spread assigns each drawn card to a named position. The position label appears in the `d:` field with `=` for each card.
+A spread assigns each drawn card to a named position. The position label appears in the `tbl:` field with `=` for each card.
 
 ### Single-line format
 
 ```
-d: {Position1}={card1}, {Position2}={card2}, ...
+tbl: {Position1}={card1}, {Position2}={card2}, ...
 ```
 
 Example:
 
 ```
-d: Past=5Sw, Present=KWa, Future=ACu
+tbl: Past=5Sw, Present=KWa, Future=ACu
 ```
 
 ### Multi-line format
@@ -444,7 +480,7 @@ d: Past=5Sw, Present=KWa, Future=ACu
 Use when each card warrants its own `->` or `=>`:
 
 ```
-d: {Position}={card} -> [outcome]
+tbl: {Position}={card} -> [outcome]
 => [Narrative consequence]
 ```
 
@@ -493,43 +529,42 @@ Ranks: A  2–10  Pg  Kn  Q  K
 
 ### In a Log
 
-```
-d: draw=Qs                             single draw, no interpretation needed
-d: draw=Qs -> Dark omen                single draw with outcome
-d: draw=M16r -> Everything breaks      Tarot reversed with outcome
-d: draw=M12 // The Hanged Man          draw with name annotation
-d: Past=5Sw, Present=KWa               spread, single line
-? Is this the right path?
-d: draw=M17 -> Yes                     oracle question answered by card
-```
+| Log line | Meaning |
+|----------|---------|
+| `tbl: draw=Qs` | Single draw, no interpretation needed |
+| `tbl: draw=Qs -> Dark omen` | Single draw with outcome |
+| `tbl: draw=M16r -> Everything breaks` | Tarot, reversed, with outcome |
+| `tbl: draw=M12 // The Hanged Man` | Draw with the card's name as a description |
+| `tbl: Past=5Sw, Present=KWa` | Spread on a single line |
+| `d: draw=M17 -> Yes` | A card answering a yes/no question: a verdict |
 
 ---
 
 ## FAQ
 
 **Q: Why does the card use `=` rather than `->` — isn't the card itself the outcome?**  
-A: The card drawn is the raw result of the mechanic, just as `9` is the raw result of `2d6+2`. What the card *means* in context — the interpreted state — is the outcome, and that goes in `->`. `d: draw=Qs -> Dark omen` mirrors `d: Strike 2d6+2=9 -> Hit` exactly.
+A: The card drawn is the raw result of the mechanic, just as `9` is the raw result of `2d6+2`. What the card *means* in context — the interpreted state — is the outcome, and that goes in `->`. `tbl: draw=Qs -> Dark omen` mirrors `tbl: Loot d100=42 -> A broken sword` exactly.
 
 **Q: What about card games that use multiple decks, or partial decks?**  
-A: The notation identifies individual cards, not deck composition. Track deck state in a `[Deck:]` tag or a session note as needed.
+A: Give each deck its own `[Deck:]` tag, with a count of the cards left and an `out:` list of the cards out of play. See *Deck State and Hands*.
 
 **Q: My system uses pip value (Ace = 1, King = 13) rather than card identity. Should I write the card or the number?**  
 A: Write the card: `d: draw=Ah -> 1`. The card identity is the raw result; the pip value is the interpreted outcome. Both are preserved.
 
 **Q: How do I note a hand of cards (drawn but not played)?**  
-A: List them space-separated: `Hand: Ah Kd 7c Qs 3h`. When one is played, log it as a normal draw.
+A: As a `hand:` category on the character: `[PC:Kael|hand:Ah, Kd, 7c, Qs, 3h]`. Remove a card with `hand:-Ah` when it is played. See *Deck State and Hands*.
 
 **Q: Tarot decks vary — some have different names or art. Does `M12` always mean The Hanged Man?**  
 A: This spec follows the Rider-Waite-Smith numbering, which is the most common standard. If your deck diverges (e.g. Thoth swaps Strength and Justice), note it once in your session header: `[Deck: Thoth — Strength=M11, Justice=M8]`.
 
 ---
 
-**Q: Can I use `?` with a card draw instead of `d:`?**  
-A: Use `?` for the question, then `d:` for the draw that answers it. They are separate events — the question is asked, then the card is drawn as the mechanical resolution.
+**Q: Can I use `?` with a card draw instead of `tbl:` or `d:`?**  
+A: Use `?` for the question, then `tbl:` or `d:` for the draw that answers it. They are separate events — the question is asked, then the card is drawn as the mechanical resolution.
 
 ```
 ? What does fate hold for this meeting?
-d: draw=M10 // Wheel of Fortune -> Chance rules all
+tbl: draw=M10 // Wheel of Fortune -> Chance rules all
 => Anything could happen. I prepare for nothing and everything.
 ```
 
@@ -546,6 +581,7 @@ This add-on extends [Lonelog](https://zeruhur.itch.io/lonelog) by Roberto Bisceg
 
 **Version History:**
 
+- v1.1.0: Added deck state (`[Deck:]` with `×N` and `out:`) and hands (`hand:` category); card identities always follow `=`; the oracle example no longer claims to be Ironsworn's. Aligned with Lonelog v1.7: draws that give content use `tbl:`, draws that give a verdict use `d:`. Explanations moved out of code blocks.
 - v1.0.0: Initial release
 
 This work is licensed under the **Creative Commons Attribution-ShareAlike 4.0 International License**.

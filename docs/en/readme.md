@@ -183,7 +183,9 @@ Real session logs using Lonelog are valuable for demonstrating the notation. Con
 
 ## Version History
 
-- **v1.5.0** (Current) - `d:` is now the preferred notation for oracle dice rolls; clarified when to use `d:`, `tbl:`, and `gen:` for oracle resolution
+- **v1.7.0** (Current) - Consolidation release: `d:` gives a verdict and `tbl:` gives content (`gen:` folded in), truthful comparisons, accumulating tags, `[E:]` for events, parallel storylines, meta-note labels and retcons, specification summary appendix
+- **v1.6.0** - Lead/Assist `@(A > B)` and Joint Action `@(A+B)`
+- **v1.5.0** - `d:` is now the preferred notation for oracle dice rolls; clarified when to use `d:`, `tbl:`, and `gen:` for oracle resolution
 - **v1.4.1** - Indentation clarified as optional and a readability aid, not structural
 - **v1.4.0** - `@(Name)` convention for multi-PC and companion play, promoted from the Combat Add-on
 - **v1.3.0** - Tag category syntax, multi-line tag form, and roll context blocks inside `d:`

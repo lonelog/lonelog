@@ -17,12 +17,12 @@ Lonelog offers a **modular shorthand** that:
 - Scales from quick one-shots to long campaigns
 - Functions in both digital markdown files and paper notebooks
 
-### Core Notation (5 symbols)
+### Core Notation (5 symbols, plus `tbl:` for random content)
 
 ```
 @ Player action
 ? Oracle question
-d: Dice/mechanics roll
+d: Roll or rule that gives a verdict
 -> Result/answer
 => Consequence/outcome
 ```
@@ -71,6 +71,9 @@ Extended notation for specific gameplay needs:
 - [Combat Add-on](docs/en/lonelog-combat-addon.md) - Tactical encounter notation
 - [Dungeon Crawling Add-on](docs/en/lonelog-dungeon-crawling-addon.md) - Exploration notation
 - [Resource Tracking Add-on](docs/en/lonelog-resource-tracking-addon.md) - Inventory and supplies
+- [Dice Notation Add-on](docs/en/lonelog-dice-notation-addon.md) - Dice expression grammar
+- [Card Notation Add-on](docs/en/lonelog-cards-addon.md) - Playing cards, tarot and oracle decks
+- [Solo Wargaming Add-on](docs/en/lonelog-wargaming-addon.md) - Units, battles and campaigns
 - [Add-on Guidelines](docs/en/lonelog-addon-guidelines.md) - How to write your own add-on
 - [Add-on Template](docs/en/lonelog-addon-template.md) - Starter template
 
@@ -173,7 +176,7 @@ Help translate Lonelog into additional languages. Use `docs/en/lonelog.md` as th
 
 Found a typo or unclear explanation? Open an issue or submit a pull request.
 
-### Module Extensions
+### Add-ons
 
 Created an optional add-on for a specific type of play? Share it with the community!
 
@@ -183,7 +186,12 @@ Real session logs using Lonelog are valuable for demonstrating the notation. Con
 
 ## Version History
 
-- **v1.3.0** (Current) - Add-on ecosystem and expanded notation
+- **v1.7.0** (Current) - Consolidation release: `d:` gives a verdict and `tbl:` gives content (`gen:` folded in), truthful comparisons, tags that accumulate with `category:value` states and `×N` counts, `[E:]` for events, parallel storylines, meta-note labels and retcons, specification summary appendix. Add-ons and companion notations aligned.
+- **v1.6.0** - Lead/Assist `@(A > B)` and Joint Action `@(A+B)`
+- **v1.5.0** - `d:` is the preferred notation for oracle dice rolls
+- **v1.4.0** - `@(Name)` convention for multi-PC and companion play
+- **v1.3.0** - Tag categories, multi-line tags, roll context
+- **v1.2.0** - Add-on ecosystem introduced
 - **v1.1.0** - Licensing and inline definitions
 - **v1.0.0** - Renamed from "Solo TTRPG Notation" to "Lonelog"
 
