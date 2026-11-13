@@ -1,0 +1,9 @@
+[
+  { "enabled": true,  "lang": "en", "file": "lonelog.pdf",     "game": "zeruhur/lonelog", "channel": "lonelog-en-pdf" },
+  { "enabled": true,  "lang": "en", "file": "lonelog.epub",    "game": "zeruhur/lonelog", "channel": "lonelog-en-epub" },
+  { "enabled": true,  "lang": "en", "file": "lonelog.odt",     "game": "zeruhur/lonelog", "channel": "lonelog-en-odt" },
+  { "enabled": false, "lang": "it", "file": "lonelog-it.pdf",  "game": "zeruhur/lonelog", "channel": "lonelog-it-pdf" },
+  { "enabled": false, "lang": "fr", "file": "lonelog-fr.pdf",  "game": "zeruhur/lonelog", "channel": "lonelog-fr-pdf" },
+  { "enabled": false, "lang": "en", "file": "partylog.pdf",    "game": "zeruhur/partylog", "channel": "partylog-en-pdf" },
+  { "enabled": false, "lang": "en", "file": "lonelog-combat-addon.pdf", "game": "zeruhur/lonelog-combat", "channel": "combat-en-pdf" }
+]

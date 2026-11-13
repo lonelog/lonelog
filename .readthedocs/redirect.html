@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="__LANG__">
+<head>
+<meta charset="utf-8">
+<title>Lonelog has moved to lonelog.org</title>
+<meta name="robots" content="noindex">
+<link rel="canonical" href="https://lonelog.org/docs/__LANG__.html">
+<meta http-equiv="refresh" content="3; url=https://lonelog.org/docs/__LANG__.html">
+<script>
+  // Maps the old Docsify URLs on Read the Docs to the same page on lonelog.org:
+  //   /en/latest/#/lonelog            -> /docs/en/lonelog.html
+  //   /en/latest/lonelog              -> /docs/en/lonelog.html
+  //   /en/latest/downloads/lonelog.pdf -> /docs/en/lonelog.pdf
+  //   anything else                   -> /docs/en.html
+  (function () {
+    var lang = "__LANG__";
+    var base = "https://lonelog.org/docs/";
+    var route = (location.hash || "").replace(/^#\/?/, "") ||
+                location.pathname.replace(/^\/[^/]+\/[^/]+\/?/, ""); // drop /<lang>/<version>/
+    route = route.split("?")[0].replace(/\.(md|html)$/, "").replace(/\/$/, "");
+    var target = base + lang + ".html";
+    var dl = route.match(/^downloads\/(.+\.(pdf|epub|odt))$/);
+    if (dl) {
+      target = base + lang + "/" + dl[1];
+    } else if (/^[a-z0-9-]+$/.test(route) && route !== "index" && route !== "readme") {
+      target = base + lang + "/" + route + ".html";
+    }
+    location.replace(target);
+  })();
+</script>
+</head>
+<body>
+<p>Lonelog has moved to <a href="https://lonelog.org/docs/__LANG__.html">lonelog.org</a>.</p>
+</body>
+</html>

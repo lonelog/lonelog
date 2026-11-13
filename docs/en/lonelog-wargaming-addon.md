@@ -2,10 +2,10 @@
 title: "Lonelog: Solo Wargaming Add-on"
 subtitle: "Notation for Units, Battles, and Campaigns"
 author: Roberto Bisceglie
-version: 1.0.0
+version: 1.1.0
 license: CC BY-SA 4.0
 lang: en
-parent: Lonelog v1.4.0
+parent: Lonelog v1.7.0
 requires: Core Notation (§3)
 ---
 
@@ -27,14 +27,12 @@ This add-on provides the notation layer that bridges those gaps. It introduces u
 
 ### What This Add-on Adds
 
-| Addition | Purpose | Example in a log |
-|----------|---------|-----------------|
-| `[Unit:Name\|size\|stats\|status]` | Track a military unit's state through a battle | `[Unit:Ironclad Rifles\|×12\|Morale 8\|Fresh]` |
-| `[Force:Name\|commander\|strength\|objective]` | Optional: record overall force composition and goal | `[Force:Reiklanders\|Captain Streng\|3 units\|Raid]` |
-| `[BATTLE]` / `[/BATTLE]` | Delimit a wargame battle within a session | `[BATTLE] ... [/BATTLE]` |
-| `Tn#` turn markers | Separate unit-scale game turns within a battle | `Tn1`, `Tn2`, `Tn3` |
-| Location armor fields | Track mech/vehicle armor by hit location | `[Unit:Atlas\|Armor CT22/RT18/LT18]` |
-| `[CAMPAIGN]` / `[/CAMPAIGN]` | Record warband or force state between sessions | `[CAMPAIGN] ... [/CAMPAIGN]` |
+- `[Unit:Name|×N|stats|status:state]` — Track a military unit's state through a battle. Example: `[Unit:Ironclad Rifles|×12|Morale 8|status:Fresh]`
+- `[Force:Name|leader:name|units N|goal:objective]` — Optional: record overall force composition and goal. Example: `[Force:Reiklanders|leader:Captain Streng|units 3|goal:Raid]`
+- `[BATTLE]` / `[/BATTLE]` — Delimit a wargame battle within a session. Example: `[BATTLE] ... [/BATTLE]`
+- `Tn#` turn markers — Separate unit-scale game turns within a battle. Example: `Tn1`, `Tn2`, `Tn3`
+- Location armor fields — Track mech/vehicle armor by hit location. Example: `[Unit:Atlas|Armor CT22/RT18/LT18]`
+- `[CAMPAIGN]` / `[/CAMPAIGN]` — Record warband or force state between sessions. Example: `[CAMPAIGN] ... [/CAMPAIGN]`
 
 **No new core symbols.** Unit activations use `@(Unit Name)` — the established actor attribution convention. This add-on introduces no additions to `@`, `?`, `d:`, `->`, or `=>`.
 
@@ -63,34 +61,34 @@ A wargame session typically contains one or more battles, each with a scenario (
 *Date: 2026-04-05 | Duration: 2h | Scenes: S1*
 
 [CAMPAIGN]
-[Force:Ironclad Company|Colonel Vane|3 units|Hold the bridge]
-[Unit:Rifles|×12|Morale 8|Fresh]
-[Unit:Cavalry|×6|Morale 7|Fresh]
-[Unit:Artillery|×4|Morale 6|Fresh]
+[Force:Ironclad Company|leader:Colonel Vane|units 3|goal:Hold the bridge]
+[Unit:Rifles|×12|Morale 8|status:Fresh]
+[Unit:Cavalry|×6|Morale 7|status:Fresh]
+[Unit:Artillery|×4|Morale 6|status:Fresh]
 [/CAMPAIGN]
 
 ### S1 *Broken bridge, dawn*
 
 [BATTLE]
-[Scenario:Hold the Line|Deny bridge 6 turns|Turn limit 8]
-[Unit:Raider Infantry|×15|Morale 6|Fresh|road approach]
-[Unit:Raider Skirmishers|×8|Morale 5|Fresh|left flank]
+[Scenario:Hold the Line|goal:Deny bridge 6 turns|turns 8]
+[Unit:Raider Infantry|×15|Morale 6|status:Fresh|pos:road approach]
+[Unit:Raider Skirmishers|×8|Morale 5|status:Fresh|pos:left flank]
 
 Tn1
 @(Raider Skirmishers) Advance through woods
 @(Rifles) Hold position, volley fire
 d: Shooting 2d6=9 vs TN 7 -> Hit
-=> [Unit:Raider Skirmishers|×6|wavering]
+=> [Unit:Raider Skirmishers|×6|status:wavering]
 
 Tn2
 d: Morale 2d6=11 vs Morale 5 -> Broken
-=> [Unit:Raider Skirmishers|×6|broken|fleeing]
+=> [Unit:Raider Skirmishers|×6|status:broken|fleeing]
 
 [/BATTLE]
 => Bridge held. Raiders withdrew after two turns.
 
 [CAMPAIGN]
-[Unit:Rifles|×11|Morale 8|Fresh] (one casualty)
+[Unit:Rifles|×11]
 [/CAMPAIGN]
 ```
 
@@ -104,7 +102,7 @@ The `[CAMPAIGN]` blocks bookend the battle: the opening block establishes enteri
 
 ```
 @ Advance the Rifles to the hedgerow
-=> [Unit:Rifles|×12|at hedgerow|Fresh]
+=> [Unit:Rifles|×12|pos:at hedgerow|status:Fresh]
 ```
 
 **Activating a unit — opponent's force:**
@@ -112,7 +110,7 @@ The `[CAMPAIGN]` blocks bookend the battle: the opening block establishes enteri
 ```
 @(Raider Cavalry) Charge the Rifles' left flank
 d: Charge 2d6+2=11 vs TN 9 -> Hit
-=> [Unit:Rifles|×10|wavering] [Unit:Raider Cavalry|×5|Engaged]
+=> [Unit:Rifles|×10|status:wavering] [Unit:Raider Cavalry|×5|status:Engaged]
 ```
 
 **Morale test:**
@@ -124,7 +122,7 @@ d: Morale Rifles 2d6=8 vs Morale 8 -> Steady
 **Casualty update:**
 
 ```
-=> [Unit:Rifles|×10|wavering]
+=> [Unit:Rifles|×10|status:wavering]
 ```
 
 **Turn with phase annotations:**
@@ -137,12 +135,12 @@ Tn3 Move:
 Tn3 Shoot:
 @ Rifles fire on Raider Infantry
 d: Shooting 2d6=7 vs TN 7 -> Partial
-=> [Unit:Raider Infantry|×13|Morale 6|Steady]
+=> [Unit:Raider Infantry|×13|Morale 6|status:Steady]
 
 Tn3 Combat:
 @(Raider Infantry) Press the ford crossing
 d: Melee 2d6+1=9 vs TN 8 -> Hit
-=> [Unit:Rifles|×9|wavering]
+=> [Unit:Rifles|×9|status:wavering]
 ```
 
 ---
@@ -173,24 +171,24 @@ The `[BATTLE]` block delimits a wargame engagement within a scene. It signals a 
 
 ```
 [BATTLE]
-[Scenario:Raid|Grab the loot|5 turns]
-[Unit:Warband×8|Morale 6|Fresh]
-[Unit:Defenders×6|Morale 7|Fresh]
+[Scenario:Raid|goal:Grab the loot|turns 5]
+[Unit:Warband|×8|Morale 6|status:Fresh]
+[Unit:Defenders|×6|Morale 7|status:Fresh]
 ```
 
 **Opening snapshot — expanded:**
 
 ```
 [BATTLE]
-[Scenario:Wyrdstone Hunt|Collect 3+ shards before opponent|6 turns|Night: -1 to shooting]
-[Force:Reiklanders|Captain Streng|4 units|Objective]
-[Force:Skaven|Assassin (hidden)|3 units|Objective]
+[Scenario:Wyrdstone Hunt|goal:Collect 3+ shards before opponent|turns 6|rule:Night: -1 to shooting]
+[Force:Reiklanders|leader:Captain Streng|units 4]
+[Force:Skaven|leader:Assassin (hidden)|units 3]
 
-[Unit:Swordsmen|×3|Morale 7|Fresh|deployment zone A]
-[Unit:Marksmen|×2|Morale 7|Fresh|deployment zone A]
+[Unit:Swordsmen|×3|Morale 7|status:Fresh|pos:deployment zone A]
+[Unit:Marksmen|×2|Morale 7|status:Fresh|pos:deployment zone A]
 [N:Captain Streng|WS4|Ld8|sword+pistol|Fresh]
-[Unit:Skaven Night Runners|×6|Morale 5|Fresh|deployment zone B]
-[Unit:Skaven Clanrats|×4|Morale 4|Fresh|deployment zone B]
+[Unit:Skaven Night Runners|×6|Morale 5|status:Fresh|pos:deployment zone B]
+[Unit:Skaven Clanrats|×4|Morale 4|status:Fresh|pos:deployment zone B]
 [N:Skaven Assassin|WS5|hidden]
 ```
 
@@ -240,7 +238,7 @@ Tn1
 Tn2
 @ Rifles fire volley
 d: Shooting 2d6=10 vs TN 7 -> Hit
-=> [Unit:Raiders|×13|Morale 6|Steady]
+=> [Unit:Raiders|×13|Morale 6|status:Steady]
 
 @(Raiders) Return fire
 d: Shooting 2d6=6 vs TN 8 -> Miss
@@ -259,24 +257,26 @@ The `[Unit:]` tag is the core of this add-on. It records the mechanical state of
 **Format:**
 
 ```
-[Unit:Name|size|stats|position|status]
+[Unit:Name|×N|stats|pos:position|status:state]
 ```
 
-**Fields:**
+**Fields** — in any order. Each one says what it is, so you can skip any of them:
 
 - `Name` — unit identifier (regiment name, unit type, or custom label)
-- `size` — model count `×N`, or abstract: `full`, `half`, `depleted`
-- `stats` — one or more key values separated by `|`: `Morale 7`, `WS3`, `Move 6`
-- `position` — optional terrain reference: `at hedge`, `road->ridge`, `C4`
-- `status` — current state (see status vocabulary below)
+- `×N` — model count. For an abstract size, use the `size:` category: `size:full`, `size:half`, `size:depleted`
+- stats — labelled numbers: `Morale 7`, `WS3`, `Move 6`
+- `pos:` — optional terrain reference: `pos:at hedge`, `pos:road>ridge`, `pos:C4`
+- `status:` — current state (see status vocabulary below)
+
+`size:`, `pos:` and `status:` are categories, so writing a new one replaces the old (core §4.1). A count, likewise, is replaced by a new count. Other values, such as skills, accumulate.
 
 **Examples:**
 
 ```
-[Unit:Ironclad Rifles|×12|Morale 8|Fresh]
-[Unit:Skeleton Warriors|×8|Morale 4|Fresh|at bridge]
-[Unit:Cavalry Screen|×6|Morale 7|at ridge|Engaged]
-[Unit:Artillery Battery|×4|Morale 6|rear|Pinned]
+[Unit:Ironclad Rifles|×12|Morale 8|status:Fresh]
+[Unit:Skeleton Warriors|×8|Morale 4|status:Fresh|pos:at bridge]
+[Unit:Cavalry Screen|×6|Morale 7|pos:at ridge|status:Engaged]
+[Unit:Artillery Battery|×4|Morale 6|pos:rear|status:Pinned]
 ```
 
 ### Status vocabulary
@@ -293,45 +293,45 @@ The `[Unit:]` tag is the core of this add-on. It records the mechanical state of
 | `Engaged` | In melee contact with enemy unit |
 | `Exhausted` | Moved and fought; no further actions this turn |
 
-These are defaults. Your system may use different terms — substitute freely, or add system-specific states inline.
+These are defaults, written as `status:Fresh`, `status:Wavering` and so on. Your system may use different terms — substitute freely. Conditions that can stack, like `fleeing` or `stunned`, stay plain values.
 
 ### Tracking casualties
 
-Update the size field when a unit takes casualties. The previous value is not preserved in the tag (it lives in the log sequence):
+Write the new count when a unit takes casualties; it replaces the old one, and the log keeps the history:
 
 ```
-[Unit:Rifles|×12|Morale 8|Fresh]          opening state
+[Unit:Rifles|×12|Morale 8|status:Fresh]
 
 d: Enemy volley 2d6=8 vs TN 7 -> Hit
-=> [Unit:Rifles|×10|Morale 8|Steady]      two casualties
+=> [Unit:Rifles|×10|Morale 8|status:Steady]
 ```
 
 For significant losses that affect morale:
 
 ```
-=> [Unit:Rifles|×8|wavering]
+=> [Unit:Rifles|×8|status:wavering]
 d: Morale 2d6=9 vs Morale 8 -> Steady
-=> [Unit:Rifles|×8|Steady]
+=> [Unit:Rifles|×8|status:Steady]
 ```
 
 **Abstract size** (when counting individual models is not the point):
 
 ```
-[Unit:Orc Mob|full|Morale 5|Fresh]
-=> [Unit:Orc Mob|half|wavering]
-=> [Unit:Orc Mob|depleted|broken]
+[Unit:Orc Mob|size:full|Morale 5|status:Fresh]
+=> [Unit:Orc Mob|size:half|status:wavering]
+=> [Unit:Orc Mob|size:depleted|status:broken]
 ```
 
 ### Formation states
 
-Systems that track unit formation add it as a status or stat field:
+Systems that track unit formation use a `formation:` category, so a new formation replaces the old one:
 
 ```
-[Unit:Pikes|×16|Morale 7|Line|Fresh]
-[Unit:Muskets|×12|Morale 6|Column|Marching]
+[Unit:Pikes|×16|Morale 7|formation:Line|status:Fresh]
+[Unit:Muskets|×12|Morale 6|formation:Column|status:Marching]
 
 @ Form square against cavalry
-=> [Unit:Muskets|×12|Morale 6|Square|Fresh]
+=> [Unit:Muskets|×12|Morale 6|formation:Square|status:Fresh]
 ```
 
 Common formation labels: `Line`, `Column`, `Square`, `Skirmish`, `Wedge`, `Dispersed`.
@@ -343,21 +343,21 @@ Common formation labels: `Line`, `Column`, `Square`, `Skirmish`, `Wedge`, `Dispe
 **Format:**
 
 ```
-[Force:Name|commander|strength|objective]
+[Force:Name|leader:name|units N|goal:objective]
 ```
 
-**Fields:**
+**Fields** — in any order, all optional except the name:
 
 - `Name` — force or army name
-- `commander` — named leader, if any
-- `strength` — number of units, or abstract: `full`, `reduced`
-- `objective` — what this force is trying to accomplish in this battle
+- `leader:` — named leader, if any
+- strength — a labelled number (`units 3`, `mechs 4`, `figures 6`), or a state such as `status:reduced`
+- `goal:` — what this force is trying to accomplish in this battle
 
 **Examples:**
 
 ```
-[Force:Ironclad Company|Colonel Vane|3 units|Hold the bridge]
-[Force:Jade Falcon Scout Lance|Mechwarrior Roshak|4 mechs|Intercept]
+[Force:Ironclad Company|leader:Colonel Vane|units 3|goal:Hold the bridge]
+[Force:Jade Falcon Scout Lance|leader:Mechwarrior Roshak|mechs 4|goal:Intercept]
 ```
 
 Leave `[Force:]` out entirely for one-off scenarios with no campaign context.
@@ -371,32 +371,34 @@ Scenarios give battles their stakes and structure: objectives, turn limits, depl
 **Format:**
 
 ```
-[Scenario:Name|objective|turn limit|special rules]
+[Scenario:Name|goal:objective|turns N|rule:special rules]
 ```
 
 **Fields:**
 
 - `Name` — scenario title or identifier
-- `objective` — victory condition
-- `turn limit` — number of turns, if applicable
-- `special rules` — weather, night, terrain effects, or other modifiers (optional)
+- `goal:` — victory condition
+- `turns N` — turn limit, if applicable
+- `rule:` — weather, night, terrain effects, or other modifiers (optional; one `rule:` per modifier)
+
+Fields can come in any order.
 
 **Examples — minimal:**
 
 ```
-[Scenario:Breakthrough|Exit 2+ units south|10 turns]
-[Scenario:Wyrdstone Hunt|Collect 3 shards|6 turns]
-[Scenario:Last Stand|Survive 5 turns|5 turns]
+[Scenario:Breakthrough|goal:Exit 2+ units south|turns 10]
+[Scenario:Wyrdstone Hunt|goal:Collect 3 shards|turns 6]
+[Scenario:Last Stand|goal:Survive 5 turns|turns 5]
 ```
 
 **Examples — expanded:**
 
 ```
 [Scenario:Raid on the Mill
-  | Destroy the mill (requires 1 turn adjacent) OR steal 2+ supply crates
-  | 7 turns
-  | Night fight: shooting -1 TN beyond 12"
-  | Reinforcements: defender roll d6 each turn, arrive on 6+
+  | goal: Destroy the mill (requires 1 turn adjacent) OR steal 2+ supply crates
+  | turns 7
+  | rule: Night fight, shooting -1 TN beyond 12"
+  | rule: Reinforcements, defender rolls d6 each turn, arrive on 6+
 ]
 ```
 
@@ -433,7 +435,7 @@ Use `[CAMPAIGN]` blocks at session boundaries — once at the start of a session
 - `[Force:]` tags for named forces
 - `[Unit:]` tags for units with experience or persistent state
 - `[N:]` or `[PC:]` tags for named heroes, leaders, or pilots
-- `[Wealth:]` for treasury (delegates to Resource Tracking Add-on)
+- `[Wealth:]` for treasury, named after the force: `[Wealth:Reiklanders|Gold 50gc]` (delegates to Resource Tracking Add-on)
 - Post-battle rolls and their results (injury tables, experience gains, reinforcement rolls)
 
 **Analog format:**
@@ -452,12 +454,12 @@ For games like Mordheim, Frostgrave, or Rangers of Shadow Deep, the warband is t
 
 ```
 [CAMPAIGN]
-[Force:Reiklanders|Captain Streng|5 units|Active]
+[Force:Reiklanders|leader:Captain Streng|units 5|status:Active]
 [N:Captain Streng|sword+pistol|WS4|Ld8|6 XP|Fresh]
 [N:Champion Aldric|halberd|WS3|Ld7|3 XP|Fresh]
-[Unit:Swordsmen|×3|Exp 0|Fresh]
+[Unit:Swordsmen|×3|Exp 0|status:Fresh]
 [Unit:Marksmen|×2|Exp 2|Marksman skill]
-[Wealth:Gold 50gc]
+[Wealth:Reiklanders|Gold 50gc]
 [/CAMPAIGN]
 ```
 
@@ -465,14 +467,15 @@ For games like Mordheim, Frostgrave, or Rangers of Shadow Deep, the warband is t
 
 ```
 [CAMPAIGN]
-d: Injury Streng 1d6=3 -> Leg Wound (–1 Move next battle)
-[N:Captain Streng|Leg Wound|7 XP]
+tbl: Serious Injury Streng d66=22 -> Leg Wound: -1 Movement
+[N:Captain Streng|Leg Wound|M-1|7 XP]
 [N:Champion Aldric|4 XP]
-d: XP advance Aldric 1d6=5 -> New skill: Step Aside
-[N:Champion Aldric|Step Aside skill|4 XP]
-d: Income 1d6+2=7 -> 7gc found
-[Wealth:Gold 50gc+7gc] => [Wealth:Gold 57gc]
-[Thread:The Haunted Quarter|Open] (Aldric spotted something in the ruins)
+tbl: Advance Aldric 2d6=4 -> New skill: Step Aside
+[N:Champion Aldric|Step Aside|4 XP]
+tbl: Exploration 3d6=7 -> 2 wyrdstone shards
+=> I sell both shards. [Wealth:Reiklanders|Gold+35gc]
+[Thread:The Haunted Quarter|Open]
+(note: Aldric spotted something in the ruins)
 [/CAMPAIGN]
 ```
 
@@ -486,7 +489,7 @@ d: Income 1d6+2=7 -> 7gc found
 **Hired swords and specialists** use `[Unit:]` with a count of `×1`:
 
 ```
-[Unit:Dwarf Troll Slayer|×1|Exp 3|Fearless|Fresh]
+[Unit:Dwarf Troll Slayer|×1|Exp 3|Fearless|status:Fresh]
 ```
 
 ### Force progression (larger scale)
@@ -497,11 +500,11 @@ For campaign wargames at company scale or above, units accumulate experience, ta
 
 ```
 [CAMPAIGN]
-[Force:Wolf's Dragoons Alpha Lance|Major Natasha|4 mechs|Full strength]
-[Unit:Atlas AS7-D|Pilot: Natasha|Armor CT30/RT25/LT25|Heat 0|Fresh]
-[Unit:Marauder MAD-3R|Pilot: Kell|Armor CT22/RT18/LT18|Heat 0|Fresh]
-[Unit:Wolverine WVR-6R|Pilot: Torres|Armor CT16/RT14/LT14|Heat 0|Fresh]
-[Unit:Jenner JR7-D|Pilot: Minh|Armor CT10/RT8/LT8|Heat 0|Fresh]
+[Force:Wolf's Dragoons Alpha Lance|leader:Major Natasha|mechs 4|status:Full strength]
+[Unit:Atlas AS7-D|Pilot: Natasha|Armor CT30/RT25/LT25|Heat 0|status:Fresh]
+[Unit:Marauder MAD-3R|Pilot: Kell|Armor CT22/RT18/LT18|Heat 0|status:Fresh]
+[Unit:Wolverine WVR-6R|Pilot: Torres|Armor CT16/RT14/LT14|Heat 0|status:Fresh]
+[Unit:Jenner JR7-D|Pilot: Minh|Armor CT10/RT8/LT8|Heat 0|status:Fresh]
 [/CAMPAIGN]
 ```
 
@@ -510,11 +513,11 @@ For campaign wargames at company scale or above, units accumulate experience, ta
 ```
 [CAMPAIGN]
 [Unit:Atlas AS7-D|Armor CT8/RT25|needs repair: CT armor]
-d: Repair time 1d6 days=3 -> Atlas operational in 3 days
-[Unit:Marauder MAD-3R|Armor CT22/RT18|Fresh]
+tbl: Repair time 1d6 days=3 -> Atlas operational in 3 days
+[Unit:Marauder MAD-3R|Armor CT22/RT18|status:Fresh]
 [Unit:Wolverine WVR-6R|Armor CT16/RT6|needs repair: RT armor]
 [Unit:Jenner JR7-D|Pilot: Minh|ejected|mech salvageable]
-d: Pilot injury 1d6=2 -> Bruised: Minh out 2 days
+tbl: Pilot injury 1d6=2 -> Bruised: Minh out 2 days
 [N:Minh|bruised|out 2 days]
 [/CAMPAIGN]
 ```
@@ -545,33 +548,38 @@ For systems that track armor by hit location (Battletech, many historical naval 
 **Format:**
 
 ```
-[Unit:Name|Armor CT#/RT#/LT#/RA#/LA#/RL#/LL#|Heat 0|status]
+[Unit:Name|Armor CT#/RT#/LT#/RA#/LA#/RL#/LL#|Heat 0|status:state]
 ```
 
 **Examples:**
 
 ```
-[Unit:Atlas AS7-D|Armor CT30/RT25/LT25/RA20/LA20/RL28/LL28|Heat 0|Fresh]
-[Unit:Summoner Prime|Armor CT22/RT18/LT18/RA16/LA16/RL20/LL20|Heat 0|Fresh]
-[Unit:Jenner JR7-D|Armor CT10/RT8/LT8/RA4/LA4/RL10/LL10|Heat 0|Fresh]
+[Unit:Atlas AS7-D|Armor CT30/RT25/LT25/RA20/LA20/RL28/LL28|Heat 0|status:Fresh]
+[Unit:Summoner Prime|Armor CT22/RT18/LT18/RA16/LA16/RL20/LL20|Heat 0|status:Fresh]
+[Unit:Jenner JR7-D|Armor CT10/RT8/LT8/RA4/LA4/RL10/LL10|Heat 0|status:Fresh]
 ```
 
-You do not need to list all locations if your session only tracks a subset. List what matters for your system.
+You do not need to list all locations if your session only tracks a subset. List what matters for your system. (The armor values in this add-on's examples are illustrative, not taken from record sheets.)
 
 ### Damage notation
 
-Record armor reduction inline during the battle sequence. The shorthand `→` shows the change:
+Record the hit with `d:`, the hit location with `tbl:`, and the armor reduction in the tag. `old>new` (or `→`) shows the change:
 
 ```
-d: AC/20 fires at Summoner CT, 2d10=14 damage -> CT hit
-=> [Unit:Summoner|Armor CT22->8/RT18/LT18|Heat 0|Steady]
+@ Atlas fires its AC/20 at the Summoner
+d: Gunnery 2d6=9 vs TN 7 -> Hit
+tbl: Location 2d6=7 -> CT
+=> 20 damage. [Unit:Summoner|Armor CT22>2/RT18/LT18|status:Steady]
 ```
 
 Or if internal structure is breached:
 
 ```
-d: PPC×2 fires at Kit Fox CT+LT, 2×10=20 damage -> CT destroyed
-=> [Unit:Kit Fox A-1|Armor CT0/LT0|destroyed]
+@ Marauder fires both PPCs at Kit Fox A-1
+d: Gunnery 2d6=8 vs TN 5 -> Both hit
+tbl: Location 2d6=7 -> CT
+tbl: Location 2d6=6 -> RT
+=> 10 damage each; the CT armor is gone and the structure behind it fails. [Unit:Kit Fox A-1|Armor CT0|destroyed]
 => Pilot ejects
 ```
 
@@ -580,38 +588,27 @@ d: PPC×2 fires at Kit Fox CT+LT, 2×10=20 damage -> CT destroyed
 Heat is a stat field on the `[Unit:]` tag, updated each turn:
 
 ```
-[Unit:Atlas AS7-D|Armor CT30/RT25|Heat 0|Fresh]
+[Unit:Atlas AS7-D|Armor CT30/RT25|Heat 0|status:Fresh]
 
 Tn1 Shoot:
 @ Atlas fires AC/20 at Summoner
-=> [Unit:Atlas|Heat 3]  (3 heat generated)
+=> [Unit:Atlas|Heat+7]
+@(Summoner) ER PPC return fire
+=> [Unit:Summoner|Heat+15]
 
 Tn1 Heat:
-@ Atlas dissipates 10 heat -> Heat 3-10 -> Heat 0
+@ Atlas's 20 heat sinks shed all of it
 => [Unit:Atlas|Heat 0]
-
-Tn2 Shoot:
-@ Atlas fires AC/20 again; Summoner fires ER PPC
-=> [Unit:Atlas|Heat 3]
-@(Summoner) ER PPC return fire
-=> [Unit:Summoner|Heat 5]  (accumulated)
+@(Summoner) Its heat sinks shed most of it
+=> [Unit:Summoner|Heat 5]
 ```
 
-**Heat status thresholds** (Battletech standard — adapt to your system):
+**Heat effects** come from your system's heat scale; look them up there rather than in the log. Record the effect that applies as a status:
 
 ```
-Heat 0–9    Safe
-Heat 10–13  Overheat: -1 movement, -1 attack
-Heat 14–17  Danger: risk of ammo explosion, shutdown check
-Heat 18+    Critical: auto-shutdown check each turn
-```
-
-Record threshold effects as status annotations:
-
-```
-=> [Unit:Summoner|Heat 18|shutdown risk]
-d: Shutdown check 1d6=2 -> Shutdown
-=> [Unit:Summoner|Heat 18|shutdown]
+=> [Unit:Summoner|Heat 18|status:shutdown risk]
+d: Shutdown avoid 2d6=5 vs 6 -> Fail
+=> [Unit:Summoner|status:shutdown]
 ```
 
 ### Simplified vehicle tracking
@@ -619,17 +616,17 @@ d: Shutdown check 1d6=2 -> Shutdown
 For systems without location-based armor, use a single `Armor N` field:
 
 ```
-[Unit:War Wagon|Armor 12|Move 4|Fresh]
+[Unit:War Wagon|Armor 12|Move 4|status:Fresh]
 d: Ballista fires at war wagon, 2d6=8 -> Hit, damage 1d6=4
-=> [Unit:War Wagon|Armor 12->8|Steady]
+=> [Unit:War Wagon|Armor 12>8|status:Steady]
 ```
 
 Or use an abstract damage track:
 
 ```
-[Unit:Tank|Intact|Morale N/A|Fresh]
-=> [Unit:Tank|Damaged|Move -2]
-=> [Unit:Tank|Critical|movement halved, weapon offline]
+[Unit:Tank|damage:Intact|Morale N/A|status:Fresh]
+=> [Unit:Tank|damage:Damaged|Move -2]
+=> [Unit:Tank|damage:Critical|movement halved, weapon offline]
 => [Unit:Tank|destroyed]
 ```
 
@@ -654,10 +651,10 @@ Some wargames include personal-scale duels within a unit-scale battle — Mordhe
 
 ```
 [BATTLE]
-[Scenario:Wyrdstone Hunt|Collect 3 shards|6 turns]
-[Unit:Swordsmen|×3|Morale 7|Fresh]
+[Scenario:Wyrdstone Hunt|goal:Collect 3 shards|turns 6]
+[Unit:Swordsmen|×3|Morale 7|status:Fresh]
 [N:Captain Streng|WS4|Ld8|sword+pistol|Fresh]
-[Unit:Skaven Night Runners|×6|Morale 5|Fresh]
+[Unit:Skaven Night Runners|×6|Morale 5|status:Fresh]
 [N:Skaven Assassin|WS5|hidden]
 
 Tn1
@@ -689,19 +686,17 @@ d: WS4 vs WS5 2d6=10 -> Hit
 Tn3
 @ Swordsmen charge the Night Runners
 d: Charge 2d6+1=9 vs TN 7 -> Hit
-=> [Unit:Night Runners|×4|wavering]
+=> [Unit:Night Runners|×4|status:wavering]
 ```
 
 ### With the Resource Tracking Add-on
 
 Use the Resource Tracking Add-on for treasury, supplies, and ammunition — anything that flows in and out across sessions.
 
-| Wargaming element | Resource Add-on tag |
-|------------------|--------------------|
-| Warband treasury | `[Wealth:Gold 45gc]` |
-| Campaign supplies | `[Inv:Rations|8]` |
-| Ammo for special weapons | `[Inv:Blackpowder|3]` |
-| Repair parts (Battletech) | `[Inv:CT Armor Pack|2]` |
+- Warband treasury — `[Wealth:Warband|Gold 45gc]`
+- Campaign supplies — `[Inv:Rations — 8]`
+- Ammo for special weapons — `[Inv:Blackpowder — 3]`
+- Repair parts (Battletech) — `[Inv:CT Armor Pack — 2]`
 
 ### With the Dungeon Crawling Add-on
 
@@ -709,15 +704,15 @@ For dungeon-scenario wargames (Frostgrave vault delves, dungeon scenario maps), 
 
 ```
 [BATTLE]
-[Scenario:The Vault|Reach the chest|5 turns|Unknown rooms]
+[Scenario:The Vault|goal:Reach the chest|turns 5|rule:Unknown rooms]
 
-[R:1|entrance|torchlit|exits: N, E]
-[Unit:Warband|×6|Morale 6|Fresh|R:1]
+[R:1|entrance|torchlit|exits:N, E]
+[Unit:Warband|×6|Morale 6|status:Fresh|R:1]
 
 Tn1
 @ Move through east passage
-d: Explore 1d6=4 -> Room 2 revealed
-[R:2|collapsed hall|dark|exits: E, S|Trap: pitfall]
+tbl: Explore 1d6=4 -> Room 2 revealed
+[R:2|collapsed hall|dark|exits:E, S|Trap: pitfall]
 ```
 
 ---
@@ -726,91 +721,93 @@ d: Explore 1d6=4 -> Room 2 revealed
 
 ### Mordheim
 
-Mordheim uses a small warband (~10–15 models) in skirmish scenarios through a ruined city. Heroes are individually tracked; units are small groups (2–5 identical warriors). The campaign is the main draw: every battle's outcome affects the warband through injury tables, experience advances, and income rolls.
+Mordheim uses a small warband (~10–15 models) in skirmish scenarios through a ruined city. Heroes are individually tracked; units are small groups (2–5 identical warriors). The campaign is the main draw: every battle's outcome affects the warband through the serious injury table, experience advances, and exploration.
 
 **Key mappings:**
 
-| Mordheim concept | Lonelog notation |
-|-----------------|-----------------|
-| Hero | `[N:Name\|WS\|BS\|S\|T\|W\|I\|A\|Ld\|skills\|XP]` |
-| Henchman group | `[Unit:Name\|×N\|Exp N\|status]` |
-| Warband | `[Force:Name\|leader\|count\|treasury state]` |
-| Scenario | `[Scenario:Name\|objective\|turns\|special rules]` |
-| Injury table | `d:` roll, result in `[N:]` tag |
-| Income | `d:` roll, result in `[Wealth:]` update |
-| XP advance | `d:` roll, result in `[N:]` skill field |
+- Hero — `[N:Name|WS|BS|S|T|W|I|A|Ld|skills|XP]`
+- Henchman group — `[Unit:Name|×N|Exp N|status:state]`
+- Warband — `[Force:Name|leader:name|units N|status:state]`
+- Scenario — `[Scenario:Name|goal:objective|turns N|rule:special rules]`
+- Serious injury — `tbl: Serious Injury d66=…`, result in the `[N:]` tag
+- Exploration — `tbl: Exploration Nd6=…` (one die per surviving hero), shards sold into `[Wealth:]`
+- Advance — `tbl: Advance 2d6=…`, result in the `[N:]` or `[Unit:]` tag
+- Shooting, combat — `d: Hit d6=… vs 4+`, then `d: Wound d6=… vs 4+`, then `d: Injury d6=…`
 
 **Example — full Mordheim session:**
 
 ```
 [CAMPAIGN]
-[Force:Reiklanders|Captain Streng|5 units|16 XP warband]
+[Force:Reiklanders|leader:Captain Streng|units 5|XP 16]
 [N:Captain Streng|WS4|BS3|S3|T3|W1|I4|A2|Ld8|6 XP|Fresh]
 [N:Champion Aldric|WS3|BS3|S3|T3|W1|I3|A1|Ld7|Step Aside|4 XP|Fresh]
-[Unit:Swordsmen|×3|Exp 0|Fresh]
-[Unit:Marksmen|×2|Exp 2|Marksman skill|Fresh]
-[Unit:Dwarf Slayer|×1|Exp 3|Fearless|Fresh]
-[Wealth:Gold 57gc]
+[Unit:Swordsmen|×3|Exp 0|status:Fresh]
+[Unit:Marksmen|×2|Exp 2|Marksman skill|status:Fresh]
+[Unit:Dwarf Slayer|×1|Exp 3|Fearless|status:Fresh]
+[Wealth:Reiklanders|Gold 85gc]
 [/CAMPAIGN]
 
 ### S1 *The Merchant Quarter — wyrdstone hunt*
 
 [BATTLE]
-[Scenario:Wyrdstone Hunt|Collect 3 shards before opponent|6 turns|Dusk: shooting range –6"]
-[Force:Skaven|Grey Seer (hidden)|3 units]
-[Unit:Night Runners|×6|Morale 5|Fresh|east deployment]
-[Unit:Clanrats|×4|Morale 4|Fresh|east deployment]
+[Scenario:Wyrdstone Hunt|goal:Collect 3 shards before opponent|turns 6|rule:Dusk: shooting range –6"]
+[Force:Skaven|leader:Grey Seer (hidden)|units 3]
+[Unit:Night Runners|×6|Morale 5|status:Fresh|pos:east deployment]
+[Unit:Clanrats|×4|Morale 4|status:Fresh|pos:east deployment]
 [N:Skaven Grey Seer|WS3|magic|hidden]
 
 Tn1
 @ Advance Swordsmen to center ruins
 @(Aldric) Move to cover the left alley
 @(Night Runners) Advance through rubble
-=> [Unit:Night Runners|×6|at rubble]
+=> [Unit:Night Runners|×6|pos:at rubble]
 
 Tn2
 @ Marksmen fire on Night Runners
-d: Shooting BS3 2d6=7 vs TN 7 -> Hit
-=> [Unit:Night Runners|×5|Morale 5|Steady]
+d: Hit BS3 d6=5 vs 4+ -> Hit
+d: Wound S3 vs T3 d6=4 vs 4+ -> Wound
+d: Injury d6=6 -> Out of action
+=> [Unit:Night Runners|×5|Morale 5|status:Steady]
 
-@ Streng moves to search first wyrdstone marker
-d: Search 1d6=5 -> Shard found
+@ Streng moves onto the first wyrdstone marker
 => Shard 1/3 collected.
 
 @(Grey Seer) Reveals and casts Warp Lightning at Streng
-d: Magic 2d6=9 vs TN 7 -> Success, Str5 hit
-d: Wound S5 vs T3 1d6=6 -> Wound, Streng knocked down
-=> [N:Captain Streng|knocked down|HP-1]
+d: Cast Warp Lightning 2d6=9 vs 8 -> Success
+d: Wound S5 vs T3 d6=6 vs 2+ -> Wound
+d: Injury d6=2 -> Knocked down
+=> [N:Captain Streng|knocked down]
 
 Tn3
 @ Streng recovers, charges Grey Seer
-d: WS4 vs WS3 2d6=8 -> Hit
-d: Wound S3 vs T3 1d6=4 -> Wound
-=> [N:Grey Seer|wounded|fleeing]
+d: Hit WS4 vs WS3 d6=5 vs 3+ -> Hit
+d: Wound S3 vs T3 d6=4 vs 4+ -> Wound
+=> [N:Grey Seer|W-1|wounded]
 
 @ Aldric charges Night Runners with Swordsmen
-d: WS3 vs WS3 2d6=10 -> Hit, 2 kills
-=> [Unit:Night Runners|×3|wavering]
+d: Hit 3d6=5,4,2 vs 4+ -> 2 hits
+d: Wound 2d6=6,4 vs 4+ -> 2 wounds
+d: Injury 2d6=5,6 -> 2 out of action
+=> [Unit:Night Runners|×3|status:wavering]
 
-d: Morale 1d6=5 vs Ld 5 -> Broken
-=> [Unit:Night Runners|×3|broken|fleeing]
+d: Rout test 2d6=9 vs Ld 5 -> Fail
+=> [Unit:Night Runners|×3|status:broken|fleeing]
 
 Tn4-6
 @ Collect remaining shards, hold position
-d: Search ×2 1d6=4, 1d6=6 -> 1 more shard found
 => Shards 2/3 collected. Clanrats withdrew.
 
 [/BATTLE]
 => Scenario: Draw. Only 2 shards vs 3 needed. Skaven fled but completed their objective.
 
 [CAMPAIGN]
-d: Injury Streng 1d6=2 -> Chest Wound (-1 Toughness next battle)
-[N:Captain Streng|Chest Wound|-1T next battle|7 XP]
+tbl: Serious Injury Streng d66=26 -> Chest Wound: -1 Toughness
+[N:Captain Streng|Chest Wound|T 3>2|7 XP]
 [N:Champion Aldric|5 XP]
-d: XP advance Swordsmen 2d6=7 -> +1 to hit
-[Unit:Swordsmen|×3|Exp 1|+1 to hit]
-d: Income 2d6=8 -> 8gc + 2 shards (sell for 15gc each)
-[Wealth:Gold 57gc+38gc] => [Wealth:Gold 95gc]
+tbl: Advance Swordsmen 2d6=7 -> +1 WS
+[Unit:Swordsmen|×3|Exp 1|WS+1]
+tbl: Exploration 3d6=11 -> 2 wyrdstone shards
+=> I sell the two shards from exploration and the two from the battle. [Wealth:Reiklanders|Gold+38gc]
 [Thread:The Merchant Quarter|Skaven also hunting here|Open]
 [/CAMPAIGN]
 ```
@@ -823,34 +820,32 @@ Battletech tracks individual mechs, each with location-based armor, internal str
 
 **Key mappings:**
 
-| Battletech concept | Lonelog notation |
-|-------------------|-----------------|
-| Mech | `[Unit:Name\|Armor CT#/.../LL#\|Heat 0\|status]` |
-| Pilot | `[N:Name\|Piloting #\|Gunnery #\|status]` |
-| Lance | `[Force:Name\|commander\|4 mechs\|mission]` |
-| Initiative | `d: Initiative 2d6=N vs 2d6=N -> winner` |
-| Weapon attack | `d: Gunnery TN=N 2d6=N -> hit/miss, location` |
-| Morale/Pilot check | `d: Piloting TN=N 2d6=N -> success/fail` |
-| Heat phase | Update `Heat N` field after each turn |
+- Mech — `[Unit:Name|Armor CT#/.../LL#|Heat 0|status:state]`
+- Pilot — `[N:Name|Piloting #|Gunnery #|status:state]`
+- Lance — `[Force:Name|leader:name|mechs 4|goal:mission]`
+- Initiative — `d: Initiative 2d6=N vs 2d6=N -> winner`
+- Weapon attack — `d: Gunnery 2d6=N vs TN N -> Hit`, then `tbl: Location 2d6=N -> location`
+- Piloting skill roll — `d: Piloting 2d6=N vs TN N -> Success`
+- Heat phase — Update `Heat N` field after each turn
 
 **Example — lance engagement:**
 
 ```
 [CAMPAIGN]
-[Force:Alpha Lance|Major Natasha|4 mechs|Operational]
-[Unit:Atlas AS7-D|Pilot: Natasha (G3/P4)|Armor CT30/RT25/LT25/RA20/LA20/RL28/LL28|Heat 0|Fresh]
-[Unit:Marauder MAD-3R|Pilot: Kell (G2/P3)|Armor CT22/RT18/LT18/RA16/LA16/RL20/LL20|Heat 0|Fresh]
-[Unit:Wolverine WVR-6R|Pilot: Torres (G3/P3)|Armor CT16/RT14/LT14/RA10/LA10/RL16/LL16|Heat 0|Fresh]
-[Unit:Jenner JR7-D|Pilot: Minh (G3/P4)|Armor CT10/RT8/LT8/RA4/LA4/RL10/LL10|Heat 0|Fresh]
+[Force:Alpha Lance|leader:Major Natasha|mechs 4|status:Operational]
+[Unit:Atlas AS7-D|Pilot: Natasha (G3/P4)|Armor CT30/RT25/LT25/RA20/LA20/RL28/LL28|Heat 0|status:Fresh]
+[Unit:Marauder MAD-3R|Pilot: Kell (G2/P3)|Armor CT22/RT18/LT18/RA16/LA16/RL20/LL20|Heat 0|status:Fresh]
+[Unit:Wolverine WVR-6R|Pilot: Torres (G3/P3)|Armor CT16/RT14/LT14/RA10/LA10/RL16/LL16|Heat 0|status:Fresh]
+[Unit:Jenner JR7-D|Pilot: Minh (G3/P4)|Armor CT10/RT8/LT8/RA4/LA4/RL10/LL10|Heat 0|status:Fresh]
 [/CAMPAIGN]
 
 ### S1 *Industrial wasteland, Luthien outskirts*
 
 [BATTLE]
-[Scenario:Breakthrough|Exit 2+ mechs off south edge|12 turns|Heavy rubble terrain: +1 TN movement]
-[Force:Jade Falcon Scout Lance|Mechwarrior Roshak|4 mechs]
-[Unit:Summoner Prime|Pilot: Roshak (G2/P2)|Armor CT22/RT18/LT18/RA16/LA16/RL20/LL20|Heat 0|Fresh]
-[Unit:Kit Fox A|×3|Pilot: assorted (G3/P3)|Armor CT10/RT8/LT8/RA6/LA6/RL12/LL12|Heat 0|Fresh]
+[Scenario:Breakthrough|goal:Exit 2+ mechs off south edge|turns 12|rule:Heavy rubble terrain: +1 TN movement]
+[Force:Jade Falcon Scout Lance|leader:Mechwarrior Roshak|mechs 4]
+[Unit:Summoner Prime|Pilot: Roshak (G2/P2)|Armor CT22/RT18/LT18/RA16/LA16/RL20/LL20|Heat 0|status:Fresh]
+[Unit:Kit Fox A|×3|Pilot: assorted (G3/P3)|Armor CT10/RT8/LT8/RA6/LA6/RL12/LL12|Heat 0|status:Fresh]
 
 Tn1 Move:
 d: Initiative 2d6=9 vs 2d6=6 -> Alpha Lance moves second (advantage)
@@ -861,27 +856,31 @@ d: Initiative 2d6=9 vs 2d6=6 -> Alpha Lance moves second (advantage)
 
 Tn1 Shoot:
 @ Atlas fires AC/20 at Summoner
-d: Gunnery TN7 (range+movement) 2d6=9 -> Hit
-d: Location 2d6=7 -> CT, damage 20
-=> [Unit:Summoner|Armor CT22->2/RT18/LT18|Heat 0|Steady]
+d: Gunnery 2d6=9 vs TN 7 -> Hit
+tbl: Location 2d6=7 -> CT
+=> 20 damage.
+=> [Unit:Summoner|Armor CT22>2/RT18/LT18|Heat 0|status:Steady]
 
 @(Summoner) ER PPC at Atlas
-d: Gunnery TN6 2d6=5 -> Miss
+d: Gunnery 2d6=5 vs TN 6 -> Miss
 
 @ Marauder fires PPC×2 at Kit Fox A-1
-d: Gunnery TN5 2d6=7 -> Hit
-d: Location 2d6=CT+LT -> CT 10->0 destroyed, internal structure gone
-=> [Unit:Kit Fox A-1|Armor CT0|destroyed]
-=> Pilot ejects, Minh moves to cover
+d: Gunnery 2d6=7 vs TN 5 -> Both hit
+tbl: Location 2d6=7 -> CT
+tbl: Location 2d6=7 -> CT
+=> 20 damage to the CT: armor gone, structure destroyed. [Unit:Kit Fox A-1|Armor CT0|destroyed]
+=> The Kit Fox pilot ejects.
 
 @(Kit Fox A-2, A-3) LRM 10 at Marauder
-d: Gunnery TN5 2d6=8, 2d6=6 -> 1 hit, 1 miss
-d: Location 2d6=RT, 6 missiles connect -> RT 18->12
-=> [Unit:Marauder|Armor CT22/RT12/LT18|Heat 0|Steady]
+d: Gunnery 2d6=8, 2d6=6 vs TN 7 -> 1 hit, 1 miss
+tbl: Cluster 2d6=7 -> 6 missiles
+tbl: Location 2d6=9 -> RT
+=> [Unit:Marauder|Armor CT22/RT12/LT18|Heat 0|status:Steady]
 
 Tn1 Heat:
-@ Atlas: 3 heat (AC/20) – dissipate 10 -> Heat 0
-@(Summoner): 15 heat (ER PPC) – dissipate 10 -> Heat 5
+@ Atlas's heat sinks shed the 7 from the AC/20
+=> [Unit:Atlas|Heat 0]
+@(Summoner) Its heat sinks shed most of the 15 from the ER PPC
 => [Unit:Summoner|Heat 5]
 
 Tn2 Move:
@@ -892,53 +891,53 @@ Tn2 Move:
 => Breakthrough achieved. Wolverine and Jenner escaped. Atlas and Marauder provide cover; mission success.
 
 [CAMPAIGN]
-[Unit:Atlas AS7-D|Armor CT30/RT25|Heat 0|Intact]
+[Unit:Atlas AS7-D|Armor CT30/RT25|Heat 0|damage:Intact]
 [Unit:Marauder MAD-3R|Armor CT22/RT12|needs repair RT armor]
-[Unit:Wolverine WVR-6R|Armor CT16/RT14|Intact]
+[Unit:Wolverine WVR-6R|Armor CT16/RT14|damage:Intact]
 [Unit:Kit Fox A-1|destroyed, salvageable]
-d: Repair Marauder RT 1d6 days=2 -> back in 2 days
-[Thread:Operation Luthien|2/4 breakthroughs complete|Open]
+tbl: Repair Marauder RT 1d6 days=2 -> back in 2 days
+[Track:Operation Luthien 2/4]
 [/CAMPAIGN]
 ```
 
 ---
 
-### Generic Fantasy Skirmish (Frostgrave / Rangers of Shadow Deep)
+### Frostgrave
 
-Fantasy skirmish games typically use small warbands (5–10 models), scenario objectives, and light campaign rules. The wargaming add-on handles these with minimal notation.
+Frostgrave uses a wizard, an apprentice and a handful of soldiers, with scenario treasure and light campaign rules. Every roll is a d20. Other fantasy skirmish games with small warbands map the same way.
 
 ```
 [CAMPAIGN]
-[Force:Sigilist Warband|Sigilist Caldris|6 figures|Level 4]
-[N:Caldris|Sigilist|Lv4|Will 14|HP 14|Fresh]
-[N:Apprentice Voss|Apprentice|Lv1|Will 11|HP 10|Fresh]
-[Unit:Infantryman|×2|Exp 0|Fresh]
-[Unit:Thug|×2|Exp 0|Fresh]
-[Wealth:Gold 200gc]
+[Force:Sigilist Warband|leader:Sigilist Caldris|figures 6|Level 4]
+[N:Caldris|Sigilist|Lv4|Will +4|Health 14|Fresh]
+[N:Apprentice Voss|Apprentice|Will +2|Health 12|Fresh]
+[Unit:Infantryman|×2|Exp 0|status:Fresh]
+[Unit:Thug|×2|Exp 0|status:Fresh]
+[Wealth:Sigilist Warband|Gold 200gc]
 [/CAMPAIGN]
 
 ### S3 *Frozen ruins, midwinter*
 
 [BATTLE]
-[Scenario:The Library|Find and retrieve 4 treasure tokens|unlimited turns|Snow: -1 Move]
-[Unit:Rival Warband|×6|Morale 6|Fresh|north edge]
+[Scenario:The Library|goal:Find and retrieve 4 treasure tokens|turns unlimited|rule:Snow: -1 Move]
+[Unit:Rival Warband|×6|Morale 6|status:Fresh|pos:north edge]
 
 Tn1
 @ Caldris moves toward central treasure, casts Leap on Voss
-d: Spellcasting Will 14 TN 12 2d6=14 -> Success
-=> [N:Voss|leaps to east treasure token]
+d: Cast Leap d20=14 vs 8 -> Success
+=> Voss leaps to the east treasure token.
 
 @ Voss picks up treasure
-d: None needed -> Token secured
+=> Token secured.
 
 @(Rival Infantryman) Charges Thug A
-d: Fight 2d6+1=9 vs 2d6+2=7 -> Thug wins
-=> [Unit:Rival Infantryman ×1|stunned]
+d: Fight d20+2=9 vs Thug d20+2=15 -> Thug wins
+=> 15 against armor 11: 4 damage. [Unit:Rival Infantryman|Health-4]
 
 Tn2
 @ Caldris casts Elemental Bolt at Rival Apprentice
-d: Spellcasting Will 14 TN 14 2d6=11 -> Fail, –1 HP
-=> [N:Caldris|HP 13]
+d: Cast Elemental Bolt d20=6 vs 12 -> Fail
+=> Failed by 6: Caldris takes 1 damage. [N:Caldris|Health-1]
 
 @ Infantry advance toward second token
 
@@ -946,13 +945,13 @@ d: Spellcasting Will 14 TN 14 2d6=11 -> Fail, –1 HP
 => 2 tokens secured, warband withdrew safely.
 
 [CAMPAIGN]
-[N:Caldris|Lv4|HP 14|80 XP -> Lv5]
-d: Level advance 1d20=14 -> +1 Fight
-[N:Caldris|Lv5|Fight +1|80 XP]
-d: Injury Thug A 1d20=7 -> Minor wound, misses next game
+[N:Caldris|Lv4>Lv5]
+=> Level 5: I choose +1 Fight. [N:Caldris|Fight+1]
+tbl: Survival Thug A d20=3 -> Badly wounded, misses next game
 [Unit:Thug A|×1|injured|out next session]
-d: Treasure 2 tokens -> 150gc + scroll (Push)
-[Wealth:Gold 200gc+150gc] => [Wealth:Gold 350gc]
+tbl: Treasure d20=7 -> 150gc
+tbl: Treasure d20=16 -> Scroll of Push
+[Wealth:Sigilist Warband|Gold+150gc]
 [Inv:Scroll of Push|×1]
 [/CAMPAIGN]
 ```
@@ -965,8 +964,8 @@ d: Treasure 2 tokens -> 150gc + scroll (Push)
 
 ```
 ✔ [BATTLE]
-  [Scenario:Raid|Escape with the chest|5 turns]
-  [Unit:Warband|×8|Morale 6|Fresh]
+  [Scenario:Raid|goal:Escape with the chest|turns 5]
+  [Unit:Warband|×8|Morale 6|status:Fresh]
   Tn1 ...
   [/BATTLE]
 ```
@@ -993,9 +992,9 @@ d: Treasure 2 tokens -> 150gc + scroll (Push)
 
 ```
 ✔ d: Shooting 2d6=8 vs TN 7 -> Hit
-  => [Unit:Raiders|×10|wavering]
+  => [Unit:Raiders|×10|status:wavering]
   d: Morale 2d6=9 vs Morale 6 -> Broken
-  => [Unit:Raiders|×10|broken|fleeing]
+  => [Unit:Raiders|×10|status:broken|fleeing]
 ```
 
 **Don't: Track individual model hit points in a unit tag**
@@ -1005,7 +1004,7 @@ d: Treasure 2 tokens -> 150gc + scroll (Push)
 ```
 
 ```
-✔ [Unit:Raiders|×4|half strength|Steady]
+✔ [Unit:Raiders|×4|size:half strength|status:Steady]
 ```
 
 ---
@@ -1040,9 +1039,9 @@ d: Treasure 2 tokens -> 150gc + scroll (Push)
 **Do: Delegate financial tracking to the Resource Tracking Add-on**
 
 ```
-✔ [Wealth:Gold 50gc]
-  d: Income 2d6=9 -> 9gc
-  [Wealth:Gold 50gc+9gc] => [Wealth:Gold 59gc]
+✔ [Wealth:Warband|Gold 50gc]
+  tbl: Income 2d6=9 -> 9gc
+  [Wealth:Warband|Gold+9gc]
 ```
 
 **Don't: Invent a new wealth tag when one already exists**
@@ -1075,11 +1074,9 @@ d: Treasure 2 tokens -> 150gc + scroll (Push)
 
 ### New Tags
 
-| Tag | Purpose | Example |
-|-----|---------|---------|
-| `[Unit:Name\|size\|stats\|status]` | Military unit state | `[Unit:Rifles\|×12\|Morale 8\|Fresh]` |
-| `[#Unit:Name]` | Reference to established unit | `[#Unit:Rifles]` |
-| `[Force:Name\|commander\|strength\|objective]` | Overall force summary (optional) | `[Force:Alpha Lance\|Natasha\|4 mechs\|Breakthrough]` |
+- `[Unit:Name|×N|stats|status:state]` — Military unit state. Example: `[Unit:Rifles|×12|Morale 8|status:Fresh]`
+- `[#Unit:Name]` — Reference to established unit. Example: `[#Unit:Rifles]`
+- `[Force:Name|leader:name|units N|goal:objective]` — Overall force summary (optional). Example: `[Force:Alpha Lance|leader:Natasha|mechs 4|goal:Breakthrough]`
 
 ### `[Unit:]` Fields
 
@@ -1134,15 +1131,15 @@ d: Treasure 2 tokens -> 150gc + scroll (Push)
 
 ```
 [CAMPAIGN]
-[Force:Reiklanders|Captain Streng|3 units|Active]
+[Force:Reiklanders|leader:Captain Streng|units 3|status:Active]
 [N:Captain Streng|WS4|Ld8|6 XP|Fresh]
-[Unit:Swordsmen|×3|Exp 0|Fresh]
-[Wealth:Gold 50gc]
+[Unit:Swordsmen|×3|Exp 0|status:Fresh]
+[Wealth:Warband|Gold 50gc]
 [/CAMPAIGN]
 
 [BATTLE]
-[Scenario:Raid|Steal the idol|5 turns|Night: –1 shooting]
-[Unit:Cultists|×6|Morale 5|Fresh]
+[Scenario:Raid|goal:Steal the idol|turns 5|rule:Night: –1 shooting]
+[Unit:Cultists|×6|Morale 5|status:Fresh]
 [N:Cult Leader|WS4|Ld7|armed|Fresh]
 
 Tn1
@@ -1158,18 +1155,18 @@ d: WS4 vs WS4 2d6=11 -> Hit, +1 wound
 => [N:Cult Leader|knocked down]
 @ Swordsmen charge cultist flank
 d: WS3 vs WS3 2d6=8 -> Hit, 2 kills
-=> [Unit:Cultists|×4|wavering]
+=> [Unit:Cultists|×4|status:wavering]
 d: Morale 1d6=6 vs Ld 5 -> Broken
-=> [Unit:Cultists|×4|broken|fleeing]
+=> [Unit:Cultists|×4|status:broken|fleeing]
 
 [/BATTLE]
 => Victory. Idol secured.
 
 [CAMPAIGN]
-d: Injury Streng 1d6=4 -> No lasting effect
+tbl: Injury Streng 1d6=4 -> No lasting effect
 [N:Captain Streng|7 XP|Fresh]
-d: Income 1d6=5 -> 15gc from the idol
-[Wealth:Gold 50gc+15gc] => [Wealth:Gold 65gc]
+tbl: Income 1d6=5 -> 15gc from the idol
+[Wealth:Warband|Gold+15gc]
 [/CAMPAIGN]
 ```
 
@@ -1184,10 +1181,10 @@ A: Use the Combat Add-on for personal-scale fights — one character vs. one or 
 A: You can, but it creates confusion if you ever mix wargaming notation with the Combat Add-on in the same log. `Rd#` has a specific meaning (personal-scale initiative round) in the established Lonelog ecosystem. `Tn#` reserves a distinct identity for unit-scale game turns.
 
 **Q: My system doesn't have morale — do I need status vocabulary?**  
-A: No. Status fields are optional. If your system doesn't track morale or unit condition, simply omit those fields from `[Unit:]` tags. `[Unit:Rifles|×12|Fresh]` is perfectly valid notation.
+A: No. Status fields are optional. If your system doesn't track morale or unit condition, simply omit those fields from `[Unit:]` tags. `[Unit:Rifles|×12|status:Fresh]` is perfectly valid notation.
 
 **Q: How do I handle random scenario events — traps triggering, weather changing, reinforcements arriving?**  
-A: Use `d:` for any random determination and `=>` for the consequence. For events that simply occur without a roll, prose or a parenthetical note works fine: `(Reinforcements: Skaven Rat Ogre arrives turn 3)`. Note: a proposed `!` symbol for external/world events is under consideration for a future core notation update, which would make these entries cleaner.
+A: Use `d:` for a roll that decides whether something happens, `tbl:` for a roll that decides what arrives, and `=>` for the consequence. For events that simply occur without a roll, write them in prose or as a meta note: `(note: Skaven Rat Ogre arrives turn 3)`. If you play with a GM or an umpire, Partylog's `!` symbol records GM and world events: `! Reinforcements arrive on the east road`.
 
 **Q: How do I track a large battle with 20+ units per side?**  
 A: Focus your log on the units that matter most — the ones that have consequential moments, pass or fail critical morale tests, or carry the objective. Units that do nothing interesting in a turn don't need an entry. The log is a record of the meaningful, not a transcript of every activation.
@@ -1213,6 +1210,7 @@ The Solo Wargaming Add-on was prompted by community requests to support Battlete
 
 **Version History:**
 
+- v1.1.0: Corrected the BattleTech, Mordheim and Frostgrave examples (weapon damage and heat, d66 injuries, 2d6 advances, exploration, d20 rolls); armor values marked illustrative; the heat table replaced by a pointer to your system's heat scale. Aligned with Lonelog v1.7: campaign and hit-location rolls that give content use `tbl:`; tag changes use `old>new`; unit sizes are `×N` values, never part of the name; treasury changes are written as changes (`Gold+7gc`). World events: Partylog's `!` for GM-run games.
 - v1.0.0: Initial release
 
 This work is licensed under the **Creative Commons Attribution-ShareAlike 4.0 International License**.

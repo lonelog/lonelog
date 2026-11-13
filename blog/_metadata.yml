@@ -1,0 +1,5 @@
+# Applies to every post under blog/.
+sidebar: false
+format-links: false
+author: Roberto Bisceglie
+title-block-banner: false

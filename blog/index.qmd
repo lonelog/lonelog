@@ -1,0 +1,13 @@
+---
+title: "Blog"
+description: "Release notes, tutorials and news about Lonelog."
+sidebar: false
+format-links: false
+listing:
+  contents: "*/index.md"
+  sort: "date desc"
+  type: default
+  categories: true
+  feed: true
+  fields: [date, title, description, categories, reading-time]
+---

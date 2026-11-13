@@ -2,7 +2,7 @@
 title: Partylog
 subtitle: "A Standard Notation for Group RPG Session Logging"
 author: Roberto Bisceglie
-version: 1.0.0
+version: 1.1.0
 license: CC BY-SA 4.0
 lang: en
 ---
@@ -333,13 +333,13 @@ Attribution on the `d:` line is optional if the preceding `@(Name)` makes it cle
 
 When comparing rolls to target numbers:
 
-```
-d: 18 vs DC 15 -> Success     (standard format)
-d: 18≥15 -> S                 (shorthand: ≥ means meets/exceeds)
-d: 8≤14 -> F                  (shorthand: ≤ means fails to meet)
-```
+| Notation | Meaning | Example |
+|----------|---------|---------|
+| `vs` | Neutral "against"; the outcome says who won | `d: 18 vs DC 15 -> Success` |
+| `≥` or `>=` | Meets or beats the target | `d: 18≥15 -> S` |
+| `<` | Falls short of the target | `d: 8<14 -> F` |
 
-**Note:** You can also use `>=` and `<=`. Add `S` (Success) or `F` (Fail) letters for explicit flags.
+Write the comparison so it is true, and put `S` (Success) or `F` (Fail) after `->`, as in core Lonelog.
 
 #### Contested Rolls
 
@@ -368,17 +368,17 @@ d(Sable): CON save d20-1=8 vs DC 13 -> Fail
 
 #### 3.3.2 Roll Context
 
-When a roll draws on specific tags, traits, or situational modifiers, list them inside square brackets within the `d:` line. This records which factors influenced the roll without changing persistent states.
+When a roll draws on specific tags, traits, or situational modifiers, list them before the dice: `+[…]` for what helps, `-[…]` for what hinders. This records which factors influenced the roll without changing persistent states.
 
 ```
 @(Mira) Attack the Ogre
-d: d20+6 [Adv: Flanking, -Wounded] = 21 vs AC 16 -> Hit
+d: +[flanking] -[wounded] d20+6=21 vs AC 16 -> Hit
 
 @(Sable) Persuade the Guard
-d: 2d6 [trait: silver tongue | vs: suspicious-2] = 9 -> Success
+d: +[trait: silver tongue] -[suspicious] 2d6=9 -> Success
 ```
 
-The `[...]` inside `d:` means "these factors are **active for this roll**." This is especially useful in group play for tracking why a player has advantage or what situational modifiers the GM applied.
+Roll context means "these factors are **active for this roll**." This is especially useful in group play for tracking why a player has advantage or what situational modifiers the GM applied.
 
 ### 3.4 Consequences
 
@@ -451,9 +451,9 @@ In combat, player and NPC actions alternate. Use `@(NPC)` for enemy turns — th
 
 ```
 [COMBAT]
-Initiative: Mira(19), Orc Chief(16), Kael(14), Sable(11)
+(init: Mira 19, Orc Chief 16, Kael 14, Sable 11)
 
-R1
+Rd1
 @(Mira) Reckless Attack with greatsword
 d: d20+6 (adv)=21 vs AC 16 -> Hit, 2d6+4=14 dmg
 => Heavy slash across the orc's chest. [F:Orc Chief|HP-14]
@@ -470,7 +470,7 @@ d: d20+7=23 vs AC 16 -> Hit, 1d6+3d6+3=18 dmg
 d: d20+5=12 vs AC 16 -> Miss
 => Flames scorch the wall behind him.
 
-R2
+Rd2
 ...
 [/COMBAT]
 ```
@@ -480,7 +480,7 @@ The `@(NPC)` convention works because NPCs are *acting* — making attacks, cast
 ```
 @(Orc Chief) Bellows for reinforcements
 ! Three more orcs burst through the side door
-=> [F:Orc×3|HP 11 each|Close]
+=> [F:Orcs|×3|HP 11 each|pos:Close]
 ```
 
 ---
@@ -544,11 +544,13 @@ The `Player:` field is optional but useful when sharing logs or when players hav
 **Updating PC stats:**
 
 ```
-[PC:Kael|HP-5]              (shorthand: lost 5 HP)
-[PC:Kael|HP 23]             (explicit: now at 23)
-[PC:Sable|+poisoned]        (gained a condition)
-[PC:Mira|HP+10|-wounded]    (healed and condition removed)
+[PC:Kael|HP-5]
+[PC:Kael|HP 23]
+[PC:Sable|poisoned]
+[PC:Mira|HP+10|-wounded]
 ```
+
+Tags accumulate, as in core Lonelog: `HP-5` lowers HP by 5, `HP 23` sets it, `poisoned` adds a condition, and `-wounded` removes one. Use `old>new` to replace a value.
 
 **Advancement events:**
 
@@ -570,21 +572,23 @@ Follow up with a `[PC:]` update to reflect the new state:
 
 #### 4.1.3 Party-Level Tracking
 
-Some resources and states belong to the group, not any individual:
+Some resources and states belong to the group, not any individual. The tag's name is the party's — whatever the table calls itself, or simply `Crew`:
 
 ```
-[Party:Gold 150|Rations 10|Wagon:intact]
-[Party:Reputation:feared in Northport]
-[Party:Quest:Retrieve the Sunstone]
+[Party:Crew|Gold 150|Rations 10|Wagon:intact]
+[Party:Crew|Reputation:feared in Northport]
+[Party:Crew|Quest:Retrieve the Sunstone]
 ```
 
 **Updating:**
 
 ```
-[Party:Gold-30]              (spent 30 gold)
-[Party:Rations-3]            (three days of travel)
-[Party:Wagon:intact->damaged] (ambush on the road)
+[Party:Crew|Gold-30]
+[Party:Crew|Rations-3]
+[Party:Crew|Wagon:intact>damaged]
 ```
+
+The party spends 30 gold, uses three days' rations, and the wagon is damaged in an ambush.
 
 #### 4.1.4 Factions
 
@@ -601,7 +605,7 @@ Factions are persistent organizations — guilds, noble houses, city watch, cult
 **Updating faction standing:**
 
 ```
-[Faction:City Watch|standing:neutral->suspicious]
+[Faction:City Watch|standing:neutral>suspicious]
 [Faction:Thieves Guild|+owes us a debt]
 [Faction:Baron Holt's House|-hostile|+hunting us]
 ```
@@ -614,15 +618,22 @@ Factions are persistent organizations — guilds, noble houses, city watch, cult
 [L:The Rusty Anchor|tavern|friendly]
 ```
 
-#### 4.1.6 Events & Clocks
+#### 4.1.6 Events
+
+An event tag marks a notable thing that happened, so the campaign's turning points are easy to find:
 
 ```
-[E:CultistRitual 3/8]
-[E:CityAlert 2/6]
-[E:DragonApproach 5/10]
+[E:Bridge Collapse]
+[E:Baron Holt Exposed]
 ```
 
-Events track significant plot elements. The `X/Y` format shows current/total progress.
+Anything that builds up over time — a ritual, the city's alert level, a dragon's approach — is a clock or track instead:
+
+```
+[Clock:Cultist Ritual 3/8]
+[Clock:City Alert 2/6]
+[Clock:Dragon Approach 5/10]
+```
 
 #### 4.1.7 Story Threads, Goals & Quests
 
@@ -724,20 +735,13 @@ Three formats handle different types of progression:
 
 ### 4.3 Random Tables & Generators
 
-When the GM rolls on a table or uses a generator, record it to maintain transparency and reproducibility.
-
-**Simple table lookup:**
+When the GM rolls on a table or uses a generator, record it to maintain transparency and reproducibility. As in core Lonelog, `tbl:` covers any random result that gives content, from a single roll to a multi-step generator:
 
 ```
-tbl: d100=42 -> "A broken sword"
-tbl: d20=15 -> "Thunderstorm at midnight"
-```
-
-**Complex generators:**
-
-```
-gen: Random NPC d8=3,d10=7 -> Gruff/Pilot
-gen: Encounter d100=78 -> Dragon patrol, distant
+tbl: Loot d100=42 -> A broken sword
+tbl: Weather d20=15 -> Thunderstorm at midnight
+tbl: Random NPC d8=3,d10=7 -> Gruff / Pilot
+tbl: Encounter d100=78 -> Dragon patrol, distant
 ```
 
 #### 4.3.1 Inline Table Definitions
@@ -774,7 +778,7 @@ tbl: Available Leads -> The torn letter
 For generators that produce compound results (e.g., an NPC with several traits).
 
 ```
-gen: Random NPC
+tbl: Random NPC
   Role: d6=2 -> Merchant
   Trait: d6=6 -> Obsessive
   Want: d6=4 -> Knowledge
@@ -785,7 +789,7 @@ gen: Random NPC
 
 ```
 ! Random encounter on the road
-tbl: d100=67 -> "Merchant caravan under attack"
+tbl: Road Encounter d100=67 -> Merchant caravan under attack
 => Screams ahead — a merchant's wagon is being raided by goblins.
 ```
 
@@ -1003,21 +1007,20 @@ S21 *The Rusty Anchor — present*
 
 #### 5.3.3 Split Party
 
-When the party divides, use thread prefixes:
+When the party divides, prefix each scene with its storyline number. A storyline is a line of play, not a story thread (`[Thread:]`):
 
 ```
 T1-S22 *Kael and Mira at the healer's*
 T2-S22 *Sable tailing the bartender*
 ```
 
-**When threads rejoin:**
+**When storylines rejoin**, continue with plain scene numbers and say so in a note:
 
 ```
 T1-S24 *Kael and Mira return to the safe house*
 T2-S24 *Sable arrives moments later*
 
-S25 *Safe house — party reunited*
-(Threads merged)
+S25 *Safe house — party reunited* (note: storylines T1 and T2 merge)
 ```
 
 #### 5.3.4 Montages and Time Cuts
@@ -1076,7 +1079,7 @@ Many systems have formal end-of-session rituals — XP awards, advancement trigg
 
 ```
 [Advance:Kael|Rogue 6|+Expertise]
-[Party:XP+1 each]
+[Party:Crew|XP+1 each]
 (hook: the shipment arrives in 3 days — scout the temple before it arrives)
 (note: strong session, the escape was tense)
 ```
@@ -1087,7 +1090,7 @@ Many systems have formal end-of-session rituals — XP awards, advancement trigg
 ```
 --- End of Session 7 ---
 [Advance] Kael: Rogue 6 (+Expertise)
-[Party:XP+1 each]
+[Party:Crew|XP+1 each]
 (hook: shipment in 3 days — scout the temple)
 (note: strong session)
 ```
@@ -1110,9 +1113,9 @@ Events that happen *between* sessions — off-camera travel, recovery, world cha
 
 ```
 [PC:Mira|HP 34/34|-bandaged]                        (fully healed)
-[Party:Rations-7]                                    (seven days' travel)
+[Party:Crew|Rations-7]                                    (seven days' travel)
 [Clock:Holt's Search +2]                             (time passes)
-[Faction:City Watch|standing:neutral->suspicious]
+[Faction:City Watch|standing:neutral>suspicious]
 (note: off-camera — narrated summary, no active play)
 ```
 ````
@@ -1122,9 +1125,9 @@ Events that happen *between* sessions — off-camera travel, recovery, world cha
 ```
 === Interlude: One week, coast road ===
 [PC:Mira|-bandaged|HP full]
-[Party:Rations-7]
+[Party:Crew|Rations-7]
 [Clock:Holt's Search +2]
-[Faction:City Watch|neutral->suspicious]
+[Faction:City Watch|neutral>suspicious]
 ```
 
 Interludes differ from **Montages** (§5.3.4): montages happen *during* a session as active play; interludes record what happened *off-camera* between sessions.
@@ -1138,9 +1141,9 @@ Interludes differ from **Montages** (§5.3.4): montages happen *during* a sessio
 Pure shorthand — for fast-paced sessions when the scribe is barely keeping up:
 
 ```
-S18 @(K)Sneak d:8≤14 F => noise [Clock:Alert 2/6]
-!Guards coming @(S)Sleep d:save9≤13 F => guard drops
-S19 @(M)Barricade d:16≥12 S => safe for now [L:Safe House]
+S18 @(K)Sneak d:8<14 ->F => noise [Clock:Alert 2/6]
+!Guards coming @(S)Sleep d:save 9<13 ->F => guard drops
+S19 @(M)Barricade d:16≥12 ->S => safe for now [L:Safe House]
 ```
 
 Single-letter abbreviations for character names work fine when everyone knows who's who.
@@ -1251,7 +1254,7 @@ PC(Kael): "Name your price."
 @(Kael) Negotiate the fee
 d: Persuasion d20+3=9 vs DC 14 -> Fail
 => Tomas won't budge. Full price.
-[Party:Gold-25]
+[Party:Crew|Gold-25]
 
 ! Tomas treats the wound
 => [PC:Mira|HP+15|HP 27/34|-wounded|bandaged]
@@ -1332,7 +1335,7 @@ PC(Kael): "Name your price."
 
 @(Kael) Negotiate
 d: Persuasion d20+3=9 vs DC 14 -> Fail
-=> Full price. [Party:Gold-25]
+=> Full price. [Party:Crew|Gold-25]
 
 ! Tomas treats the wound
 => [PC:Mira|HP+15|-wounded|bandaged]
@@ -1365,15 +1368,15 @@ A full combat encounter showing initiative, multiple participants, and world eve
 
 ```
 ! Bandits spring from the tree line — four of them, armed
-[F:Bandit×4|HP 11 each|Close]
+[F:Bandits|×4|HP 11 each|pos:Close]
 
 [COMBAT]
-Initiative: Mira(19), Bandit Leader(17), Kael(14), Bandits(12), Sable(8)
+(init: Mira 19, Bandit Leader 17, Kael 14, Bandits 12, Sable 8)
 
-R1
+Rd1
 @(Mira) Draw greatsword, charge the leader
 d: d20+6=21 vs AC 13 -> Hit, 2d6+4=15 dmg
-=> Devastating opening strike. [F:Bandit Leader|HP 27-15=12]
+=> Devastating opening strike: 15 of his 27 HP. [F:Bandit Leader|HP-15]
 
 @(Bandit Leader) "Kill them! Take the satchel!"
 d: d20+4=17 vs AC 18 (Mira) -> Miss
@@ -1381,9 +1384,9 @@ d: d20+4=17 vs AC 18 (Mira) -> Miss
 
 @(Kael) Shortbow at the nearest bandit
 d: d20+7=19 vs AC 12 -> Hit, 1d6+3d6+3=16 dmg
-=> Drops instantly. [F:Bandit×4→3]
+=> Drops instantly. [F:Bandits|×3]
 
-@(Bandits×2) Rush Sable
+@(Bandits) Two of them rush Sable
 d: d20+3=15 vs AC 12 -> Hit, 1d6+1=5 dmg
 d: d20+3=11 vs AC 12 -> Miss
 => One blade gets through. [PC:Sable|HP-5]
@@ -1391,9 +1394,9 @@ d: d20+3=11 vs AC 12 -> Miss
 @(Sable) 5-foot step back, cast Burning Hands
 d: DEX saves — Bandit 1: d20+1=8, Bandit 2: d20+1=14 vs DC 14
 => 3d6=11 fire dmg. Bandit 1 takes full (dead), Bandit 2 half.
-   [F:Bandit×3→1 (+1 wounded)]
+   [F:Bandits|×2|one wounded]
 
-R2
+Rd2
 @(Mira) Finish the leader
 d: d20+6=18 vs AC 13 -> Hit, 2d6+4=11 dmg
 => [F:Bandit Leader|HP 0|dead]
@@ -1411,7 +1414,7 @@ d: Intimidation (Mira, assist) d20+3=17 vs DC 12 -> Success
 [/COMBAT]
 
 => Party takes stock. Sable bandages herself.
-[PC:Sable|HP-5→HP 13/18]
+[PC:Sable|HP 13/18]
 [N:Captured Bandit|terrified|cooperative]
 ```
 ````
@@ -1460,7 +1463,7 @@ d: d20+7=19 vs DC 15 -> Success
 **Do: Prioritize mechanics over prose when falling behind**
 
 ```
-Fast:  @(K) lock d:19≥15 S => open
+Fast:  @(K) lock d:19≥15 ->S => open
 Slow:  Kael knelt before the ancient lock, his picks glinting...
 ```
 
@@ -1597,7 +1600,7 @@ Your play log here...
 
 ```
 [Advance:Name|Class Level|+gained]
-[Party:XP+]
+[Party:Crew|XP+]
 (hook: )
 (note: )
 ```
@@ -1619,7 +1622,7 @@ S1 *Scene description*
 
 --- End of Session X ---
 [Advance] Name: Class Level (+gained)
-[Party:XP+]
+[Party:Crew|XP+]
 (hook: )
 (note: )
 ```
@@ -1640,9 +1643,9 @@ d: roll -> outcome
 
 ```
 [COMBAT]
-Initiative: Name(X), Name(X), Name(X)
+(init: Name X, Name X, Name X)
 
-R1
+Rd1
 @(Name) Action
 d: roll -> outcome
 => [F:Enemy|effect]
@@ -1651,7 +1654,7 @@ d: roll -> outcome
 d: roll -> outcome
 => [PC:Name|effect]
 
-R2
+Rd2
 ...
 [/COMBAT]
 ```
@@ -1732,7 +1735,7 @@ d: 2d20=17,8 (take higher=17) vs AC 14 -> Hit
 d(Kael): Stealth d20+7=21 -> S
 d(Sable): Stealth d20+0=8 -> F
 d(Mira): Stealth d20-1=6 -> F
-=> Group check: 1/3 succeed -> Fail. They're spotted.
+=> Group check: only 1 of 3 succeeds, so the party fails. They're spotted.
 ```
 
 #### Reactions and Interrupts
@@ -1765,17 +1768,18 @@ d: CON save d20+1=14 vs DC 10 (damage taken) -> Success
 | `@` / `@(Name)` | Player character action | `@(Kael) Pick the lock` |
 | `@(A > B)` | Collaborative action (Lead > Assist) | `@(Mira > Kael) Assist` |
 | `!` | GM / world event | `! The ceiling collapses` |
-| `d:` | Mechanics roll/result | `d: d20+5=18 vs DC 15 -> Hit` |
+| `d:` | Roll or rule that gives a verdict | `d: d20+5=18 vs DC 15 -> Hit` |
+| `tbl:` | Random result that gives content | `tbl: Loot d100=42 -> A broken sword` |
 | `->` | Resolution outcome | `-> Success` |
 | `=>` | Consequence | `=> The door opens quietly` |
 
 #### A.2 Comparison Operators
 
 - `≥` or `>=` — Meets/beats target
-- `≤` or `<=` — Fails to meet target
-- `vs` — Explicit comparison
-- `S` — Success flag
-- `F` — Fail flag
+- `<` — Falls short of target
+- `vs` — Neutral comparison
+- `-> S` / `-> F` — Success / Fail
+- `+[…]` / `-[…]` before the dice — Roll context
 
 #### A.3 Tracking Tags
 
@@ -1783,13 +1787,13 @@ d: CON save d20+1=14 vs DC 10 (damage taken) -> Success
 - `[N:Name|cat:tag,tag]` — NPC with categorized tags
 - `[#N:Name]` — NPC (reference)
 - `[L:Name|tags]` — Location
-- `[E:Name X/Y]` — Event/Clock
+- `[E:Name]` — Notable event
 - `[Thread:Name|state]` — Story thread
 - `[Goal:Name|state]` — Shared objective
 - `[Quest:Name|state]` — Major milestone
 - `[Loot:Name|tags]` — Unassigned party item
 - `[PC:Name|stats]` — Player character
-- `[Party:resources]` — Party-level tracking
+- `[Party:Name|resources]` — Party-level tracking, named after the group
 - `[Faction:Name|tier:X|standing:Y]` — Faction (power and relationship)
 - `[Advance:Name|Class Level|+gained]` — Character advancement event
 - `[F:Enemy|stats]` — Foe in combat
@@ -1803,17 +1807,16 @@ d: CON save d20+1=14 vs DC 10 (damage taken) -> Success
 
 #### A.5 Random Generation
 
-- `tbl: roll -> result` — Simple table lookup
+- `tbl: Name roll -> result` — Table or generator result
 - `tbl: Name [A, B, C]` — Filtered option set
 - `tbl: Name (d#) \n 1: Res` — Inline table definition
-- `gen: system -> result` — Complex generator
-- `gen: Name \n Axis: res` — Multi-line result block
+- `tbl: Name \n Axis: res` — Multi-line result block
 
 #### A.6 Structure
 
 - `S#` — Scene number
 - `S#a` — Flashback scene
-- `T#-S#` — Thread-specific scene (split party)
+- `T#-S#` — Scene in a parallel storyline (split party)
 - `S#.#` — Montage / time cut
 
 #### A.7 Narrative
@@ -1834,7 +1837,7 @@ d: CON save d20+1=14 vs DC 10 (damage taken) -> Success
 #### A.9 Combat
 
 - `[COMBAT]` / `[/COMBAT]` — Combat block markers
-- `R1`, `R2` — Round markers
+- `Rd1`, `Rd2` — Round markers
 - `@(NPC)` — Enemy turn within combat
 - `[F:Enemy|stats]` — Foe tracking
 
@@ -1916,10 +1919,11 @@ Partylog's symbols were chosen for specific reasons:
 
 © 2025-2026 Roberto Bisceglie
 
-Partylog is forked from **Lonelog** v1.0.0 by Roberto Bisceglie. It shares Lonelog's core philosophy, tag system, and structural conventions, adapted for group TTRPG play.
+Partylog is forked from **Lonelog** v1.0.0 by Roberto Bisceglie and kept aligned with Lonelog v1.7.0. It shares Lonelog's core philosophy, tag system, and structural conventions, adapted for group TTRPG play.
 
 **Version History:**
 
+- v 1.1.0: Round markers are `Rd#`, matching the Combat Add-on; initiative is an `(init: …)` note; HP changes are written as changes, not arithmetic. Aligned with Lonelog v1.7: `[Party:]` is named after the group (`[Party:Crew|Gold 150]`); group sizes are `×N` values, never part of the name; truthful comparisons with outcomes after `->`, roll context before the dice, accumulating tags with `old>new`, `[E:]` for events and `[Clock:]` for counters, `gen:` folded into `tbl:`, parallel storylines.
 - v 1.0.0: Public launch
 - v 0.5.0: Added Safety Tool Protocol (§4.5), Logical Tag Flow recommendation (§4.1), and clarified the Scribe's role as a diegetic observer (§1.5).
 - v 0.4.0: Added Faction tracking (`[Faction:]`), PC advancement events (`[Advance:]`), Session End structure (§5.4), Interlude blocks (§5.5), and `(post:)` / `(hook:)` meta notes. Fixed section 4.1 numbering.

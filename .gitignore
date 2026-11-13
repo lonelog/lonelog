@@ -1,3 +1,10 @@
 /.quarto/
 **/*.quarto_ipynb
 _site/
+
+# Rendered outputs (built by CI)
+/output/
+/_site/
+/_freeze/
+**/*.typ
+!_extensions/*.typ

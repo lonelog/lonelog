@@ -1,34 +1,122 @@
 project:
-  type: default
+  type: website
+  output-dir: _site
+  render:
+    - index.qmd
+    - blog/
+    - "docs/**/*.md"
+    - "!docs/en/lorelog.md"   # draft, not released
+    - "!docs/en/maplog.md"    # draft, not released
 
-filters:
-  - _extensions/pagebreak.lua  # Converts --- to pagebreaks in Typst
+website:
+  title: "Lonelog"
+  description: "A Standard Notation for Solo RPG Session Logging"
+  site-url: "https://lonelog.org"
+  repo-url: "https://github.com/lonelog/lonelog"
+  repo-branch: main
+  repo-actions: [source, issue]
+  favicon: assets/banner.png
+  open-graph: true
+  search: true
+  page-navigation: true
 
-# Cover page images
-logo-image: assets/logo.png
-license-image: assets/by-sa.png
+  navbar:
+    left:
+      - text: "Docs"
+        href: docs/en.md
+      - text: "Lonelog"
+        href: docs/en/lonelog.md
+      - text: "Add-ons"
+        menu:
+          - text: "Writing an add-on"
+            href: docs/en/lonelog-addon-guidelines.md
+          - text: "Add-on template"
+            href: docs/en/lonelog-addon-template.md
+          - text: "---"
+          - docs/en/lonelog-combat-addon.md
+          - docs/en/lonelog-dungeon-crawling-addon.md
+          - docs/en/lonelog-resource-tracking-addon.md
+          - docs/en/lonelog-dice-notation-addon.md
+          - docs/en/lonelog-cards-addon.md
+          - docs/en/lonelog-wargaming-addon.md
+      - text: "Partylog"
+        href: docs/en/partylog.md
+      - text: "Blog"
+        href: blog/index.qmd
+    right:
+      - text: "Language"
+        icon: translate
+        menu:
+          - text: "English"
+            href: docs/en.md
+          - text: "Italiano"
+            href: docs/it.md
+          - text: "Français"
+            href: docs/fr.md
+      - icon: reddit
+        href: https://www.reddit.com/r/lonelog/
+        aria-label: Reddit
+      - icon: discord
+        href: https://discord.gg/DBpgvvC2sG
+        aria-label: Discord
+      - icon: github
+        href: https://github.com/lonelog/lonelog
+        aria-label: GitHub
+      - icon: rss
+        href: blog/index.xml
+        aria-label: Blog feed
 
+  # One sidebar per language. Quarto shows a page the sidebar that lists it.
+  sidebar:
+    - id: en
+      title: "Lonelog"
+      style: docked
+      contents:
+        - docs/en.md
+        - docs/en/lonelog.md
+        - docs/en/partylog.md
+        - section: "Add-ons"
+          contents:
+            - docs/en/lonelog-addon-guidelines.md
+            - docs/en/lonelog-addon-template.md
+            - docs/en/lonelog-combat-addon.md
+            - docs/en/lonelog-dungeon-crawling-addon.md
+            - docs/en/lonelog-resource-tracking-addon.md
+            - docs/en/lonelog-dice-notation-addon.md
+            - docs/en/lonelog-cards-addon.md
+            - docs/en/lonelog-wargaming-addon.md
+    - id: it
+      title: "Lonelog (Italiano)"
+      style: docked
+      contents:
+        - docs/it.md
+        - docs/it/lonelog-it.md
+    - id: fr
+      title: "Lonelog (Français)"
+      style: docked
+      contents:
+        - docs/fr.md
+        - docs/fr/lonelog-fr.md
+        - section: "Extensions"
+          contents:
+            - docs/fr/lonelog-addon-guidelines-fr.md
+            - docs/fr/lonelog-addon-template-fr.md
+            - docs/fr/lonelog-combat-addon-fr.md
+            - docs/fr/lonelog-dungeon-crawling-addon-fr.md
+            - docs/fr/lonelog-resource-tracking-addon-fr.md
+
+  page-footer:
+    left: "Lonelog by Roberto Bisceglie · [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/)"
+    right: "[itch.io](https://zeruhur.itch.io/lonelog) · Built with [Quarto](https://quarto.org)"
+
+# The website shell is HTML only. The documents under docs/ add PDF, EPUB,
+# ODT and Markdown downloads in docs/_metadata.yml.
 format:
-  typst:
-    toc: true
-    toc-depth: 2
-    number-sections: false
-    fontsize: 11pt
-    tbl-colwidths: auto
-    keep-typ: true  # Preserves generated .typ file for debugging
-
-    # Custom template
-    template-partials:
-      - _extensions/typst-show.typ
-    include-in-header:
-      - _extensions/typst-template.typ
-
   html:
+    theme:
+      light: [cosmo, assets/custom.scss]
+      dark:  [darkly, assets/custom.scss]
     toc: true
-
-  epub:
-    toc: true
-
-  gfm:
-    toc: false
-    wrap: none
+    toc-depth: 3
+    include-in-header: assets/fonts.html
+    include-after-body: assets/format-links-top.html

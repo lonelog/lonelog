@@ -1,0 +1,61 @@
+name: Publish website
+
+# Builds lonelog.org (the Quarto website, with every document's PDF, EPUB,
+# ODT and Markdown downloads) and pushes it to the gh-pages branch of
+# lonelog/lonelog.github.io, the organization Pages repo that owns the
+# lonelog.org domain. Project repos in an org are served under
+# lonelog.github.io/<repo>, so the site is published through the org repo.
+#
+# Pushing to another repo needs credentials. The org policy blocks deploy
+# keys, so this uses a GitHub App owned by the lonelog org.
+# One-time setup:
+#   - Org settings > Developer settings > GitHub Apps > New: no webhook,
+#     Repository permissions > Contents: Read and write. Install it on
+#     lonelog/lonelog.github.io only.
+#   - lonelog/lonelog (this repo): Settings > Secrets and variables > Actions:
+#     variable PAGES_APP_ID = the App ID, secret PAGES_APP_PRIVATE_KEY = the
+#     App's generated private key (.pem contents).
+#   - lonelog/lonelog.github.io: Settings > Pages > Deploy from a branch:
+#     gh-pages, / (root); custom domain lonelog.org.
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: ./.github/actions/render
+
+      - name: Token for lonelog/lonelog.github.io
+        id: app-token
+        uses: actions/create-github-app-token@v1
+        with:
+          app-id: ${{ vars.PAGES_APP_ID }}
+          private-key: ${{ secrets.PAGES_APP_PRIVATE_KEY }}
+          owner: lonelog
+          repositories: lonelog.github.io
+
+      - name: Push to lonelog/lonelog.github.io (gh-pages)
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          personal_token: ${{ steps.app-token.outputs.token }}
+          external_repository: lonelog/lonelog.github.io
+          publish_branch: gh-pages
+          publish_dir: ./_site
+          force_orphan: true          # gh-pages holds only the latest build
+          cname: lonelog.org          # branch publishing reads the domain from CNAME
+          user_name: "github-actions[bot]"
+          user_email: "41898299+github-actions[bot]@users.noreply.github.com"
+          full_commit_message: "Publish lonelog.org from lonelog/lonelog@${{ github.sha }}"

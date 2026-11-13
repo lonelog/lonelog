@@ -17,12 +17,12 @@ Lonelog offers a **modular shorthand** that:
 - Scales from quick one-shots to long campaigns
 - Functions in both digital markdown files and paper notebooks
 
-### Core Notation (5 symbols)
+### Core Notation (5 symbols, plus `tbl:` for random content)
 
 ```
 @ Player action
 ? Oracle question
-d: Dice/mechanics roll
+d: Roll or rule that gives a verdict
 -> Result/answer
 => Consequence/outcome
 ```
@@ -44,25 +44,11 @@ That's the entire core system. Everything else (scenes, threads, progress clocks
 
 ## Available Documentation
 
-The documentation is available in multiple formats and languages:
+Read Lonelog online at **[lonelog.org](https://lonelog.org)**. Every page there has PDF, EPUB, ODT and Markdown downloads, and each [release](https://github.com/lonelog/lonelog/releases) carries a zip of the English core and add-ons.
 
-### English
-
-- [PDF](output/en/lonelog.pdf) - Print-ready version
-- [EPUB](output/en/lonelog.epub) - E-reader format
-- [ODT](output/en/lonelog.odt) - LibreOffice/Word format
-
-### Italian (Italiano)
-
-- [PDF](output/it/lonelog-it.pdf) - Versione per la stampa
-- [EPUB](output/it/lonelog-it.epub) - Formato e-reader
-- [ODT](output/it/lonelog-it.odt) - Formato LibreOffice/Word
-
-### French (Français)
-
-- [PDF](output/fr/lonelog-fr.pdf) - Version imprimable
-- [EPUB](output/fr/lonelog-fr.epub) - Format e-reader
-- [ODT](output/fr/lonelog-fr.odt) - Format LibreOffice/Word
+- **English**: [Lonelog](https://lonelog.org/docs/en/lonelog.html), [Partylog](https://lonelog.org/docs/en/partylog.html) and all add-ons
+- **Italiano**: [Lonelog](https://lonelog.org/docs/it/lonelog-it.html)
+- **Français**: [Lonelog](https://lonelog.org/docs/fr/lonelog-fr.html) and five add-ons
 
 ### Optional Add-ons
 
@@ -71,6 +57,9 @@ Extended notation for specific gameplay needs:
 - [Combat Add-on](docs/en/lonelog-combat-addon.md) - Tactical encounter notation
 - [Dungeon Crawling Add-on](docs/en/lonelog-dungeon-crawling-addon.md) - Exploration notation
 - [Resource Tracking Add-on](docs/en/lonelog-resource-tracking-addon.md) - Inventory and supplies
+- [Dice Notation Add-on](docs/en/lonelog-dice-notation-addon.md) - Dice expression grammar
+- [Card Notation Add-on](docs/en/lonelog-cards-addon.md) - Playing cards, tarot and oracle decks
+- [Solo Wargaming Add-on](docs/en/lonelog-wargaming-addon.md) - Units, battles and campaigns
 - [Add-on Guidelines](docs/en/lonelog-addon-guidelines.md) - How to write your own add-on
 - [Add-on Template](docs/en/lonelog-addon-template.md) - Starter template
 
@@ -83,82 +72,47 @@ Extended notation for specific gameplay needs:
 - **Shareable** - Standard notation means others can read your session logs
 - **Multi-language** - Documentation available in English, Italian, and French
 
-## Building the Documentation
+## Building the Website
 
-This repository uses [Quarto](https://quarto.org/) to generate documentation from Markdown source files.
+This repository is a [Quarto](https://quarto.org/) website. One render builds lonelog.org and every document's PDF (via Typst), EPUB, ODT and Markdown download into `_site/`.
 
-### Prerequisites
-
-Install Quarto:
+Install Quarto (1.8 or later):
 
 - **Windows**: `choco install quarto` (via Chocolatey)
 - **macOS**: `brew install quarto`
 - **Linux**: Download from [quarto.org](https://quarto.org/docs/get-started/)
 
-### Build Commands
-
-Render all languages:
-
 ```bash
-for lang in en it fr; do
-  quarto render docs/$lang/lonelog*.md --output-dir output/$lang/
-done
+quarto preview                                  # live preview of the whole site
+quarto render                                   # build everything into _site/
+quarto render docs/en/lonelog.md                # one document, all formats
+quarto render docs/en/lonelog.md --to typst     # one document, PDF only
 ```
 
-Render a specific language:
+`_site/` is not committed. GitHub Actions builds and publishes it:
 
-```bash
-quarto render docs/en/lonelog.md --output-dir output/en/      # English
-quarto render docs/it/lonelog-it.md --output-dir output/it/   # Italian
-quarto render docs/fr/lonelog-fr.md --output-dir output/fr/   # French
-```
-
-Render to a specific format:
-
-```bash
-quarto render docs/en/lonelog.md --to pdf --output-dir output/en/
-quarto render docs/en/lonelog.md --to epub --output-dir output/en/
-```
-
-Preview with live reload:
-
-```bash
-quarto preview docs/en/lonelog.md
-```
+- **Push to `main`** publishes the website (`.github/workflows/publish.yml`): it pushes `_site/` to the `gh-pages` branch of [lonelog/lonelog.github.io](https://github.com/lonelog/lonelog.github.io), the org Pages repo that serves lonelog.org.
+- **A `v*` tag** renders everything and attaches a zip of the English core and add-ons (PDF, EPUB, ODT, MD), plus the PDFs, to a GitHub Release. It can also push files to itch.io (`.github/workflows/release.yml`, targets in `.github/itch-targets.json`).
 
 ## Project Structure
 
 ```
 /
-├── index.html                              # Docsify entry point
-├── _quarto.yml                             # Quarto configuration
-├── docs/                                   # Markdown source files
-│   ├── README.md                           # Site home (language selector)
-│   ├── en/                                 # English documentation
-│   │   ├── lonelog.md                      # Main specification
-│   │   ├── lonelog-addon-guidelines.md     # Add-on guidelines
-│   │   ├── lonelog-addon-template.md       # Add-on template
-│   │   ├── lonelog-combat-addon.md         # Combat add-on
-│   │   ├── lonelog-dungeon-crawling-addon.md # Dungeon crawling add-on
-│   │   ├── lonelog-resource-tracking-addon.md # Resource tracking add-on
-│   │   └── _sidebar.md                     # Docsify sidebar (EN)
-│   ├── it/                                 # Italian translation
-│   │   ├── lonelog-it.md
-│   │   └── _sidebar.md
-│   └── fr/                                 # French translation
-│       ├── lonelog-fr.md
-│       └── _sidebar.md
-├── output/                                 # Rendered documents (Quarto)
-│   ├── en/                                 # English renders
-│   ├── it/                                 # Italian renders
-│   └── fr/                                 # French renders
-├── _extensions/                            # Custom templates and filters
-│   ├── typst-template.typ                  # Custom Typst styling
-│   ├── typst-show.typ                      # Template partial
-│   └── pagebreak.lua                       # Pagebreak filter
-├── assets/                                 # Shared assets (images, fonts)
-├── legacy/                                 # Previous versions
-└── .readthedocs.yaml                       # Read the Docs build config
+├── _quarto.yml            # Website config: navbar, per-language sidebars, theme
+├── index.qmd              # Home page (lonelog.org)
+├── blog/                  # Blog and devlog: one folder per post (blog/<slug>/index.md)
+├── docs/
+│   ├── en.md, it.md, fr.md  # Language landing pages
+│   ├── assets/            # PDF cover images
+│   ├── en/                # English documents (+ _metadata.yml: download formats)
+│   ├── it/                # Italian translation
+│   └── fr/                # French translation and add-ons
+├── _extensions/           # Typst template and pagebreak filter
+├── assets/                # Site styles, banner, and the fonts the PDFs embed
+├── .github/               # Publish and release workflows, itch.io targets
+├── .readthedocs/          # Redirect page served by the old Read the Docs projects
+├── proposals/             # Design proposals
+└── legacy/                # Previous versions
 ```
 
 ## Contributing
@@ -173,7 +127,7 @@ Help translate Lonelog into additional languages. Use `docs/en/lonelog.md` as th
 
 Found a typo or unclear explanation? Open an issue or submit a pull request.
 
-### Module Extensions
+### Add-ons
 
 Created an optional add-on for a specific type of play? Share it with the community!
 
@@ -183,7 +137,12 @@ Real session logs using Lonelog are valuable for demonstrating the notation. Con
 
 ## Version History
 
-- **v1.3.0** (Current) - Add-on ecosystem and expanded notation
+- **v1.7.0** (Current) - Consolidation release: `d:` gives a verdict and `tbl:` gives content (`gen:` folded in), truthful comparisons, tags that accumulate with `category:value` states and `×N` counts, `[E:]` for events, parallel storylines, meta-note labels and retcons, specification summary appendix. Add-ons and companion notations aligned.
+- **v1.6.0** - Lead/Assist `@(A > B)` and Joint Action `@(A+B)`
+- **v1.5.0** - `d:` is the preferred notation for oracle dice rolls
+- **v1.4.0** - `@(Name)` convention for multi-PC and companion play
+- **v1.3.0** - Tag categories, multi-line tags, roll context
+- **v1.2.0** - Add-on ecosystem introduced
 - **v1.1.0** - Licensing and inline definitions
 - **v1.0.0** - Renamed from "Solo TTRPG Notation" to "Lonelog"
 

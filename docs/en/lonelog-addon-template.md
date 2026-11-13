@@ -5,7 +5,7 @@ author: [Your name or handle]
 version: 0.1.0
 license: CC BY-SA 4.0
 lang: en
-parent: Lonelog v1.1.0
+parent: Lonelog v1.7.0
 requires: Core Notation (§3)
 ---
 
@@ -57,13 +57,11 @@ prevents players from adopting notation they don't need.]
   an experienced Lonelog player will read. Be precise.
 -->
 
-| Addition | Purpose | Example |
-|----------|---------|---------|
-| `[TAG:Name\|props]` | [What it tracks] | `[TAG:Example\|prop1]` |
-| [Structural block] | [What it delimits] | `[BLOCK] ... [/BLOCK]` |
-| [Convention name] | [What it standardizes] | [brief example] |
+- `[TAG:Name|props]` — [What it tracks]. Example: `[TAG:Example|prop1]`
+- [Structural block] — [What it delimits]. Example: `[BLOCK] ... [/BLOCK]`
+- [Convention name] — [What it standardizes]. Example: [brief example]
 
-**No new core symbols.** This add-on introduces no additions to `@`, `?`, `d:`, `->`, or `=>`.
+**No new core symbols.** This add-on introduces no additions to `@`, `?`, `d:`, `tbl:`, `->`, or `=>`.
 
 ---
 
@@ -313,10 +311,8 @@ together. Should feel like actual play, not a demonstration.]
 
 ### New Tags
 
-| Tag | Purpose | Example |
-|-----|---------|---------|
-| `[TAG:Name\|field]` | [What it tracks] | `[TAG:Example\|value]` |
-| `[#TAG:Name]` | Reference to previously established element | `[#TAG:Example]` |
+- `[TAG:Name|field]` — [What it tracks]. Example: `[TAG:Example|value]`
+- `[#TAG:Name]` — Reference to previously established element. Example: `[#TAG:Example]`
 
 ### [Structural Blocks — if applicable]
 

@@ -1,0 +1,20 @@
+name: Render Lonelog
+description: Install Quarto and fonts, then render the website and all downloads into _site/.
+
+runs:
+  using: composite
+  steps:
+    - uses: quarto-dev/quarto-actions/setup@v2
+      with:
+        version: 1.8.26
+
+    # Montserrat and Lora come from assets/fonts (font-paths). Consolas is not
+    # available on Linux, so code falls back to DejaVu Sans Mono (bundled with
+    # Typst). The emoji font covers the few emoji in the documents.
+    - name: Install emoji font
+      shell: bash
+      run: sudo apt-get update -qq && sudo apt-get install -y -qq fonts-noto-color-emoji
+
+    - name: Render
+      shell: bash
+      run: quarto render

@@ -1,0 +1,90 @@
+---
+pagetitle: "Lonelog: A Standard Notation for Solo RPG Session Logging"
+description: "A lightweight shorthand notation that captures the essential game elements while leaving room for narrative."
+page-layout: full
+sidebar: false
+toc: false
+format-links: false
+listing:
+  id: recent-posts
+  contents: blog/*/index.md
+  sort: "date desc"
+  type: table
+  max-items: 3
+  fields: [date, title, categories]
+  sort-ui: false
+  filter-ui: false
+---
+
+::: {.hero .text-center}
+[Open Specification]{.eyebrow}
+
+# Lonelog {.hero-title}
+
+[A Standard Notation for Solo RPG Session Logging]{.hero-sub}
+
+[v1.7.0]{.version-pill}
+
+A lightweight shorthand language designed to separate mechanics from fiction,
+stay compact at the table, and scale from quick one-shots to sprawling campaigns.
+
+[Read the Docs](docs/en.md){.btn .btn-dark .me-1}
+[Download on itch.io](https://zeruhur.itch.io/lonelog){.btn .btn-outline-dark .me-1}
+[GitHub](https://github.com/lonelog/lonelog){.btn .btn-link}
+
+![](assets/banner.png){.hero-banner fig-alt="The five core Lonelog symbols: @ ? d: -> =>"}
+:::
+
+## Quick Start {.section-label}
+
+``` {.lonelog filename="session-log.md"}
+### S1 *Dark alley, midnight*
+@  Sneak past the guard
+d: Stealth 4 vs TN 5 -> Fail
+=> I kick a bottle. Guard turns!
+?  Does he see me clearly?
+   -> No, but...
+=> He's suspicious, starts walking toward the noise
+```
+
+## Core Philosophy {.section-label}
+
+::: {.grid .philosophy}
+::: {.g-col-12 .g-col-md-4 .pillar}
+[@]{.pillar-symbol}
+
+**Format-agnostic**
+
+Works the same in digital Markdown code blocks and in paper notebooks.
+:::
+
+::: {.g-col-12 .g-col-md-4 .pillar}
+[d:]{.pillar-symbol}
+
+**Toolbox, not a rulebook**
+
+Fully modular. Use the five core symbols, or layer in clocks, threads and NPC tags as you need them.
+:::
+
+::: {.g-col-12 .g-col-md-4 .pillar}
+[→]{.pillar-symbol}
+
+**Built for scannability**
+
+Standard tokens let tools, plugins and human readers parse logs at a glance.
+:::
+:::
+
+## Latest from the Blog {.section-label}
+
+::: {#recent-posts}
+:::
+
+[All posts →](blog/index.qmd){.btn .btn-link .ps-0}
+
+## Community {.section-label}
+
+[Reddit](https://www.reddit.com/r/lonelog/){.btn .btn-outline-dark .me-1}
+[Discord](https://discord.gg/DBpgvvC2sG){.btn .btn-outline-dark}
+
+Documentation is also available in [Italiano](docs/it.md) and [Français](docs/fr.md).
