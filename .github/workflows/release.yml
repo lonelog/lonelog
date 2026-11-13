@@ -1,30 +1,132 @@
 name: Release
 
+# On a version tag (v1.8.0, or the older v.1.7.0 style):
+#   1. render every document,
+#   2. attach the zip (core + add-ons, English; see RELEASE_LANGS) and the
+#      individual PDFs to a GitHub Release,
+#   3. optionally push the files to itch.io with butler.
+#
+# itch.io is off until you set the repository variable ITCH_PUSH=true and the
+# secret BUTLER_API_KEY (from https://itch.io/user/settings/api-keys).
+# What goes where is listed in .github/itch-targets.json.
+
 on:
   push:
     tags:
-      - 'v.*'
+      - 'v*'
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: "Existing tag to (re)build, e.g. v1.7.0"
+        required: true
 
 permissions:
   contents: write
 
+env:
+  TAG: ${{ github.event.inputs.tag || github.ref_name }}
+  # Languages packaged into the release. IT and FR join once their
+  # translations reach parity with the core spec. (The website always has all.)
+  RELEASE_LANGS: "en"
+
 jobs:
-  release:
+  build:
     runs-on: ubuntu-latest
-
+    outputs:
+      version: ${{ steps.version.outputs.version }}
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Package English outputs
-        run: |
-          zip -j lonelog-en-${{ github.ref_name }}.zip \
-            output/en/lonelog*.pdf output/en/lonelog*.epub output/en/lonelog*.odt output/en/lonelog*.md
-
-      - name: Create GitHub Release
-        uses: softprops/action-gh-release@v2
+      - uses: actions/checkout@v4
         with:
-          name: "Lonelog ${{ github.ref_name }}"
+          ref: ${{ env.TAG }}
+
+      - uses: ./.github/actions/render
+
+      - id: version
+        name: Version number from the tag
+        run: echo "version=$(echo "$TAG" | sed -E 's/^v\.?//')" >> "$GITHUB_OUTPUT"
+
+      - name: Collect downloads
+        run: |
+          set -euo pipefail
+          mkdir -p dist
+          for lang in $RELEASE_LANGS; do
+            dir="dist/lonelog-$lang-$TAG"
+            mkdir -p "$dir"
+            # Core and add-ons only: the lonelog* prefix leaves Partylog out on
+            # purpose. Drafts are never rendered.
+            cp _site/docs/$lang/lonelog*.{pdf,epub,odt} "$dir"/
+            # GFM exports: drop the -gfm suffix Quarto adds
+            for f in _site/docs/$lang/lonelog*-gfm.md; do
+              cp "$f" "$dir/$(basename "${f%-gfm.md}").md"
+            done
+            (cd dist && zip -qr "lonelog-$lang-$TAG.zip" "lonelog-$lang-$TAG")
+          done
+          ls -R dist
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: dist
+          path: dist
+
+  release:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: dist
+          path: dist
+
+      - uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ env.TAG }}
+          name: "Lonelog ${{ env.TAG }}"
           generate_release_notes: true
           files: |
-            lonelog-en-${{ github.ref_name }}.zip
+            dist/*.zip
+            dist/lonelog-en-*/*.pdf
+
+  itch-targets:
+    if: vars.ITCH_PUSH == 'true'
+    needs: build
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.read.outputs.matrix }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ env.TAG }}
+          sparse-checkout: .github/itch-targets.json
+          sparse-checkout-cone-mode: false
+      - id: read
+        run: echo "matrix=$(jq -c '[.[] | select(.enabled)]' .github/itch-targets.json)" >> "$GITHUB_OUTPUT"
+
+  itch:
+    needs: [build, itch-targets]
+    if: needs.itch-targets.outputs.matrix != '[]'
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        target: ${{ fromJSON(needs.itch-targets.outputs.matrix) }}
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: dist
+          path: dist
+
+      - name: Install butler
+        run: |
+          curl -sSfL -o butler.zip https://broth.itch.zone/butler/linux-amd64/LATEST/archive/default
+          unzip -q butler.zip -d butler && chmod +x butler/butler
+          echo "$PWD/butler" >> "$GITHUB_PATH"
+
+      - name: Push ${{ matrix.target.file }} to ${{ matrix.target.game }}:${{ matrix.target.channel }}
+        env:
+          BUTLER_API_KEY: ${{ secrets.BUTLER_API_KEY }}
+        run: |
+          set -euo pipefail
+          src="dist/lonelog-${{ matrix.target.lang }}-$TAG/${{ matrix.target.file }}"
+          test -f "$src" || { echo "::error::$src was not rendered"; exit 1; }
+          butler push "$src" "${{ matrix.target.game }}:${{ matrix.target.channel }}" \
+            --userversion "${{ needs.build.outputs.version }}"

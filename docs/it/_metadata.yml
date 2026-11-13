@@ -1,0 +1,38 @@
+# Formats for every document in this language folder: the website page (HTML)
+# plus PDF (Typst), EPUB, ODT and Markdown downloads linked from its sidebar.
+# docs/en, docs/it and docs/fr carry identical copies of this file: keep them
+# in sync. (Quarto ignores metadata-files in _metadata.yml.)
+
+filters:
+  - ../../_extensions/pagebreak.lua  # Converts --- to pagebreaks in Typst
+
+# Typst cover images. Typst resolves these from the generated .typ file,
+# which sits in docs/<lang>/, so they point one level up.
+logo-image: ../assets/cover-logo.png
+license-image: ../assets/by-sa.png
+
+format:
+  html: default   # the website page; listed first so it is the primary format
+
+  typst:
+    toc: true
+    toc-depth: 2
+    number-sections: false
+    fontsize: 11pt
+    tbl-colwidths: auto
+    font-paths:
+      - ../../assets/fonts
+    template-partials:
+      - ../../_extensions/typst-show.typ
+    include-in-header:
+      - ../../_extensions/typst-template.typ
+
+  epub:
+    toc: true
+
+  odt:
+    toc: true
+
+  gfm:
+    toc: false
+    wrap: none

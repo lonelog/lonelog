@@ -12,7 +12,7 @@
 // Font System
 #let font-title = "Montserrat"
 #let font-body = "Lora"
-#let font-code = "Consolas"
+#let font-code = ("Consolas", "DejaVu Sans Mono")  // DejaVu ships with Typst; used where Consolas is missing (CI)
 
 // Multilingual TOC titles
 #let toc-titles = (

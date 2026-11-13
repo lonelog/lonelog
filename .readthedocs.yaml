@@ -1,5 +1,10 @@
 version: 2
 
+# The documentation now lives at https://lonelog.org (Quarto website, built by
+# .github/workflows/publish.yml). The three Read the Docs projects (lonelog,
+# lonelog-it, lonelog-fr) only publish a redirect page, served both as the
+# index and as the 404 page, so old links land on the same page on lonelog.org.
+
 build:
   os: ubuntu-22.04
   tools:
@@ -7,17 +12,6 @@ build:
   jobs:
     build:
       html:
-        # Root output
         - mkdir -p $READTHEDOCS_OUTPUT/html/
-
-        # Docsify entry point e assets (comuni a tutte le lingue)
-        - cp index.html $READTHEDOCS_OUTPUT/html/
-        - cp -r assets/ $READTHEDOCS_OUTPUT/html/assets/
-
-        # Copia i file della lingua corrente nella root dell'output
-        # RTD imposta $READTHEDOCS_LANGUAGE automaticamente (en, it, fr)
-        - cp -r docs/$READTHEDOCS_LANGUAGE/. $READTHEDOCS_OUTPUT/html/
-
-        # Downloads (PDF, ePub) per la lingua corrente
-        - mkdir -p $READTHEDOCS_OUTPUT/html/downloads/
-        - cp -r output/$READTHEDOCS_LANGUAGE/. $READTHEDOCS_OUTPUT/html/downloads/
+        - sed "s/__LANG__/$READTHEDOCS_LANGUAGE/g" .readthedocs/redirect.html > $READTHEDOCS_OUTPUT/html/index.html
+        - cp $READTHEDOCS_OUTPUT/html/index.html $READTHEDOCS_OUTPUT/html/404.html

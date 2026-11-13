@@ -1,0 +1,125 @@
+/*-- scss:defaults --*/
+
+// Trade dress fonts (mirror typst-template.typ)
+$font-family-sans-serif: "Montserrat", sans-serif;
+$font-family-base:        "Lora", serif;
+$headings-font-family:    "Montserrat", sans-serif;
+$headings-font-weight:    700;
+
+// Black navigation bars
+$navbar-bg: #000000;
+$navbar-fg: #ffffff;
+
+// Lonelog palette (mirrors typst-template.typ)
+$primary:          #188038;
+$link-color:       #188038;
+$code-color:       #188038;
+$code-block-bg:    #efecf4;
+$font-family-monospace: Consolas, "DejaVu Sans Mono", "Courier New", monospace;
+
+/*-- scss:rules --*/
+
+// Code blocks: Lonelog purple-grey on light purple
+div.sourceCode, pre.sourceCode, pre { color: #585260; }
+
+// ---- Home page ---------------------------------------------------------
+.hero { padding: 3rem 0 2rem; }
+.hero .eyebrow {
+  display: block; font-family: $font-family-monospace; font-size: .7rem;
+  letter-spacing: .1em; text-transform: uppercase; color: $primary; margin-bottom: 1rem;
+}
+.hero h1.hero-title {
+  font-family: "Montserrat", sans-serif; font-weight: 900; border: none;
+  font-size: clamp(3.5rem, 12vw, 6rem); line-height: 1; letter-spacing: -.03em; margin: 0 0 1rem;
+}
+.hero .hero-sub { display: block; font-family: "Montserrat", sans-serif; font-weight: 500; opacity: .7; }
+.hero .version-pill {
+  display: inline-block; font-family: $font-family-monospace; font-size: .7rem;
+  border: 1px solid currentColor; opacity: .7; padding: .1em .75em; border-radius: 2px; margin: .5rem 0 1.5rem;
+}
+.hero p { max-width: 36rem; margin-left: auto; margin-right: auto; }
+.hero img.hero-banner { max-width: 480px; width: 100%; margin-top: 2.5rem; opacity: .9; }
+
+h2.section-label {
+  font-family: $font-family-monospace; font-size: .75rem; font-weight: 600;
+  letter-spacing: .1em; text-transform: uppercase; color: $primary;
+  border-top: 1px solid rgba(127,127,127,.3); border-bottom: none; padding-top: 2.5rem; margin-top: 2.5rem;
+}
+
+.philosophy .pillar {
+  border: 1px solid rgba(127,127,127,.3); border-radius: 2px; padding: 1.25rem;
+  p { margin-bottom: .4rem; }
+}
+.pillar-symbol { display: block; font-family: $font-family-monospace; font-size: 1.15rem; font-weight: 600; color: $primary; margin-bottom: .75rem; }
+
+
+// Navbar inherits body font in Bootstrap — override explicitly
+.navbar,
+.navbar .nav-link,
+.navbar-brand {
+  font-family: "Montserrat", sans-serif;
+}
+
+// Document title: Montserrat Black (matches PDF cover weight)
+.quarto-title h1,
+h1.title {
+  font-family: "Montserrat", sans-serif;
+  font-weight: 900;
+}
+
+// Footer mirrors navbar
+.nav-footer {
+  background-color: #000000;
+  color: rgba(255, 255, 255, 0.8);
+  font-family: "Montserrat", sans-serif;
+
+  a {
+    color: rgba(255, 255, 255, 0.7);
+    &:hover { color: #ffffff; }
+  }
+}
+
+// "Other Formats" links get moved into #quarto-margin-sidebar by
+// assets/format-links-top.html. On mobile, #quarto-margin-sidebar is a grid
+// item of #quarto-content.page-columns (grid-column: body-end/page-end), so
+// overriding its own grid-column just reshuffles it within the grid — it
+// still renders as a narrow right-hand strip. Break the grid entirely
+// instead: #quarto-margin-sidebar sits *before* <main id=
+// "quarto-document-content"> in the DOM, so falling back to normal block
+// flow naturally stacks it as a full-width column above the article body.
+@media (max-width: 991.98px) {
+  #quarto-content.page-columns {
+    display: block !important;
+  }
+
+  #quarto-margin-sidebar {
+    display: block !important;
+    position: static !important;
+    width: 100% !important;
+  }
+
+  #quarto-margin-sidebar > *:not(.quarto-alternate-formats) {
+    display: none !important;
+  }
+
+  .quarto-alternate-formats {
+    display: block !important;
+    width: 100% !important;
+    margin-bottom: 2rem !important;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid #dee2e6;
+  }
+
+  .quarto-alternate-formats ul {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    padding-left: 0;
+    list-style: none;
+  }
+
+  .quarto-alternate-formats li a {
+    padding: 0.5rem 0;
+    display: inline-block;
+  }
+}
