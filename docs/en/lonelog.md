@@ -2041,8 +2041,10 @@ This is the cheat sheet to keep handy while you play. Everything here is explain
 
 #### A.1 Core Symbols
 
+::: {.keep-together}
+
 | Symbol | Meaning | Example |
-|--------|---------|---------|
+|--------|------------|-------------|
 | `@` | Player action — primary PC, or the storyline's POV character | `@ Pick the lock` |
 | `@(Name)` | Action by a named actor (other PC, companion, NPC) | `@(Jonah) Covers the door` |
 | `@(A > B)` | Lead/Assist — A helps B, B makes the roll | `@(Elara > Jonah) Boosts the climb` |
@@ -2052,6 +2054,8 @@ This is the cheat sheet to keep handy while you play. Everything here is explain
 | `tbl:` | Random result that gives **content** | `tbl: Loot d100=42 -> A broken sword` |
 | `->` | Outcome: a roll's verdict or an oracle's answer | `-> Yes, but... (d6=4)` |
 | `=>` | Consequence | `=> The door opens quietly` |
+
+:::
 
 Standard form puts each element on its own line. Compact form chains them on one line, each symbol preceded by a space.
 

@@ -5,6 +5,7 @@
 
 filters:
   - ../../_extensions/pagebreak.lua  # Converts --- to pagebreaks in Typst
+  - ../../_extensions/keep-together.lua  # ::: {.keep-together} never splits across pages in PDF
 
 # Typst cover images. Typst resolves these from the generated .typ file,
 # which sits in docs/<lang>/, so they point one level up.
