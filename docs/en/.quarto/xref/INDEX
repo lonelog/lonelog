@@ -6,7 +6,10 @@
     "lonelog-combat-addon-gfm.md": "24964654"
   },
   "lonelog-addon-guidelines.md": {
-    "lonelog-addon-guidelines.typ": "96080980"
+    "lonelog-addon-guidelines.typ": "96080980",
+    "lonelog-addon-guidelines.odt": "fbfa4902",
+    "lonelog-addon-guidelines.epub": "2eec7dea",
+    "lonelog-addon-guidelines-gfm.md": "23b677d1"
   },
   "lonelog.md": {
     "lonelog.typ": "75c41965",
@@ -17,22 +20,26 @@
   "lonelog-dice-notation-addon.md": {
     "lonelog-dice-notation-addon.typ": "dcbbf9b3",
     "lonelog-dice-notation-addon.odt": "841f966f",
-    "lonelog-dice-notation-addon.epub": "5edcd987"
+    "lonelog-dice-notation-addon.epub": "5edcd987",
+    "lonelog-dice-notation-addon-gfm.md": "3f259e58"
   },
   "lonelog-cards-addon.md": {
     "lonelog-cards-addon.typ": "4dd14b15",
     "lonelog-cards-addon.odt": "ed99a1a6",
-    "lonelog-cards-addon.epub": "c909aeb7"
+    "lonelog-cards-addon.epub": "c909aeb7",
+    "lonelog-cards-addon-gfm.md": "160a03a7"
   },
   "lonelog-wargaming-addon.md": {
     "lonelog-wargaming-addon.typ": "a3926681",
     "lonelog-wargaming-addon.odt": "8e7ba519",
-    "lonelog-wargaming-addon.epub": "71f0c639"
+    "lonelog-wargaming-addon.epub": "71f0c639",
+    "lonelog-wargaming-addon-gfm.md": "a7e6859d"
   },
   "partylog.md": {
     "partylog.typ": "ce3d5f16",
     "partylog.odt": "af25f97f",
-    "partylog.epub": "ea93ea08"
+    "partylog.epub": "ea93ea08",
+    "partylog-gfm.md": "8a9209ef"
   },
   "lonelog-dungeon-crawling-addon.md": {
     "lonelog-dungeon-crawling-addon.typ": "cd6a67ba",
@@ -45,5 +52,23 @@
     "lonelog-resource-tracking-addon.odt": "ce69beb8",
     "lonelog-resource-tracking-addon.epub": "3fd4d6cf",
     "lonelog-resource-tracking-addon-gfm.md": "47067865"
+  },
+  "lonelog-addon-template.md": {
+    "lonelog-addon-template.typ": "eb718de7",
+    "lonelog-addon-template.odt": "94a3d842",
+    "lonelog-addon-template.epub": "1fa24064",
+    "lonelog-addon-template-gfm.md": "eb6ae50d"
+  },
+  "lorelog.md": {
+    "lorelog.typ": "98876f2c",
+    "lorelog.odt": "b2ecc060",
+    "lorelog.epub": "8bca14f6",
+    "lorelog-gfm.md": "4816f456"
+  },
+  "maplog.md": {
+    "maplog.typ": "a38db2b8",
+    "maplog.odt": "28cb0b39",
+    "maplog.epub": "60b3aac1",
+    "maplog-gfm.md": "b893b314"
   }
 }

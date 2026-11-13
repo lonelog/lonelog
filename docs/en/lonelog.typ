@@ -674,7 +674,7 @@
 #show: doc => worldbuilders(
   title: "Lonelog",
   subtitle: "A Standard Notation for Solo RPG Session Logging",
-  version: "1.5.0",
+  version: "1.7.0",
   authors: ("Roberto Bisceglie", ),
   date: none,
   abstract: none,
@@ -696,47 +696,21 @@ If you've ever played a solo RPG, you know the challenge: you're deep in an exci
 
 Maybe you've tried free-form journaling (gets messy), pure prose (loses the mechanics), or bullet points (hard to parse later). This notation system offers a different approach: a #strong[lightweight shorthand] that captures the essential game elements while leaving room for as much (or as little) narrative as you want.
 
-== 1.1 Why "Lonelog"?
-<why-lonelog>
-This system started life as #strong[Solo TTRPG Notation];, a name that was descriptive but unwieldy. Nearly 5,000 downloads later, it was clear the concept resonated with the community. But real-world use brought valuable lessons about what worked, what caused friction, and where the notation could evolve.
-
-The rename to #strong[Lonelog] reflects three insights:
-
-- #strong[A name that sticks.] "Solo TTRPG Notation" got abbreviated a dozen different ways. #emph[Lonelog] is compact and evocative: #emph[Lone] (solo play) + #emph[log] (session record). It works.
-
-- #strong[A name you can find.] Search "solo ttrpg notation" and you'll drown in generic results. Search "lonelog" and you get #emph[this system];. Think of how #strong[Markdown] succeeded as both a format and a brand, it's not called "Text Formatting Notation." Lonelog gives this notation a distinct, findable identity.
-
-- #strong[A name built to last.] As the system matures, having a clear identity makes it easier for the community to share resources, tools, and session logs under one banner.
-
-The core philosophy hasn't changed: separate mechanics from fiction, stay compact at the table, scale from one-shots to long campaigns, and work in both markdown and paper notebooks.
-
-== 1.2 What Lonelog Does
+== 1.1 What Lonelog Does
 <what-lonelog-does>
-Think of it as a shared language for solo play. Whether you're playing #emph[Ironsworn];, #emph[Thousand Year Old Vampire];, a non-solo RPG using Mythic GME, or your own homebrew system, this notation helps you:
+Lonelog is a shared language for solo play. Whether you're playing #emph[Ironsworn];, #emph[Thousand Year Old Vampire];, a non-solo RPG using Mythic GME, or your own homebrew system, it helps you:
 
 - #strong[Record what happened] without slowing down play
-- #strong[Track ongoing elements] like NPCs, locations, and plot threads
-- #strong[Share your sessions] with other solo players who'll understand the format
-- #strong[Review past sessions] and quickly find that crucial detail from three sessions ago
+- #strong[Separate mechanics from fiction];, so a reader can see how rules and oracles shaped the story
+- #strong[Track ongoing elements] like NPCs, locations, and plot threads, and find them again sessions later
+- #strong[Share your sessions] with other solo players, who can read them at a glance because the symbols are standard
+- #strong[Scale] from a one-line shorthand to a full narrative log, in a Markdown file or a paper notebook
 
-The notation is designed to be:
+(If you knew this system as #emph[Solo TTRPG Notation];, see #emph[Appendix E: History and Migration];.)
 
-- #strong[Flexible] --- usable across different systems and formats
-- #strong[Layered] --- works as both quick shorthand or expanded narrative
-- #strong[Searchable] --- tags and codes make it easy to track NPCs, events, and locations
-- #strong[Format-agnostic] --- works in digital markdown files or analog notebooks
-
-The notation's goals:
-
-- #strong[Make reports written by different people readable at a glance:] standard symbols facilitate reading
-- #strong[Separate mechanics from fiction:] the best reports are those that highlight how the use of rules and oracles informs fiction
-- #strong[Have a modular and scalable system:] you can use the core symbols or extend the notation as you wish
-- #strong[Make it useful for both digital and analog notes]
-- #strong[Compliance and extension of markdown for digital use]
-
-== 1.3 How to Use This Notation
+== 1.2 How to Use This Notation
 <how-to-use-this-notation>
-Think of this as a #strong[toolbox, not a rulebook];. The system is fully modular: grab what works for you and leave the rest behind.
+Lonelog is a #strong[toolbox, not a rulebook];. The system is fully modular: grab what works for you and leave the rest behind.
 
 At its core are just #strong[five symbols] (see #emph[Section 3: Core Notation];). They are carefully chosen to avoid conflicts with markdown formatting and comparison operators. These are the minimal language of play:
 
@@ -750,7 +724,7 @@ That's it. #strong[Everything else is optional.]
 
 Scenes, campaign headers, session headers, threads, clocks, narrative excerpts---these are all enhancements you can add when they serve your play. Want to track a long campaign? Add campaign headers. Need to follow complex plots? Use thread tags. Playing a quick one-shot? Stick to the five core symbols.
 
-Think of it as concentric circles:
+The system works in concentric circles:
 
 - #strong[Core Notation] (required): Actions, Resolutions, Consequences
 - #strong[Optional Layers] (add as needed): Persistent Elements, Progress tracking, Notes, etc.
@@ -760,7 +734,7 @@ Think of it as concentric circles:
 
 #strong[A note on licensing:] This work is released under the CC BY-SA 4.0 license, that covers the Lonelog specification itself --- this document. Session logs, actual plays, and other content you create using Lonelog notation are your own work and are not subject to this license. Write, publish, and license your sessions however you like.
 
-== 1.4 Quick Start: Your First Session
+== 1.3 Quick Start: Your First Session
 <quick-start-your-first-session>
 Never used notation before? Here's everything you need:
 
@@ -789,34 +763,6 @@ d: Stealth 4 vs TN 5 -> Fail
 -> No, but...
 => He's suspicious, starts walking toward the noise
 ```
-
-== 1.5 Migrating from Solo TTRPG Notation v2.0
-<migrating-from-solo-ttrpg-notation-v2.0>
-If you're already using Solo TTRPG Notation v2.0, welcome! Lonelog is an evolution of that system with clarified symbols for better consistency.
-
-#strong[What Changed:]
-
-#table(
-  columns: (28.89%, 35.56%, 35.56%),
-  align: (auto,auto,auto,),
-  table.header([v2.0 Symbol], [Lonelog Symbol], [Why the Change],),
-  table.hline(),
-  [`>`], [`@`], [Avoids conflict with Markdown blockquotes],
-  [`->` (oracle only)], [`->` (all resolutions)], [Now unified for both dice AND oracle results],
-  [`=>` (overloaded)], [`=>` (consequences only)], [Clarified---no longer doubles as dice outcome],
-)
-#strong[Key clarification:] In v2.0, `=>` was confusingly used for both dice outcomes and consequences. Lonelog clarifies this by using `->` for ALL resolutions (dice and oracle), reserving `=>` exclusively for consequences.
-
-=== Your Old Logs Are Still Valid
-<your-old-logs-are-still-valid>
-The structure and philosophy remain identical. Your existing logs are perfectly readable---you don't need to convert them unless you want consistency across your campaign.
-
-=== Conversion
-<conversion>
-If you prefer manual conversion, use find & replace in your text editor:
-
-+ Find: `>` (at start of lines) → Replace: `@`
-+ The `->` and `=>` symbols are retained but with clarified usage
 
 = 2. Digital vs Analog Formats
 <digital-vs-analog-formats>
@@ -897,7 +843,7 @@ This is the heart of the system---the symbols you'll use in nearly every scene. 
 
 There are only five symbols to remember, and they mirror the natural flow of solo play: you take an action or ask a question, you resolve it with mechanics or an oracle, then you record what happens as a result.
 
-Let's break it down.
+#strong[Where symbols go.] In the #strong[standard form];, each element (`@`, `?`, `d:`, `tbl:`, `->`, `=>`) starts its own line, as in every example below. In the #strong[compact form];, elements follow one another on a single line, provided each symbol is preceded by a space; the space #emph[after] a symbol is optional. Compact form is for fast play and is shown in §6.1.
 
 == 3.1 Actions
 <actions>
@@ -937,6 +883,8 @@ When you play more than one character---a party of PCs, a PC with a companion, o
   [Primary PC], [`@ Action`], [`@ Pick the lock`],
   [Named PC], [`@(Name) Action`], [`@(Elara) Covers the door`],
   [Companion / ally NPC], [`@(Name) Action`], [`@(Jonah) Distracts the guard`],
+  [Lead/Assist], [`@(A > B) Action`], [`@(Elara > Jonah) Boosts the climb`],
+  [Joint action], [`@(A+B) Action`], [`@(Elara+Jonah) Force the door`],
 )
 ```
 @ Slip into the archive
@@ -946,6 +894,22 @@ d: Stealth d6=5 vs TN 4 -> Success
 ```
 
 This convention requires no new symbols---it simply extends `@` with a parenthetical to identify who is acting.
+
+#strong[Lead/Assist] --- use `@(A > B)` when one character helps another and the game has a formal assistance mechanic (PbtA's #emph[Help] move, Ironsworn's #emph[Aid your Ally];, etc.). `A` is the helper; `B` makes the roll. The `>` means "assists," not a comparison operator.
+
+```
+@(Elara > Jonah) Elara steadies the rope while Jonah climbs
+d: Athletics d6+1 vs TN 4 -> Success
+=> Jonah reaches the ledge. Elara follows.
+```
+
+#strong[Joint action] --- use `@(A+B)` when two characters contribute to a single roll together, with no clear lead/assist distinction.
+
+```
+@(Elara+Jonah) Force open the barred door
+d: Might 2d6 (take highest) vs TN 5 -> Success
+=> The bar splinters. They're through.
+```
 
 #strong[When to use it:] Any time ambiguity about who is acting would require prose clarification anyway: co-op solo play, games with a party, or scenes where a companion's action has its own mechanical resolution.
 
@@ -959,119 +923,115 @@ There are two types of resolutions: #strong[mechanics] (when you roll dice or ap
 
 === 3.2.1 Mechanics Rolls
 <mechanics-rolls>
-Format:
+The `d:` prefix marks a roll or rule that #strong[gives a verdict];: success or failure, yes or no, a degree of either. Every part of the line is optional except `d:` and the outcome after `->`; the outcome can be left out only when the total is itself the result, as when you generate a stat. The usual order is:
 
 ```
-d: [roll or rule] -> outcome
+d: [Label] <dice>[+mod]=<total> [vs <target>] -> <outcome>
 ```
 
-The `d:` prefix indicates a mechanics roll or rule resolution. Always include the outcome (Success/Fail or narrative result).
-
-=== Examples
-<examples>
-```
-d: d20+Lockpicking=17 vs DC 15 -> Success
-d: 2d6=8 vs TN 7 -> Success
-d: d100=42 -> Partial success (using result table)
-d: Hack the terminal (spend 1 Gear) -> Success
-```
-
-=== Comparison shorthand
-<comparison-shorthand>
-When comparing rolls to target numbers, you can use comparison operators:
-
-```
-d: 5 vs TN 4 -> Success    (standard format)
-d: 5≥4 -> S                (shorthand: ≥ means meets/exceeds TN)
-d: 2≤4 -> F                (shorthand: ≤ means fails to meet TN)
-```
-
-#strong[Note:] Comparison operators `≥` and `≤` work seamlessly with lonelog notation, with no symbol conflicts. You can also use `>=` and `<=`.
-
-Add `S` (Success) or `F` (Fail) letters if you want explicit flags:
-
-```
-d: 2≤4 F
-d: 5≥4 S
-```
-
-=== 3.2.2 Oracle and Dice Results
-<oracle-and-dice-results>
-The `->` symbol represents a definitive resolution---a declaration of outcome. The arrow visually shows "this leads to outcome," whether determined by dice mechanics or the oracle's answer.
-
-#strong[Format:]
-
-```
--> [result] (optional: roll reference)
-```
-
-The `->` prefix indicates any resolution outcome---mechanics or oracle.
-
-=== Dice Mechanics Results
-<dice-mechanics-results>
-For mechanics rolls, `->` declares Success or Fail:
+The label says what you rolled for, the dice expression says what you rolled, `=` gives the total, `vs` gives what you rolled against, and `->` gives the verdict.
 
 ```
 d: Stealth d6=5 vs TN 4 -> Success
-d: Lockpicking d20=8 vs DC 15 -> Fail
-d: Attack 2d6=7 vs TN 7 -> Success
-d: Hacking d10=3 -> Partial Success
+d: Lockpicking d20+3=17 vs DC 15 -> Success
+d: Strike 2d6+2=9 -> Hit
+d: d100=42 -> Partial success
+d: Hack the terminal (spend 1 Gear) -> Success
 ```
 
-=== Oracle Answers
+The last line has no dice at all: `d:` covers any resolution mechanic, including spending resources or drawing cards. For keep/drop, exploding dice, dice pools and individual die results, see the #strong[Dice Notation Add-on];.
+
+=== Comparison shorthand
+<comparison-shorthand>
+When the comparison is the point, you can write it with operators instead of `vs`:
+
+#table(
+  columns: (35.71%, 32.14%, 32.14%),
+  align: (auto,auto,auto,),
+  table.header([Operator], [Meaning], [Example],),
+  table.hline(),
+  [`≥` or `>=`], [meets or beats the target], [`d: 5≥4 -> Success`],
+  [`<`], [falls short of the target], [`d: 2<4 -> Fail`],
+  [`vs`], [neutral: "against"; the outcome says who won], [`d: 5 vs TN 4 -> Success`],
+)
+Write the comparison so it is true: `4≥5` is never a way of writing "4 against 5". Roll-under systems do the same: `d: d20=8 ≤ 12 -> Success`.
+
+The outcome can be abbreviated to `S` (Success) or `F` (Fail). The abbreviation still goes after `->`:
+
+```
+d: 5≥4 -> S
+d: 2<4 -> F
+```
+
+=== 3.2.2 Oracle Answers
 <oracle-answers>
-For oracle questions resolved by dice, use `d:` to record the roll --- consistent with mechanics resolution:
+The `->` symbol declares an outcome: "this is what it came to." On a `d:` line it carries the verdict of a roll. On its own line it carries the answer to an oracle question.
 
+An oracle answer can be recorded in three equivalent forms. Pick the one that fits how much the roll matters:
+
+#table(
+  columns: (24%, 36%, 40%),
+  align: (auto,auto,auto,),
+  table.header([Form], [Example], [Use when],),
+  table.hline(),
+  [Full], [`d: d100=60 vs 35 -> No`], [The roll and the target both matter, e.g.~in shared logs or likelihood-based oracles],
+  [Compact], [`-> No, but... (d6=3)`], [You want the roll on record but not the target],
+  [Bare], [`-> No, but...`], [Only the answer matters],
+)
 ```
-? Do they see Phoebe?
-d: d100=60 vs 35 (Unlikely) -> No
+? Do they see Phoebe? (Unlikely)
+d: d100=60 vs 35 -> No
 => Distracted, but one guard lingers. [N:Guard|watchful]
 
 ? Is anyone home?
-d: d6=5 vs 4+ -> Yes
+-> Yes (d6=5)
 => Lights are on inside.
 ```
 
-When the dice details don't matter, `->` alone is a valid shorthand:
+#strong[Likelihood goes on the question];, because it describes what you asked, not the roll: `? Does the rope hold? (Likely)`.
 
+A parenthesis directly after an answer, with no label, is always a roll reference.
+
+=== Answer abbreviations
+<answer-abbreviations>
+For compact logs, these codes stand for the common oracle answers:
+
+#table(
+  columns: 4,
+  align: (auto,auto,auto,auto,),
+  table.header([Code], [Meaning], [Code], [Meaning],),
+  table.hline(),
+  [`Y`], [Yes], [`N`], [No],
+  [`Ya`], [Yes, and…], [`Na`], [No, and…],
+  [`Yb`], [Yes, but…], [`Nb`], [No, but…],
+  [`Yx`], [Exceptional yes], [`Nx`], [Exceptional no],
+)
 ```
--> Yes (d6=6)
--> No, but... (d6=3)
--> Yes, and... (d6=5)
--> No, and... (d6=1)
+? Seen? -> Nb (3)
 ```
 
-=== Choosing between `d:`, `tbl:`, and `gen:` for oracle resolution
-<choosing-between-d-tbl-and-gen-for-oracle-resolution>
-When an oracle question involves dice, choose based on the type of resolution:
+Answers that don't fit a yes/no scale are written out: `-> Partially`, `-> With a cost`, `-> Strong hit`.
 
-- #strong[`d:`] --- direct dice roll against a probability or target (Yes/No checks, likelihood rolls)
-- #strong[`tbl:`] --- lookup on a named oracle table (Mythic Random Event table, custom oracle table)
-- #strong[`gen:`] --- complex multi-step oracle generator producing compound results
+=== Verdicts and content: `d:` or `tbl:`?
+<verdicts-and-content-d-or-tbl>
+Random results do one of two jobs, and the prefix tells the reader which:
+
+- #strong[`d:` gives a verdict.] Did it work? Is it so? The outcome is success or failure, yes or no, or a degree of either.
+- #strong[`tbl:` gives content.] What is it? Who? What happens? The outcome is a thing, a name, an event, a trait.
+
+The number of dice doesn't matter to either. One roll or five, if what comes back is content, it's `tbl:`.
 
 ```
 ? Does the guard notice me? (Unlikely)
-d: d100=60 vs 35 -> No                           (direct probability roll)
+d: d100=60 vs 35 -> No
 
-? What random event disrupts the scene?
-tbl: Mythic Event d100=78 -> NPC Action           (named table oracle)
-
-? What does the oracle reveal about my enemy?
-gen: Mythic Event d100=78+d100=34 -> NPC Action / Betray  (compound generator)
+? What disrupts the scene?
+tbl: Mythic Event
+  Focus: d100=78 -> NPC Action
+  Meaning: d100=34 -> Betray
 ```
 
-=== Common oracle shorthand formats
-<common-oracle-shorthand-formats>
-When recording the roll is unnecessary, `->` alone captures the result:
-
-- #strong[Yes/No oracles:] `-> Yes`, `-> No`
-- #strong[Yes/No with modifiers:] `-> Yes, but...`, `-> No, and...`
-- #strong[Degree results:] `-> Strong yes`, `-> Weak no`
-- #strong[Custom results:] `-> Partially`, `-> With a cost`
-
-=== Why unified syntax?
-<why-unified-syntax>
-Both mechanics rolls and oracle dice resolve the same thing: uncertainty. Using `d:` for any dice-based resolution --- whether resolving an action or answering an oracle question --- keeps your log consistent and scannable. `->` alone is the shorthand when dice details aren't worth recording; `tbl:` and `gen:` handle table-based and generator-based oracle resolution respectively.
+`tbl:` is covered in full in §4.3.
 
 == 3.3 Consequences
 <consequences>
@@ -1091,8 +1051,10 @@ You can chain multiple consequence lines for cascading effects:
 d: Lockpicking 5≥4 -> Success
 => The door opens
 => But the hinges squeal loudly
-=> [E:AlertClock 1/6]
+=> Guards in the next room hear it [Clock:Alert 1/6]
 ```
+
+Most actions have one clear consequence. Chain lines when a major success or failure ripples outward.
 
 == 3.4 Complete Action Sequences
 <complete-action-sequences>
@@ -1118,8 +1080,8 @@ d: d20+Lockpicking=17 vs DC 15 -> Success
 <combined-sequence>
 ```
 @ Sneak past the guards
-d: Stealth 2≤4 -> Fail
-=> My foot kicks a barrel. [E:AlertClock 2/6]
+d: Stealth 2<4 -> Fail
+=> My foot kicks a barrel. [Clock:Alert 2/6]
 
 ? Do they see me?
 -> No, but... (d6=3)
@@ -1149,6 +1111,25 @@ Tags let you track them consistently across scenes and sessions. The format is s
 
 You don't need to tag everything---only what matters to your campaign. A random merchant you'll never see again? Just call them "the merchant" in prose. A recurring villain? Definitely tag them.
 
+Every tag has a name after the type prefix, player characters included: `[PC:Alex|HP 6]`, never `[PC:HP 6]`.
+
+#strong[Tags accumulate.] A later tag adds to what's already known about the element; you never need to restate everything. Four rules cover every change:
+
++ #strong[Plain values add up.] Use `-value` to remove one and `old>new` to replace one.
++ #strong[A category holds one state.] A value written as `category:value` (§4.1.7) replaces whatever that category held before. Use it for anything that can only be one thing at a time: a status, a position, a mood.
++ #strong[Numbers are set or adjusted.] `HP 6` sets a value; `HP-2` or `HP+3` adjusts it.
++ #strong[Counts are numbers too.] `×12` is a count: a new count replaces the old one, and `×-1` or `×+2` adjusts it.
+
+- `[N:Jonah|friendly|injured]` --- Establishes Jonah as friendly and injured
+- `[N:Jonah|captured]` --- Adds #emph[captured];; he is still friendly and injured
+- `[N:Jonah|-injured]` --- Removes #emph[injured]
+- `[N:Jonah|friendly>hostile]` --- Replaces #emph[friendly] with #emph[hostile]
+- `[N:Guard|status:alert]` then `[N:Guard|status:unconscious]` --- The guard is now unconscious, and no longer alert
+- `[PC:Alex|HP-2|Gold-5]` --- Lowers HP by 2 and Gold by 5
+- `[N:Bandits|×6]` then `[N:Bandits|×4]` --- Six bandits, then four; the name stays the same
+
+`>` and `→` mean the same thing inside a tag; use whichever you can type. Keep counts out of names: `[N:Bandits|×6]`, not `[N:Bandits×6]`, so the element keeps one identity as its numbers change. To reset an element entirely, restate it as a multi-line tag (§4.1.8), which reads as a full status block.
+
 Here are the main types of persistent elements you might track:
 
 === 4.1.1 NPCs
@@ -1159,16 +1140,7 @@ Here are the main types of persistent elements you might track:
 [N:Merchant|suspicious]
 ```
 
-#strong[Updating NPC tags:]
-
-When an NPC's status changes, you can either:
-
-- Restate with new tags: `[N:Jonah|captured|wounded]`
-- Show just the change: `[N:Jonah|captured]` (assumes other tags persist)
-- Use explicit updates: `[N:Jonah|friendly→hostile]`
-- Add `+` or `-`: `[N:Jonah|+captured]` or `[N:Jonah|-wounded]`
-
-Choose the style that keeps your log clearest.
+Update NPCs with the accumulation rules above. A leading `+` (`[N:Jonah|+captured]`) is allowed when you want to stress that something is new, but it means the same as `[N:Jonah|captured]`.
 
 === 4.1.2 Locations
 <locations>
@@ -1178,15 +1150,18 @@ Choose the style that keeps your log clearest.
 [L:Tavern|crowded|noisy]
 ```
 
-=== 4.1.3 Events & Clocks
-<events-clocks>
+=== 4.1.3 Events
+<events>
+An event tag marks #strong[something notable that happened];: a turning point you'll want to find again.
+
 ```
-[E:CultistPlot 2/6]
-[E:AlertClock 3/4]
-[E:RitualProgress 0/8]
+=> The bridge gives way behind me. [E:Bridge Collapse]
+=> The duke is dead. [E:Duke Assassinated]
 ```
 
-Events track significant plot elements. The number format `X/Y` shows current/total progress.
+Search a campaign for `[E:` and you get its milestones. Anything that #emph[builds up] toward a result is a clock, track or timer instead (§4.2).
+
+(Logs written before v1.7 may use `[E:Name X/Y]` with a counter. Read it as `[Clock:Name X/Y]`.)
 
 === 4.1.4 Story Threads
 <story-threads>
@@ -1203,6 +1178,8 @@ Threads track major story questions or goals. Common states:
 - `Abandoned` --- dropped thread
 - Custom states allowed (e.g., `Urgent`, `Background`)
 
+A thread holds one state at a time, so change it by replacing it: `[Thread:Escape the City|Open>Closed]`.
+
 === 4.1.5 Player Character
 <player-character>
 ```
@@ -1212,26 +1189,26 @@ Threads track major story questions or goals. Common states:
 
 #strong[Updating PC stats:]
 
-```
-[PC:Alex|HP 8]        (initial)
-[PC:Alex|HP-2]        (shorthand: lost 2 HP, now at 6)
-[PC:Alex|HP 6]        (explicit: now at 6 HP)
-[PC:Alex|HP+3|Stress-1]  (multiple changes)
-```
+- `[PC:Alex|HP 8]` --- Sets HP to 8
+- `[PC:Alex|HP-2]` --- Lowers HP by 2, to 6
+- `[PC:Alex|HP 6]` --- Sets HP to 6, the same result written explicitly
+- `[PC:Alex|HP+3|Stress-1]` --- Several changes at once
 
 === 4.1.6 Reference Tags
 <reference-tags>
-To reference a previously established element without restating tags, use the `#` prefix:
+To reference a previously established element without restating tags, put `#` before the type. The first mention establishes the element:
 
 ```
-[N:Jonah|friendly|injured]     (first mention — establishes the element)
-
-... later in the log ...
-
-[#N:Jonah]                     (reference — assumes tags from earlier)
+[N:Jonah|friendly|injured]
 ```
 
-The `#` tells you this element was defined earlier. Use it to:
+Later in the log, a reference points back to it:
+
+```
+[#N:Jonah]
+```
+
+The `#` works with every tag type: `[#L:Lighthouse]`, `[#Thread:Lighthouse Mystery]`, `[#Clock:Alert]`. It tells you this element was defined earlier. Use it to:
 
 - Keep later mentions concise
 - Signal to readers they should look back for context
@@ -1253,11 +1230,19 @@ When a tag holds values across distinct types, group them with category prefixes
 [N:Guard|role:watchful|status:armed,alert]
 ```
 
-Categories are freeform --- use whatever labels your game's vocabulary provides. This is especially useful for games where tags have explicit types (like Power Tags and Weakness Tags in City of Mist, or Aspects and skills in Fate). Plain tags without a category prefix work exactly as before:
+Categories are freeform --- use whatever labels your game's vocabulary provides. This is especially useful for games where tags have explicit types (like Power Tags and Weakness Tags in City of Mist, or Aspects and skills in Fate). Plain tags without a category prefix work exactly as before. These two lines hold the same information, the second one grouped:
 
 ```
-[N:Jonah|friendly|injured]               (plain — works as always)
-[N:Jonah|trait:friendly|status:injured]  (categorized — same information, grouped)
+[N:Jonah|friendly|injured]
+[N:Jonah|trait:friendly|status:injured]
+```
+
+A category holds one state: writing it again replaces what it held (§4.1). `[N:Jonah|status:captured]` means Jonah is now captured and no longer injured. When a category holds a list, rewrite the list, or add and remove single entries with `+` and `-` inside it:
+
+```
+[PC:Jonah|trait:friendly,curious]
+[PC:Jonah|trait:+reckless]         friendly, curious, reckless
+[PC:Jonah|trait:-curious]          friendly, reckless
 ```
 
 === 4.1.8 Multi-Line Tags
@@ -1285,21 +1270,25 @@ Multi-line and single-line form are equivalent --- use whichever is readable at 
 
 === 4.1.9 Roll Context
 <roll-context>
-When a roll draws on specific tags, traits, or situational modifiers --- especially in tag-heavy games like PbtA or City of Mist --- list them inside square brackets within the `d:` line:
+When a roll draws on specific tags, traits, or situational modifiers --- especially in tag-heavy games like PbtA or City of Mist --- list them #strong[before the dice];: `+[…]` for what helps, `-[…]` for what hinders.
 
 ```
-d: Investigate 2d6 [Be kind to others, Naive] = 8 -> Mixed
-d: Stealth d6 [+cover, -injured] vs TN 4 -> Fail
-d: Persuade 2d6 [power: silver tongue | against: suspicious-2] = 9 -> Strong Hit
+d: Investigate +[Be kind to others, Naive] 2d6=8 -> Mixed
+d: Stealth +[cover] -[injured] d6=3 vs TN 4 -> Fail
+d: Persuade +[silver tongue] -[suspicious] 2d6=9 -> Strong Hit
 ```
 
-The `[...]` inside `d:` means "these tags are #strong[active for this roll];." This is distinct from the `+`/`-` tag update shorthand on standalone tag lines (§4.1.1). Roll context is temporary --- it records which tags contributed to the roll without changing the character's persistent state.
+Roll context means "these tags are #strong[active for this roll];." It is temporary: it records what contributed to the roll without changing the character's persistent state, unlike the `-tag` update on a standalone tag line (§4.1).
 
 Use category prefixes inside the brackets when your game distinguishes types of modifiers:
 
 ```
-d: Investigate 2d6 [power: Be kind to others, Naive | against: reluctant-to-talk-1] = 8 -> Mixed
+d: Investigate +[power: Be kind to others, Naive] -[weakness: reluctant to talk] 2d6=8 -> Mixed
 ```
+
+Brackets #emph[after] the dice expression belong to the Dice Notation Add-on, which uses them for individual die results (`2d6[4, 4]=8`).
+
+(Logs written between v1.3 and v1.6 place roll context after the dice, as in `d: Investigate 2d6 [Naive] = 8`. That form is still readable.)
 
 #strong[When to use:] Only when the active tags aren't obvious from the action line, or when your system requires explicitly tracking which tags contributed to a roll. For most games, the action line alone is sufficient.
 
@@ -1338,37 +1327,44 @@ Progress tracking gives you a visual way to see these accumulating forces. Three
 
 #strong[The difference?] Clocks and tracks both go up, but clocks are threats (bad when full) and tracks are progress (good when full). Timers go down and create urgency.
 
+#strong[Advancing them:] progress tags carry their counter right after the name. Write the new value, or the change:
+
+```
+[Clock:Suspicion 3/6]     sets it to 3 of 6
+[Clock:Suspicion+1]       advances it by one
+[Track:Escape+2]          two steps of progress
+[Timer:Dawn-1]            one step closer to zero
+```
+
 You don't need to track everything numerically. Only use these when the accumulation matters to your story and you want a concrete way to measure it.
 
 == 4.3 Random Tables & Generators
 <random-tables-generators>
 Solo play thrives on surprise. Sometimes you roll on a table to see what you find, or use a generator to create an NPC on the fly. When you do, it helps to record what you rolled---both for transparency and so you can recreate the logic later.
 
-#strong[Simple table lookup:]
+`tbl:` records any random result that #strong[gives content];: a thing, a name, an event, a trait (§3.2.2). A single roll on a simple table and a multi-step generator are both `tbl:`.
 
 ```
-tbl: d100=42 -> "A broken sword"
-tbl: d20=15 -> "The merchant is nervous"
+tbl: Loot d100=42 -> A broken sword
+tbl: Merchant Mood d20=15 -> Nervous
+tbl: SWN NPC d8=3,d10=7 -> Gruff / Pilot
 ```
 
-Use `tbl:` when you're pulling from a straightforward random table---the kind where you roll once and get a result.
-
-#strong[Complex generators:]
+The table name comes first, then the roll, then `->` and the result. The roll is optional, and so are quotes around the result:
 
 ```
-gen: Mythic Event d100=78 + 11 -> NPC Action / Betray
-gen: Stars Without Number NPC d8=3,d10=7 -> Gruff/Pilot
+tbl: Loot -> A broken sword
 ```
-
-Use `gen:` when you're using a multi-step generator that combines multiple rolls or produces compound results.
 
 #strong[Integrating with oracle questions:]
 
 ```
 ? What do I find in the chest?
-tbl: d100=42 -> "A broken sword"
+tbl: Loot d100=42 -> A broken sword
 => An ancient blade, snapped in two, with strange runes on the hilt.
 ```
+
+(Logs written before v1.7 may use `gen:` for generators. Read it as `tbl:`.)
 
 #strong[Why record the rolls?] Three reasons:
 
@@ -1376,7 +1372,7 @@ tbl: d100=42 -> "A broken sword"
 + #strong[Reproducibility];: You can trace how you got surprising results \
 + #strong[Learning];: Over time, you see which tables you use most
 
-That said, if you're playing fast and loose, you can skip the roll details and just record the result: `=> I find a broken sword [tbl]`. The important part is the fiction, not the math.
+That said, if you're playing fast and loose, you can skip the roll details and just record the result: `tbl: Loot -> A broken sword`. The important part is the fiction, not the math.
 
 === 4.3.1 Inline Table Definitions
 <inline-table-definitions>
@@ -1398,7 +1394,7 @@ tbl: TableName (die)
   6: Result six
 ```
 
-The table name and die type go on the first line. Each entry is indented with its number and result. Then roll against it normally:
+The table name and die type go on the first line. Each entry is indented with its number and result. A `tbl:` line #strong[without] `->` is a definition; a `tbl:` line #strong[with] `->` is a result. Roll against the table normally:
 
 ```
 tbl: TableName d6=3 -> Result three
@@ -1424,7 +1420,7 @@ tbl: Forest Encounter d6=5 -> Traveler on the road
 - #strong[Inline] --- when you created the table, when the table is short (roughly 10 entries or fewer), when shareability matters, or when the table only exists in your head
 - #strong[External] --- when you're rolling on a published table that readers can look up, or when the table is too long to include without cluttering your log
 
-For longer tables, you can define them once at the start of a session or campaign (much like the Resource Status Block pattern), then reference them by name throughout play:
+For tables you use often, define them once at the start of a session or campaign, then reference them by name throughout play:
 
 ```
 tbl: Forest Encounter d6=5 -> Traveler on the road
@@ -1458,7 +1454,7 @@ tbl: Weather d4=2 -> Fog
 #strong[Building a filtered set from a larger source:]
 
 ```
-(note: filtering Bivius Companion themes for this arc)
+(source: Bivius Companion themes, filtered for this arc)
 tbl: Theme [Betrayal, Redemption, Sacrifice, Secrets]
 
 tbl: Theme -> Sacrifice
@@ -1476,6 +1472,13 @@ tbl: Available Leads -> The torn letter
 
 The key difference from numbered tables: filtered sets capture #emph[what was available];, not just what was chosen. This is especially valuable when you're sharing logs --- readers see the roads not taken alongside the one you picked.
 
+#strong[Rolling on a list:] add a die after the name, and the entries are numbered 1, 2, 3… in the order written. The die should match the length of the list:
+
+```
+tbl: NPC Role (d6) [Guard, Merchant, Scholar, Beggar, Noble, Priest]
+tbl: NPC Role d6=2 -> Merchant
+```
+
 === 4.3.3 Multi-Line Result Blocks
 <multi-line-result-blocks>
 Some generators produce compound results --- multiple axes of meaning that together create something greater than any single roll. An NPC might have a role, a personality trait, and a motivation. A location might have a feature, a mood, and a secret. Recording each axis makes the creative logic transparent.
@@ -1483,7 +1486,7 @@ Some generators produce compound results --- multiple axes of meaning that toget
 #strong[Format:]
 
 ```
-gen: GeneratorName
+tbl: GeneratorName
   Axis1: roll -> result
   Axis2: roll -> result
   Axis3: roll -> result
@@ -1494,7 +1497,7 @@ Each axis is indented under the generator name. Roll details are optional --- in
 #strong[NPC generator example:]
 
 ```
-gen: NPC (custom)
+tbl: NPC (custom)
   Role: d6=3 -> Merchant
   Trait: d6=5 -> Secretive
   Want: d6=1 -> Escape
@@ -1504,7 +1507,7 @@ gen: NPC (custom)
 #strong[Location generator example:]
 
 ```
-gen: Ruin (custom d6 tables)
+tbl: Ruin (custom d6 tables)
   Feature: d6=4 -> Collapsed tower
   Mood: d6=2 -> Oppressive silence
   Secret: d6=6 -> Hidden passage beneath the rubble
@@ -1518,7 +1521,7 @@ tbl: NPC Role (d6) [Guard, Merchant, Scholar, Beggar, Noble, Priest]
 tbl: NPC Trait (d6) [Nervous, Secretive, Boisterous, Cold, Kind, Obsessive]
 tbl: NPC Want (d6) [Escape, Revenge, Wealth, Knowledge, Power, Peace]
 
-gen: NPC
+tbl: NPC
   Role: d6=2 -> Merchant
   Trait: d6=6 -> Obsessive
   Want: d6=4 -> Knowledge
@@ -1528,7 +1531,7 @@ gen: NPC
 #strong[Minimal format] --- when you just need the output:
 
 ```
-gen: NPC -> Merchant / Secretive / Escape
+tbl: NPC -> Merchant / Secretive / Escape
 => [N:Unnamed Merchant|secretive|wants to flee]
 ```
 
@@ -1536,7 +1539,7 @@ Use the expanded multi-line format when you want to show your work --- especiall
 
 == 4.4 Narrative Excerpts
 <narrative-excerpts>
-Here's a secret: #strong[you don't need to write narrative at all];. The shorthand captures everything mechanically. But sometimes the fiction demands more---a piece of dialogue that's too perfect not to record, a description that sets the mood, a document your character finds.
+#strong[You don't need to write narrative at all.] The shorthand captures everything mechanically. But sometimes the fiction demands more---a piece of dialogue that's too perfect not to record, a description that sets the mood, a document your character finds.
 
 That's what narrative excerpts are for: the moments where shorthand isn't enough.
 
@@ -1580,27 +1583,53 @@ Sometimes you need to step outside the fiction and leave yourself a note: a remi
 
 That's what meta notes are for---your out-of-character asides to yourself (or to readers, if you're sharing).
 
-#strong[Format:] Use parentheses to signal "this is meta, not fiction":
+#strong[Format:] a label, a colon and the text, inside parentheses: `(label: text)`. The parentheses signal "this is meta, not fiction."
 
 ```
 (note: testing alternate stealth rule where noise increases Alert clock)
 (reflection: this scene felt tense! the timer really worked)
-(house rule: giving advantage on familiar terrain)
-(reminder: revisit this thread next session)
+(house: giving advantage on familiar terrain)
+(todo: revisit this thread next session)
 (question: should I have rolled for that? seemed obvious)
 ```
 
-#strong[When to use meta notes:]
+Bare parentheses without a label still read as a meta note, but a label tells the reader what kind of aside it is.
 
-- #strong[Experiments];: Track rule variants or house rules you're testing
-- #strong[Reflection];: Capture what worked or didn't work emotionally
-- #strong[Reminders];: Flag things to follow up on later
-- #strong[Clarification];: Explain unusual rulings or interpretations
-- #strong[Process];: Document your thinking for shared logs
+=== Suggested labels
+<suggested-labels>
+These labels are #strong[suggestions, not rules];, and the list isn't complete. Use them when they fit, and invent your own when they don't: any lowercase word followed by `:` works. The point of a shared set is that two players writing about the same thing reach for the same word.
 
-#strong[When NOT to use them:] Don't let meta notes overwhelm your log. If you're stopping every few lines to reflect, you're probably over-thinking it. The game is the thing---meta notes are just occasional margin comments.
+#table(
+  columns: (28%, 36%, 36%),
+  align: (auto,auto,auto,),
+  table.header([Label], [Use for], [Example],),
+  table.hline(),
+  [`note:`], [Anything; the default when no other label fits], [`(note: playing with the alt stealth rule)`],
+  [`house:`], [A house rule or rule variant in use], [`(house: advantage on familiar terrain)`],
+  [`ruling:`], [An on-the-spot decision about how a rule applies], [`(ruling: the rope counts as climbing gear)`],
+  [`interp:`], [How you read an ambiguous oracle or table result], [`(interp: honest, but hiding something)`],
+  [`retcon:`], [A correction to something already logged], [`(retcon: forgot +1 from cover — Success)`],
+  [`todo:`], [Something to follow up later], [`(todo: revisit the torn letter next session)`],
+  [`question:`], [Something you're unsure about, rules or fiction], [`(question: should I have rolled for that?)`],
+  [`reflection:`], [How the play felt; what worked and what didn't], [`(reflection: the timer made this tense)`],
+  [`source:`], [Where a table, rule or prompt came from], [`(source: Mythic GME 2e)`],
+  [`break:`], [A real-world pause in play], [`(break: 20 min)`],
+)
+`reminder:` and `house rule:`, found in older logs, read as `todo:` and `house:`.
 
-Think of them like director's commentary on a movie. Most of the time, you just watch the film. Occasionally, there's an interesting behind-the-scenes note worth sharing.
+=== Retcons and corrections
+<retcons-and-corrections>
+Everyone misreads a rule or forgets a modifier now and then. Don't edit the log silently: leave the original line as it was, and add a `retcon:` note directly after it.
+
+```
+d: Stealth d6=3 vs TN 4 -> Fail
+(retcon: forgot +1 from cover — actually 4 vs TN 4, Success)
+=> I slip past unnoticed.
+```
+
+Keeping the original line means the log shows both what happened and what was corrected. The same form works on paper.
+
+#strong[When NOT to use meta notes:] Don't let them overwhelm your log. If you're stopping every few lines to reflect, you're probably over-thinking it. The game is the thing---meta notes are occasional margin comments, like a director's commentary you only switch on now and then.
 
 = 5. Optional Structure
 <optional-structure>
@@ -1614,7 +1643,7 @@ The key difference? #strong[Digital and analog formats handle structure differen
 
 == 5.1 Campaign Header
 <campaign-header>
-Before you dive into play, it helps to record some basics: What are you playing? What system? When did you start? Think of this as the "cover page" of your campaign log.
+Before you dive into play, it helps to record some basics: What are you playing? What system? When did you start? It's the cover page of your campaign log.
 
 This is especially useful when:
 
@@ -1626,9 +1655,10 @@ If you're just trying out the notation with a quick one-shot, skip this entirely
 
 #strong[Digital and analog formats differ here.] Digital markdown uses YAML front matter (structured metadata at the top of the file). Analog notebooks use a written header block.
 
-#strong[For digital markdown files];, use YAML front matter at the very top:
+#strong[For digital markdown files];, use YAML front matter at the very top, between two `---` lines:
 
 ```yaml
+---
 title: Clearview Mystery
 ruleset: Loner + Mythic Oracle
 genre: Teen mystery / supernatural
@@ -1640,6 +1670,7 @@ tools: Oracles - Mythic, Random Event tables
 themes: Friendship, courage, secrets
 tone: Eerie but playful
 notes: Inspired by 80s teen mystery shows
+---
 ```
 
 #strong[For analog notebooks];, write a campaign header block:
@@ -1782,11 +1813,9 @@ S5 *Investigating the mill*
 => I find my father's old journal.
 
 S5a *Flashback: Father's workshop, 10 years ago*
-(This happened before the campaign)
 => Father: "Promise me you'll never go to the mill alone."
 
 S6 *Back at the mill, present day*
-(Now we continue from S5)
 ```
 
 #strong[Complete example:]
@@ -1799,8 +1828,7 @@ d: Investigation d6=6 vs TN 4 -> Success
 [Thread:Mother's Connection|Open]
 
 S8a *Flashback: Home, 15 years ago*
-(Memory triggered by the photograph)
-(Do I remember anything about this place?)
+(note: memory triggered by the photograph)
 ? Did mother ever mention a lighthouse?
 -> Yes, but... (d6=5)
 => She mentioned it once, briefly, then changed the subject quickly.
@@ -1809,15 +1837,12 @@ PC (Young me): "Mom, where is this?"
 N (Mother): [nervous] "Just an old place. Nothing important."
 
 S8b *Flashback: Mother's study, 14 years ago*
-(Following the thread of memory)
-(Did I ever see documents about the lighthouse?)
 ? Was I snooping in her papers?
 -> Yes, and... (d6=6)
 => I found a deed. The lighthouse belonged to our family!
-[E:LighthouseSecret 1/4]
+[Clock:Lighthouse Secret 1/4]
 
 S9 *Lighthouse keeper's quarters, present*
-(Back to current timeline)
 => Armed with this memory, I search more carefully for family records.
 ```
 
@@ -1828,11 +1853,13 @@ S9 *Lighthouse keeper's quarters, present*
 - Keep flashbacks short (1-3 scenes usually)
 - Note in context when returning: `*Present day*` or `*Back at the...*`
 
-=== 5.3.3 Parallel Threads
-<parallel-threads>
-When tracking multiple storylines that happen simultaneously or in alternating focus, use thread prefixes.
+=== 5.3.3 Parallel Storylines
+<parallel-storylines>
+When several storylines run at the same time, or you alternate between them, prefix each scene with its storyline number.
 
-#strong[Format:] `T#-S#` where T\# is the thread number, S\# is the scene number within that thread
+#strong[Format:] `T#-S#`, where `T#` is the storyline number and `S#` is the scene number within that storyline.
+
+Parallel storylines are not the same as story threads. A `[Thread:…]` tag (§4.1.4) tracks a story #emph[question];; a `T#` prefix tracks a line of #emph[play];.
 
 #strong[When to use:]
 
@@ -1851,14 +1878,15 @@ T2-S2 *Back to city*
 T1-S3 *Lighthouse, continuing*
 ```
 
+#strong[Who `@` means.] Inside a storyline, a bare `@` means that storyline's point-of-view character. Declare the POV once, at the end of the storyline's first scene line: `T2-S1 *City archives* @(Jordan)`. Without a declaration, `@` keeps its usual meaning, the primary PC (§3.1.1).
+
 #strong[Complete example:]
 
 ```
 === Session 3 ===
-[Threads] Main story (T1), City investigation (T2)
+[Storylines] Main story (T1), City investigation (T2)
 
-T1-S1 *Lighthouse tower, dusk*
-[PC:Alex|investigating the tower]
+T1-S1 *Lighthouse tower, dusk* @(Alex)
 @ Climb to the top
 d: Athletics d6=4 vs TN 4 -> Success
 => I reach the top. The light mechanism is still functional!
@@ -1867,15 +1895,13 @@ d: Athletics d6=4 vs TN 4 -> Success
 -> No, but... (d6=3)
 => Fresh footprints in the dust lead down.
 
-T2-S1 *City archives, same time*
-[PC:Jordan|researching at the library]
+T2-S1 *City archives, same time* @(Jordan)
 @ Search for lighthouse records
 d: Research d6=6 vs TN 4 -> Success
 => I find construction documents from 1923. There's a hidden basement!
-[E:SecretBasement 1/4]
+[E:Basement Plans Found]
 
 T1-S2 *Lighthouse basement stairs*
-[PC:Alex]
 @ Follow the footprints down
 d: Stealth d6=3 vs TN 5 -> Fail
 => A step creaks loudly.
@@ -1885,7 +1911,6 @@ d: Stealth d6=3 vs TN 5 -> Fail
 => A voice from below: "Who's there?" [N:Cultist|hostile|armed]
 
 T2-S2 *City archives, moments later*
-[PC:Jordan]
 @ Call Alex to warn about the basement
 ? Does the call go through?
 -> No, and... (d6=2)
@@ -1893,26 +1918,22 @@ T2-S2 *City archives, moments later*
 [Clock:Alex in Danger 2/6]
 
 T1-S3 *Lighthouse basement*
-[PC:Alex|unaware of danger]
 @ Try to talk my way out
 d: Deception d6=2 vs TN 5 -> Fail
 => The cultist isn't buying it. He advances with a knife!
 ```
 
-#strong[When threads converge:]
+#strong[When storylines merge:]
 
-Once parallel threads meet, you can either:
-
-- Continue with thread prefixes: `T1+T2-S5`
-- Return to sequential: `S14` (note: threads merged)
+Continue with plain scene numbers, numbering on from the highest scene number used so far, and say so in a note. From the merge on, use `@(Name)` for each PC, as in any multi-PC scene.
 
 ```
 T1-S6 *Alex escapes the lighthouse*
-T2-S4 *Jordan drives toward the lighthouse*
+T2-S6 *Jordan drives toward the lighthouse*
 
-S14 *Lighthouse entrance, both reunited*
-(Threads merged)
-[PC:Alex|wounded] meets [PC:Jordan|worried]
+S7 *Lighthouse entrance* (note: storylines T1 and T2 merge)
+[PC:Alex|wounded] [PC:Jordan|worried]
+@(Jordan) Helps Alex into the car
 ```
 
 === 5.3.4 Montages and Time Cuts
@@ -1951,7 +1972,7 @@ S12.1 *Herb shop, morning*
 d: Persuasion d6=5 vs TN 4 -> Success
 => The herbalist gives me a discount.
 [Track:Ritual Components 1/3]
-[PC:Gold-5]
+[PC:Alex|Gold-5]
 
 S12.2 *Blacksmith, afternoon*
 @ Obtain silver dagger
@@ -1973,7 +1994,6 @@ d: Stealth d6=6 vs TN 5 -> Success
 [Track:Ritual Components 2/3]
 
 S13 *Blacksmith shop, next morning*
-(Montage complete, back to sequential)
 => I collect the silver dagger.
 [Track:Ritual Components 3/3]
 ```
@@ -1985,8 +2005,8 @@ S8 *Setting out from Port Ashan*
 => Three-week journey to the Northern Wastes begins.
 
 S8.1 *Week 1: Coastal road*
-? Encounters on the road?
-tbl: d100=23 -> "Merchant caravan"
+? Who do I meet on the road?
+tbl: Road Encounter d100=23 -> Merchant caravan
 => I join a caravan for safety. [N:Merchants|friendly]
 
 S8.2 *Week 2: Mountain pass*
@@ -2004,10 +2024,9 @@ S8.3 *Week 3: Descending into wastes*
 d: Survival d6=4 vs TN 6 -> Fail
 => I'm lost for two days.
 [Clock:Supplies Dwindle 4/4]
-[PC:Rations depleted]
+[PC:Alex|out of rations]
 
 S9 *Arriving at the Northern Wastes*
-(Journey complete)
 => Exhausted and hungry, but I've made it.
 ```
 
@@ -2027,7 +2046,7 @@ S9 *Arriving at the Northern Wastes*
 - Explaining mysteries
 - Short diversions from main timeline
 
-#strong[Use parallel threads (T1-S1, T2-S1) when:]
+#strong[Use parallel storylines (T1-S1, T2-S1) when:]
 
 - Playing multiple characters
 - Tracking simultaneous events
@@ -2077,11 +2096,10 @@ T2-S3 *Meanwhile in the city, same evening*
 S7.2 *Day 2 of journey: Mountain pass*
 ```
 
-#strong[Minimal (just number):]
+#strong[Minimal (just the number),] with the context given in the first action or consequence:
 
 ```
 S1
-(Add context in first action or consequence)
 ```
 
 Choose the level of detail that helps you track your story. More detail helps future reference; less detail keeps notes cleaner.
@@ -2094,17 +2112,17 @@ Each example demonstrates the same notation system, just with different levels o
 
 == 6.1 Minimal Shorthand Log
 <minimal-shorthand-log>
-Pure shorthand, no formatting --- perfect for fast play:
+Compact form (§3), no formatting --- perfect for fast play:
 
 ```
-S1 @Sneak d:4≥5 F => noise [E:Alert 1/6] ?Seen? ->Nb3 => distracted
-S2 @Search d:6≥4 S => find key [E:Clue 1/4] ?Trapped? ->Yn6 => yes, spikes!
-S3 @Dodge d:3≤5 F => HP-2 [PC:HP 6] => bleeding, need to retreat
+S1 @Sneak d:4<5 ->F => noise [Clock:Alert 1/6] ?Seen? ->Nb (3) => distracted
+S2 @Search d:6≥4 ->S => find key [Track:Clues 1/4] ?Trapped? ->Ya (6) => spikes, and they're poisoned!
+S3 @Dodge d:3<5 ->F => [PC:Alex|HP-2] => bleeding, need to retreat
 ```
 
-== 6.2 Hybrid Digital Format
-<hybrid-digital-format>
-Combines shorthand with narrative, using markdown structure:
+== 6.2 Hybrid Format: Digital and Analog
+<hybrid-format-digital-and-analog>
+Shorthand mixed with narrative. In a Markdown file, notation goes in code blocks and prose sits between them:
 
 ````markdown
 ### S7 *Dark alley behind tavern, Midnight*
@@ -2112,44 +2130,23 @@ Combines shorthand with narrative, using markdown structure:
 ```
 @ Sneak past the guards
 d: Stealth d6=2 vs TN 4 -> Fail
-=> My foot kicks a barrel. [E:AlertClock 2/6]
+=> My foot kicks a barrel. [Clock:Alert 2/6]
 
 ? Do they see me?
 -> No, but... (d6=3)
 => Distracted, but one guard lingers. [N:Guard|watchful]
+
+N (Guard): "Who's there?"
+PC: "Stay calm... just stay calm."
 ```
 
 The guard's torch light sweeps across the alley walls. I press myself
 into the shadows, barely breathing.
-
-```
-N (Guard): "Who's there?"
-PC: "Stay calm... just stay calm."
-```
 ````
 
-== 6.3 Analog Notebook Format
-<analog-notebook-format>
-Same content as 6.2, formatted for handwritten notes:
+In a notebook, the same scene is written straight through, with no fences: the notation lines are identical, and the prose simply follows them.
 
-```
-S7 *Dark alley behind tavern, Midnight*
-
-@ Sneak past the guards
-d: Stealth d6=2 vs TN 4 -> Fail
-=> My foot kicks a barrel. [E:AlertClock 2/6]
-
-? Do they see me?
--> No, but... (d6=3)
-=> Distracted, but one guard lingers. [N:Guard|watchful]
-
-The guard's torch light sweeps across the alley. I press into shadows.
-
-N (Guard): "Who's there?"
-PC: "Stay calm... just stay calm."
-```
-
-== 6.4 Complete Campaign Log (Digital)
+== 6.3 Complete Campaign Log (Digital)
 <complete-campaign-log-digital>
 ````markdown
 ---
@@ -2176,7 +2173,7 @@ d: Stealth d6=5 vs TN 4 -> Success
 
 ? Is there a strange clue waiting?
 -> Yes (d6=6)
-=> I find a torn diary page about the lighthouse. [E:LighthouseClue 1/6]
+=> I find a torn diary page about the lighthouse. [Track:Lighthouse Clues 1/6]
 ```
 
 The page is yellowed with age. The handwriting is shaky: "The light 
@@ -2192,18 +2189,19 @@ calls to us. We must not answer."
 ? Do I hear footsteps?
 -> Yes, but... (d6=4)
 => A janitor approaches, but he doesn't notice me yet. [N:Janitor|tired|suspicious]
-```
-
-I freeze. His keys jangle as he walks past the doorway.
 
 N (Janitor): "Thought I heard something..."
 PC (Alex, whisper): "Gotta get out of here."
+```
+
+I freeze. His keys jangle as he walks past the doorway.
 
 ```
 @ Slip out while he's distracted
 d: Stealth d6=6 vs TN 4 -> Success
 => I escape into the night safely.
 ```
+
 ## Session 2
 *Date: 2025-09-10 | Duration: 2h*
 
@@ -2228,17 +2226,20 @@ d: Stealth d6=2 vs TN 4 -> Fail
 d: Investigation d6=6 vs TN 4 -> Success
 => I find fresh footprints in the dust. [Thread:Who is using the lighthouse?|Open]
 
-tbl: d100=42 -> "A broken lantern"
-=> A cracked lantern lies near the stairs. [E:LighthouseClue 2/6]
+? What's lying near the stairs?
+tbl: Lighthouse Debris d100=42 -> A broken lantern
+=> A cracked lantern, still warm. [Track:Lighthouse Clues 2/6]
+
+PC (Alex, thinking): "This place isn't as abandoned as everyone thinks..."
 ```
 
 Someone's been here. Recently.
-
-PC (Alex, thinking): "This place isn't as abandoned as everyone thinks..."
 ````
 
-== 6.5 Complete Campaign Log (Analog)
+== 6.4 Complete Campaign Log (Analog)
 <complete-campaign-log-analog>
+The same campaign in a notebook. Only the headers change; every notation line is written exactly as in 6.3.
+
 ```
 === Campaign Log: Clearview Mystery ===
 [Title]        Clearview Mystery
@@ -2261,57 +2262,18 @@ d: Stealth d6=5 vs TN 4 -> Success
 
 ? Is there a strange clue waiting?
 -> Yes (d6=6)
-=> I find a torn diary page about the lighthouse. [E:LighthouseClue 1/6]
+=> I find a torn diary page about the lighthouse. [Track:Lighthouse Clues 1/6]
 
 The page is yellowed. Shaky writing: "The light calls to us."
 
 [Thread:Lighthouse Mystery|Open]
-
-S2 *Outside the library, empty hall*
-
-? Do I hear footsteps?
--> Yes, but... (d6=4)
-=> A janitor approaches, but doesn't notice me yet. [N:Janitor|tired|suspicious]
-
-N (Janitor): "Thought I heard something..."
-PC (Alex): "Gotta get out of here."
-
-@ Slip out while distracted
-d: Stealth d6=6 vs TN 4 -> Success
-=> I escape into the night safely.
-
-=== Session 2 ===
-[Date]        2025-09-10
-[Duration]    2h
-[Recap]       Found diary page, nearly spotted in library.
-
-S3 *Path to lighthouse, Day 2*
-
-@ Approach quietly at dusk
-d: Stealth d6=2 vs TN 4 -> Fail
-=> I step on broken glass. [Clock:Suspicion 1/6]
-
-? Does anyone respond?
--> No, but... (d6=3)
-=> Light flickers in tower window. [L:Lighthouse|ruined|haunted]
-
-S4 *Inside lighthouse foyer*
-
-@ Search floor for signs
-d: Investigation d6=6 vs TN 4 -> Success
-=> Fresh footprints in dust. [Thread:Who uses lighthouse?|Open]
-
-tbl: d100=42 -> "A broken lantern"
-=> Cracked lantern near stairs. [E:LighthouseClue 2/6]
-
-PC (Alex): "This place isn't as abandoned as everyone thinks..."
 ```
 
 = 7. Best Practices
 <best-practices>
 You've learned the notation---now let's talk about using it well. This section shows proven patterns that make your logs clearer and more useful, plus common mistakes to avoid.
 
-Think of these as guidelines from the solo community's collective experience. They're not rigid rules, but they'll help you create logs that are easy to read, reference, and share.
+These are guidelines drawn from the solo community's collective experience. They're not rigid rules, but they'll help you create logs that are easy to read, reference, and share.
 
 == 7.1 Good Practices ✓
 <good-practices>
@@ -2335,22 +2297,25 @@ d: d20=15 vs DC 14 -> Success
 #strong[Do: Record consequences clearly]
 
 ```
-=> I find the key. [E:Clue 2/4]
+=> I find the key. [Track:Clues 2/4]
 => But the guard heard me. [Clock:Alert 1/6]
 ```
 
 #strong[Do: Use reference tags in later scenes]
 
+Establish the element at its first mention, then refer back to it:
+
 ```
-First mention: [N:Jonah|friendly]
-Later: [#N:Jonah] approaches cautiously
+[N:Jonah|friendly]
+...
+[#N:Jonah] approaches cautiously
 ```
 
 #strong[Do: Mix shorthand and narrative as needed]
 
 ```
 @ Sneak past guard
-d: 5≥4 S -> Success
+d: 5≥4 -> Success
 => I slip by unnoticed, heart pounding.
 ```
 
@@ -2372,31 +2337,35 @@ These are common pitfalls that make logs harder to read or parse. If you catch y
 
 ```
 ❌ @ Attack the guard
-  d: 8≤10 -> Fail
+  d: 8<10 -> Fail
 
 ✔️ @ Attack the guard
-  d: 8≤10 -> Fail
+  d: 8<10 -> Fail
   => My blade glances off his armor. He counterattacks!
 ```
 
 #strong[Don't: Lose track of tags across scenes]
 
+The first version leaves the reader asking how and when the guard changed:
+
 ```
 ❌ [N:Guard|alert] ... then later ... [N:Guard|sleeping]
-   (How did this change? When?)
 
 ✔️ [N:Guard|alert] ... then later ...
   @ Knock him out
-  d: 6≥5 S => [N:Guard|unconscious]
+  d: 6≥5 -> S
+  => [N:Guard|alert>unconscious]
 ```
 
 #strong[Don't: Mix action and oracle symbols]
 
-```
-❌ ? Sneak past guards    (This is an action, not a question)
+Sneaking is something you do, so it's an action. Whether they notice is something the world decides, so it's a question:
 
-✔️ @ Sneak past guards    (Actions use @)
-  ? Do they notice?      (Questions use ?)
+```
+❌ ? Sneak past guards
+
+✔️ @ Sneak past guards
+  ? Do they notice?
 ```
 
 #strong[Don't: Forget scene context]
@@ -2423,7 +2392,8 @@ For digital markdown files, use YAML front matter to store campaign metadata. Th
 
 Copy this template, fill in your details, and you're ready to start your first session.
 
-```yaml
+````markdown
+---
 title: 
 ruleset: 
 genre: 
@@ -2435,9 +2405,8 @@ tools:
 themes: 
 tone: 
 notes: 
-```
+---
 
-```
 # [Campaign Title]
 
 ## Session 1
@@ -2445,8 +2414,10 @@ notes:
 
 ### S1 *Starting scene*
 
+```
 Your play log here...
 ```
+````
 
 == 8.2 Campaign Template (Analog)
 <campaign-template-analog>
@@ -2513,7 +2484,8 @@ This is your workhorse template---the basic structure you'll use scene after sce
 Use this as your default starting point for every scene, whether you're playing digitally or analog.
 
 ````markdown
-S# *Location, time*
+### S# *Location, time*
+
 ```
 @ Your action
 d: your roll -> outcome
@@ -2527,7 +2499,7 @@ d: your roll -> outcome
 
 = 9. Adapting to Your System
 <adapting-to-your-system>
-Here's the beautiful part: this notation works with #emph[any] solo RPG system. #emph[Ironsworn];, #emph[Mythic GME];, #emph[Thousand Year Old Vampire];, your own homebrew---doesn't matter. The core symbols stay the same; only the resolution details change.
+This notation works with #emph[any] solo RPG system. #emph[Ironsworn];, #emph[Mythic GME];, #emph[Thousand Year Old Vampire];, your own homebrew---doesn't matter. The core symbols stay the same; only the resolution details change.
 
 This section shows you how to adapt the `d:` roll notation and `->` oracle formats to match your specific game system. We'll cover common systems (PbtA, FitD, Ironsworn, OSR) and oracles (Mythic, CRGE, MUNE), but the principles work for anything.
 
@@ -2549,67 +2521,90 @@ d: 2d6=4 -> Miss (6-)
 
 === 9.1.2 Forged in the Dark (FitD)
 <forged-in-the-dark-fitd>
+The pool is listed die by die, and the highest die decides:
+
 ```
-d: 4d6=6,5,4,2 (take highest=6) -> Critical Success
-d: 3d6=4,4,2 -> Partial Success (4-5)
-d: 2d6=3,2 -> Failure (1-3)
+d: Prowl 4d6=6,6,4,2 -> Critical (two 6s)
+d: Prowl 3d6=6,5,2 -> Success (6)
+d: Prowl 3d6=4,4,2 -> Partial Success (4-5)
+d: Prowl 2d6=3,2 -> Failure (1-3)
 ```
 
 === 9.1.3 Ironsworn
 <ironsworn>
+The action die plus your stat, against two challenge dice:
+
 ```
-d: Action=4+Stat=2=6 vs Challenge=4,8 -> Weak Hit
-d: Action=6+Stat=3=9 vs Challenge=2,7 -> Strong Hit
+d: Face Danger d6+2=6 vs 4,8 -> Weak Hit
+d: Strike d6+3=9 vs 2,7 -> Strong Hit
 ```
 
 === 9.1.4 Fate/Fudge
 <fatefudge>
+Four Fate dice plus your skill, against the opposition:
+
 ```
-d: 4dF=+2 (++0-) +Skill=3 = +5 -> Success with Style
-d: 4dF=-1 (-0--) +Skill=2 = +1 -> Tie
+d: Overcome 4dF=+1 (++0-) +3=4 vs 2 -> Success
+d: Overcome 4dF=-3 (-0--) +2=-1 vs 1 -> Fail
 ```
 
 === 9.1.5 OSR/Traditional D&D
 <osrtraditional-dd>
 ```
-d: d20=15+Mod=2=17 vs AC 16 -> Hit
-d: d20=8+Mod=-1=7 vs DC 10 -> Fail
+d: Attack d20+2=17 vs AC 16 -> Hit
+d: Save d20-1=7 vs 10 -> Fail
 ```
 
 == 9.2 Oracle Adaptations
 <oracle-adaptations>
 Different oracle systems have different output formats. Some give yes/no answers, others generate complex results. Here's how to record results from popular oracle systems.
 
-The key is consistency: always use `->` for oracle results, then capture whatever information your oracle provides.
+The rule from §3.2.2 applies: an oracle that gives a verdict is recorded with `d:` or `->`, and an oracle that gives content is recorded with `tbl:`. Then capture whatever information your oracle provides.
 
 === 9.2.1 Mythic GME
 <mythic-gme>
+Fate questions give a verdict. Mythic's answers are Yes, No, Exceptional Yes and Exceptional No; record the Chaos Factor if you want it on file:
+
 ```
-? Does the guard notice me? (Likelihood: Unlikely)
--> No, but... (CF=4)
-=> He doesn't see me, but he's suspicious.
+? Does the guard notice me? (Unlikely)
+d: d100=83 vs 25 (CF 5) -> No
+=> He doesn't see me.
+
+? Is the door locked? (50/50)
+-> Exceptional Yes (d100=4)
+=> Locked, barred, and the bar is chained.
 ```
 
-=== 9.2.2 CRGE (Conjectural Roleplaying Game Engine)
-<crge-conjectural-roleplaying-game-engine>
+A random event gives content:
+
+```
+tbl: Mythic Event
+  Focus: d100=78 -> NPC Action
+  Meaning: d100=34 -> Betray
+```
+
+=== 9.2.2 CRGE
+<crge>
 ```
 ? What is the merchant's mood?
--> Surge: Actor + Focus => Angry + Betrayal
+tbl: CRGE -> Surge: Actor + Focus / Angry + Betrayal
 => The merchant is furious about being cheated.
 ```
 
-=== 9.2.3 MUNE (Madey Upy Number Engine)
-<mune-madey-upy-number-engine>
+=== 9.2.3 MUNE
+<mune>
+For a #emph[likely] question, roll two dice and keep the higher:
+
 ```
-? Is anyone home?
--> Likely + roll 2,4 => Yes
+? Is anyone home? (Likely)
+d: 2d6=2,4 keep highest -> Yes
 => Lights are on, someone's definitely inside.
 ```
 
 === 9.2.4 UNE (Universal NPC Emulator)
 <une-universal-npc-emulator>
 ```
-gen: UNE Motivation -> Power + Reputation
+tbl: UNE Motivation -> Power + Reputation
 => [N:Baron|ambitious|seeks recognition]
 ```
 
@@ -2625,15 +2620,16 @@ When you need to make multiple rolls for one action:
 
 ```
 @ Attack with advantage
-d: 2d20=15,8 (take higher) vs TN 12 -> 15≥12 Success
+d: Attack 2d20=15,8 keep highest=15 vs AC 12 -> Hit
 => I strike true, blade finding a gap in the armor.
 ```
 
-#strong[Multiple dice pools:]
+#strong[Several rolls for one action:] one `d:` line per roll, and the consequence after the last one.
 
 ```
 @ Perform complex ritual
-d: INT d6=4, WILL d6=5, vs TN 4 each -> Both succeed
+d: INT d6=4 vs TN 4 -> Success
+d: WILL d6=5 vs TN 4 -> Success
 => The spell takes hold, energy crackling between my fingers.
 ```
 
@@ -2641,60 +2637,33 @@ d: INT d6=4, WILL d6=5, vs TN 4 each -> Both succeed
 
 ```
 @ Arm wrestle the sailor
-d: STR d20=12 vs sailor d20=15 -> 12≤15 Fail
+d: STR d20=12 vs sailor d20=15 -> Fail
 => His grip tightens. My arm slams to the table.
 ```
 
-=== 9.3.2 Ambiguous Oracle Results
-<ambiguous-oracle-results>
-When the oracle gives unclear or contradictory results:
+=== 9.3.2 Unhelpful Oracle Results
+<unhelpful-oracle-results>
+Sometimes an answer is hard to read. Record how you read it with an `interp:` note:
 
 ```
 ? Is the merchant trustworthy?
 -> Yes, but... (d6=4)
-(note: "but" contradicts "yes"—interpreting as: trustworthy but hiding something)
+(interp: trustworthy, but hiding something)
 => He seems honest, but keeps glancing at the door nervously.
 ```
 
-Or re-roll if truly stuck:
-
-```
-? Can I trust him?
--> Unclear result (d6=3 on binary oracle)
-(note: re-rolling with different framing)
-? Is he trying to help me?
--> No, and... (d6=2)
-=> He's actively working against me.
-```
-
-=== 9.3.3 Nested Consequences
-<nested-consequences>
-Sometimes one consequence leads to another, creating a cascade:
-
-```
-d: Lockpicking 5≥4 -> Success
-=> The door opens
-=> But the hinges squeal loudly
-=> Guards in the next room hear it [E:AlertClock 1/6]
-=> One starts walking this way [N:Guard|investigating]
-```
-
-#strong[When to use:] Major successes or failures with multiple ripple effects. Don't overuse---most actions have one clear consequence.
-
-=== 9.3.4 Failed Oracle Questions
-<failed-oracle-questions>
-What if the oracle doesn't help?
+Sometimes an answer sparks nothing. Ask a sharper question, and leave the first one in the log so the reader can follow your thinking:
 
 ```
 ? What's behind the door?
--> [Roll unclear/contradictory]
-(note: asking a more specific question)
+tbl: Room Contents d6=3 -> Nothing of note
+(note: doesn't fit the scene, asking something sharper)
 ? Is there danger behind the door?
--> Yes, and...
+-> Yes, and... (d6=6)
 => Danger, and it's immediate!
 ```
 
-#strong[Pro tip:] If an oracle result doesn't spark fiction, it's okay to re-frame the question or roll again. The oracle serves your story, not the other way around.
+The oracle serves your story, not the other way around.
 
 = 10. Add-ons
 <add-ons>
@@ -2740,13 +2709,27 @@ Three reasons:
 The following add-ons are part of the official Lonelog ecosystem:
 
 #table(
-  columns: (33.33%, 25%, 41.67%),
-  align: (auto,auto,auto,),
-  table.header([Add-on], [File], [Best For],),
+  columns: (44.44%, 55.56%),
+  align: (auto,auto,),
+  table.header([Add-on], [Best For],),
   table.hline(),
-  [Combat Add-on], [`addons/combat.md`], [Tactical fights, initiative, HP tracking],
-  [Dungeon Crawling Add-on], [`addons/dungeon.md`], [Room exploration, light, traps, mapping notes],
-  [Resource Tracking Add-on], [`addons/resources.md`], [Inventory, usage dice, wealth, supply],
+  [Combat Add-on], [Tactical fights, initiative, HP tracking],
+  [Dungeon Crawling Add-on], [Room exploration, light, traps, mapping notes],
+  [Resource Tracking Add-on], [Inventory, usage dice, wealth, supply],
+  [Dice Notation Add-on], [A full grammar for dice expressions: keep/drop, exploding dice, pools],
+  [Card Notation Add-on], [Playing cards, tarot and decks as oracles or mechanics],
+  [Solo Wargaming Add-on], [Units, battles and campaigns],
+)
+Alongside the add-ons, three #strong[companion notations] share Lonelog's symbols for neighbouring jobs:
+
+#table(
+  columns: (66.67%, 33.33%),
+  align: (auto,auto,),
+  table.header([Notation], [For],),
+  table.hline(),
+  [Partylog], [Group play with a GM, or several players at one table; adds `!` for GM and world events],
+  [Lorelog], [Worldbuilding logs: history, factions and places built before or between sessions],
+  [Maplog], [Drawing maps during play; the state of things stays in the Lonelog log],
 )
 Community-created add-ons follow the same conventions. See the #strong[Community Add-on Guidelines] for how to write one, and the Lonelog itch.io page for the community library.
 
@@ -2758,13 +2741,9 @@ The guiding principle: #strong[extend, don't replace.] A Lonelog add-on that inv
 
 = Appendices
 <appendices>
-== A. Solo RPG Notation Legend
-<a.-solo-rpg-notation-legend>
-This is your quick reference---the cheat sheet to keep handy while you play. Forget what `=>` means? Need to remember how to format a clock? This section has you covered.
-
-Think of it as the notation's "vocabulary list." Everything here has been explained earlier in detail; this is just the condensed version for fast lookup.
-
-Bookmark this section. You'll come back to it often in your first few sessions, then less and less as the notation becomes second nature.
+== A. Notation Legend
+<a.-notation-legend>
+This is the cheat sheet to keep handy while you play. Everything here is explained in detail earlier; this is the condensed version for fast lookup.
 
 === A.1 Core Symbols
 <a.1-core-symbols>
@@ -2773,88 +2752,134 @@ Bookmark this section. You'll come back to it often in your first few sessions, 
   align: (auto,auto,auto,),
   table.header([Symbol], [Meaning], [Example],),
   table.hline(),
-  [`@`], [Player action --- primary/default PC], [`@ Pick the lock`],
-  [`@(Name)`], [Action attributed to a named actor (other PC, companion, NPC)], [`@(Jonah) Covers the door`],
-  [`?`], [Oracle question (world/uncertainty)], [`? Is anyone inside?`],
-  [`d:`], [Mechanics roll/result], [`d: 2d6=8 vs TN 7 -> Success`],
-  [`->`], [Oracle/dice result], [`-> Yes, but...`],
-  [`=>`], [Consequence/outcome], [`=> The door opens quietly`],
+  [`@`], [Player action --- primary PC, or the storyline's POV character], [`@ Pick the lock`],
+  [`@(Name)`], [Action by a named actor (other PC, companion, NPC)], [`@(Jonah) Covers the door`],
+  [`@(A > B)`], [Lead/Assist --- A helps B, B makes the roll], [`@(Elara > Jonah) Boosts the climb`],
+  [`@(A+B)`], [Joint action --- both contribute to one roll], [`@(Elara+Jonah) Force the door`],
+  [`?`], [Oracle question, with optional likelihood], [`? Is anyone inside? (Likely)`],
+  [`d:`], [Roll or rule that gives a #strong[verdict];], [`d: Stealth d6=5 vs TN 4 -> Success`],
+  [`tbl:`], [Random result that gives #strong[content];], [`tbl: Loot d100=42 -> A broken sword`],
+  [`->`], [Outcome: a roll's verdict or an oracle's answer], [`-> Yes, but... (d6=4)`],
+  [`=>`], [Consequence], [`=> The door opens quietly`],
 )
-=== A.2 Comparison Operators
-<a.2-comparison-operators>
-- `≥` or `>=` --- Greater than or equal (meets/beats TN)
-- `≤` or `<=` --- Less than or equal (fails to meet TN)
-- `vs` --- Versus (explicit comparison)
-- `S` --- Success flag
-- `F` --- Fail flag
+Standard form puts each element on its own line. Compact form chains them on one line, each symbol preceded by a space.
 
-=== A.3 Tracking Tags
-<a.3-tracking-tags>
-- `[N:Name|tags]` --- NPC (first mention)
-- `[#N:Name]` --- NPC (reference to earlier mention)
-- `[L:Name|tags]` --- Location
-- `[E:Name X/Y]` --- Event/Clock
-- `[Thread:Name|state]` --- Story thread
-- `[PC:Name|stats]` --- Player character
-- `[PC:Name|category:tag,tag]` --- Tag with category grouping (§4.1.7)
+=== A.2 Rolls and Answers
+<a.2-rolls-and-answers>
+#strong[The `d:` line:] `d: [Label] <dice>[+mod]=<total> [vs <target>] -> <outcome>`
+
+#table(
+  columns: (52.63%, 47.37%),
+  align: (auto,auto,),
+  table.header([Notation], [Meaning],),
+  table.hline(),
+  [`≥` or `>=`], [Meets or beats the target],
+  [`<`], [Falls short of the target],
+  [`vs`], [Neutral "against"],
+  [`-> S` / `-> F`], [Success / Fail],
+  [`+[…]` / `-[…]` before the dice], [Roll context: what helps, what hinders],
+)
+#strong[Oracle answers:] full `d: d100=60 vs 35 -> No`, compact `-> No (d6=2)`, or bare `-> No`.
+
+#table(
+  columns: 4,
+  align: (auto,auto,auto,auto,),
+  table.header([Code], [Meaning], [Code], [Meaning],),
+  table.hline(),
+  [`Y`], [Yes], [`N`], [No],
+  [`Ya`], [Yes, and…], [`Na`], [No, and…],
+  [`Yb`], [Yes, but…], [`Nb`], [No, but…],
+  [`Yx`], [Exceptional yes], [`Nx`], [Exceptional no],
+)
+=== A.3 Tags
+<a.3-tags>
+- `[PC:Name|values]` --- Player character
+- `[N:Name|values]` --- NPC
+- `[L:Name|values]` --- Location
+- `[Thread:Name|state]` --- Story thread (`Open`, `Closed`, `Abandoned`, …)
+- `[E:Name]` --- A notable event that happened
+- `[#N:Name]` --- Reference to an element defined earlier (any type)
+- `[N:Name|cat:v,v|cat:v]` --- Values grouped in categories
+
+#strong[Updates] (tags accumulate):
+
+#table(
+  columns: (46.67%, 53.33%),
+  align: (auto,auto,),
+  table.header([Write], [Effect],),
+  table.hline(),
+  [`value`], [Adds a value],
+  [`-value`], [Removes a value],
+  [`old>new` (or `old→new`)], [Replaces a value],
+  [`category:value`], [Replaces what the category held],
+  [`category:+v` / `category:-v`], [Adds or removes one entry in a category],
+  [`HP 6`], [Sets a number],
+  [`HP-2` / `HP+3`], [Adjusts a number],
+  [`×12` / `×-1`], [Sets / adjusts a count],
+)
+#strong[Multi-line form:] open with `[Type:Name`, put each `| value` on its own indented line, close with `]` on its own line.
 
 === A.4 Progress Tracking
 <a.4-progress-tracking>
-- `[Clock:Name X/Y]` --- Clock (fills up)
-- `[Track:Name X/Y]` --- Progress track
-- `[Timer:Name X]` --- Countdown timer
-
-=== A.5 Random Generation
-<a.5-random-generation>
-- `tbl: roll -> result` --- Simple table lookup
-- `gen: system -> result` --- Complex generator
-
+#table(
+  columns: 2,
+  align: (auto,auto,),
+  table.header([Tag], [Meaning],),
+  table.hline(),
+  [`[Clock:Name X/Y]`], [Fills up toward a threat],
+  [`[Track:Name X/Y]`], [Fills up toward a goal],
+  [`[Timer:Name X]`], [Counts down to zero],
+  [`[Clock:Name+1]` / `[Timer:Name-1]`], [Advances a counter],
+)
+=== A.5 Random Tables
+<a.5-random-tables>
+#table(
+  columns: (52.63%, 47.37%),
+  align: (auto,auto,),
+  table.header([Notation], [Meaning],),
+  table.hline(),
+  [`tbl: Name (d6)` + indented `1: …` lines], [Defines a numbered table],
+  [`tbl: Name [A, B, C]`], [Defines a list of options],
+  [`tbl: Name (d6) [A, B, …]`], [A list numbered 1… in order],
+  [`tbl: Name d6=3 -> Result`], [A result (a `tbl:` line with `->`)],
+  [`tbl: Name` + indented `Axis: roll -> result` lines], [A multi-part result],
+)
 === A.6 Structure
 <a.6-structure>
-- `S#` or `S#a` --- Scene number
-- `T#-S#` --- Thread-specific scene
-
-=== A.7 Narrative (Optional)
-<a.7-narrative-optional>
-- Inline: `=> Prose here`
-- Dialogue: `N (Name): "Speech"`
-- Block: `--- text ---`
-
+#table(
+  columns: (52.63%, 47.37%),
+  align: (auto,auto,),
+  table.header([Notation], [Meaning],),
+  table.hline(),
+  [`S#`], [Scene],
+  [`S#a`, `S#b`], [Flashback branching from scene `#`],
+  [`S#.1`, `S#.2`], [Montage beats within scene `#`],
+  [`T#-S#`], [Scene in parallel storyline `T#`],
+  [`T#-S# *context* @(Name)`], [Storyline's first scene, declaring its POV character],
+)
+=== A.7 Narrative
+<a.7-narrative>
+#table(
+  columns: 2,
+  align: (auto,auto,),
+  table.header([Notation], [Meaning],),
+  table.hline(),
+  [`=> Prose`], [Short inline description],
+  [`N (Name): "Speech"`], [NPC dialogue],
+  [`PC (Name): "Speech"`], [PC dialogue],
+  [`\---` … `---\`], [Long block: documents, extended description],
+)
 === A.8 Meta
 <a.8-meta>
-- `(note: ...)` --- Reflection, reminder, house rule
+`(label: text)` --- an out-of-character note. Suggested labels: `note:`, `house:`, `ruling:`, `interp:`, `retcon:`, `todo:`, `question:`, `reflection:`, `source:`, `break:`. Any other label works too.
 
 === A.9 Complete Example Line
 <a.9-complete-example-line>
 ```
-S3 @Pick lock d:15≥14 S => door opens quietly [N:Guard|alert]
+S3 @Pick lock d:15≥14 ->S => door opens quietly [N:Guard|alert]
 ```
 
-=== A.10 Tag Categories, Multi-line, and Roll Context (v1.3)
-<a.10-tag-categories-multi-line-and-roll-context-v1.3>
-#strong[Category syntax:]
-
-```
-[PC:Jonah|trait:friendly,curious|status:wounded|stat:HP 8]
-```
-
-#strong[Multi-line form:]
-
-```
-[PC:Jonah
-  | trait: friendly, curious
-  | status: wounded
-  | stat: HP 8, Stress 2
-]
-```
-
-#strong[Roll context inside `d:`:]
-
-```
-d: Investigate 2d6 [power: Be kind to others, Naive | against: reluctant-to-talk-1] = 8 -> Mixed
-```
-
-= B. FAQ
+== B. FAQ
 <b.-faq>
 Got questions? You're not alone. These are the most common questions from people learning the notation, along with straight answers.
 
@@ -2873,19 +2898,19 @@ A: Use `d:` for any resolution mechanic: `d: Draw from deck -> Queen of Spades`,
 A: Whichever you prefer! They use the same notation. Digital has better search/organization; analog is immediate and tactile.
 
 #strong[Q: How detailed should my notes be?] \
-A: As detailed as you want! The system works for pure shorthand (Example 6.1) or rich narrative (Example 6.4).
+A: As detailed as you want! The system works for pure shorthand (Example 6.1) or rich narrative (Example 6.3).
 
 #strong[Q: Can I share my logs with others?] \
 A: Yes! That's one reason for standardized notation. Others familiar with the system can read your logs easily.
 
 #strong[Q: What about house rules or custom symbols?] \
-A: Document them in meta notes: `(note: using + for advantage, - for disadvantage)`. The system is designed to be extended.
+A: Document them in meta notes: `(house: using + for advantage, - for disadvantage)`. The system is designed to be extended; for conventions you'll reuse, consider writing an add-on (§10).
 
 #strong[Q: Do scene numbers have to be sequential?] \
-A: No.~Use `S1`, `S2`, `S3` for simplicity, but branch (`S3a`, `S3b`) or use thread prefixes (`T1-S1`) if helpful.
+A: No.~Use `S1`, `S2`, `S3` for simplicity, but branch (`S3a`, `S3b`) or use storyline prefixes (`T1-S1`) if helpful.
 
 #strong[Q: Should I update tags every time something changes?] \
-A: Show significant changes explicitly: `[N:Guard|alert]` → `[N:Guard|unconscious]`. Minor changes can be implied through narrative.
+A: Show significant changes explicitly: `[N:Guard|alert>unconscious]`. Minor changes can be implied through narrative.
 
 #strong[Q: If I post a recorded session log publicly, does it need to be under the ShareAlike license?] \
 A: No.~The CC BY-SA 4.0 license covers the Lonelog specification document, not content created using the notation. Your session logs are your own independent creative work --- publish and license them however you choose. The ShareAlike clause would only apply if you were adapting or redistributing the spec itself, for example by forking Lonelog into a new notation system.
@@ -2893,7 +2918,16 @@ A: No.~The CC BY-SA 4.0 license covers the Lonelog specification document, not c
 #strong[Q: I made my own random table. How do I include it in my log?] \
 A: Define it inline with `tbl: Name (die)` followed by indented entries, or use `tbl: Name [Option A, Option B, ...]` for unnumbered option sets. See §4.3.1 and §4.3.2. This makes your log self-contained --- readers see the full table and the result without needing external references.
 
-= C. Symbol Design Philosophy
+#strong[Q: When do I use `d:` and when `tbl:`?] \
+A: Ask what came back. A verdict (success, failure, yes, no) is `d:`. Content (a thing, a name, an event) is `tbl:`. The number of dice doesn't matter.
+
+#strong[Q: I made a mistake in an earlier entry. Should I fix it?] \
+A: Leave the original line and add a `(retcon: …)` note after it (§4.5). The log then shows both what happened and what you corrected.
+
+#strong[Q: My old logs use forms this version no longer shows. Are they still valid?] \
+A: Yes. Lonelog never invalidates an old log. Deprecated forms stay readable; Appendix E lists them with their current equivalents.
+
+== C. Symbol Design Philosophy
 <c.-symbol-design-philosophy>
 Lonelog's symbols were chosen for specific reasons:
 
@@ -2901,13 +2935,136 @@ Lonelog's symbols were chosen for specific reasons:
 
 - #strong[`?` (Question)];: Universal symbol for inquiry. Unchanged from v2.0.
 
-- #strong[`d:` (Dice/Resolution)];: Clear abbreviation for dice rolls. Unchanged from v2.0.
+- #strong[`d:` (Dice/Resolution)];: Clear abbreviation for dice rolls. Unchanged from v2.0. Since v1.7, `d:` is defined by what it gives back, a verdict, rather than by the use of dice.
+
+- #strong[`tbl:` (Table)];: Random content from a table or generator. Since v1.7 it also covers what used to be `gen:`, because the number of rolls behind a result doesn't change what the reader needs to know.
 
 - #strong[`->` (Resolution)];: Retained from v2.0. Now unified for ALL resolutions (dice and oracle). The arrow visually shows "this leads to outcome."
 
 - #strong[`=>` (Consequence)];: Retained from v2.0. Double arrow shows cascading effects. Clarified usage: consequences only (v2.0 overloaded this for dice outcomes too).
 
 #strong[Markdown Compatibility];: All symbols work cleanly in code blocks and don't conflict with markdown formatting or mathematical operators. Always wrap notation in code blocks when using digital markdown to prevent conflicts with Markdown extensions.
+
+== D. Specification Summary
+<d.-specification-summary>
+This appendix restates the rules of Lonelog in compact, normative form, for people writing tools, parsers or add-ons. The rest of the document explains them; this appendix is the reference. The key words MUST, SHOULD and MAY mean what they mean in technical standards: a requirement, a recommendation and an option.
+
+=== D.1 Lines
+<d.1-lines>
++ A log is a sequence of lines. In digital Markdown files, notation lines SHOULD sit inside fenced code blocks.
++ A #strong[core element] is a line, or part of a line, introduced by one of: `@`, `@(…)`, `?`, `d:`, `tbl:`, `->`, `=>`.
++ In #strong[standard form];, each core element starts a line. In #strong[compact form];, several elements MAY share a line; each symbol MUST then be preceded by whitespace, and the whitespace after it MAY be omitted.
++ `->` marks an outcome and nothing else: it appears after `d:` or `tbl:`, under a `tbl:` line, or at the start of an answer. It MUST NOT be used as an arrow in prose, tags or action text; inside a tag, a change is written `old>new`.
++ Indentation carries no meaning, except under a `tbl:` line, where indented lines are that table's entries or result axes.
++ Any other line is prose, dialogue, a tag line, a scene or session header, or a meta note.
+
+=== D.2 Actions and questions
+<d.2-actions-and-questions>
++ `@` declares an action by the primary PC, or by the current storyline's POV character when one is declared (D.6).
++ `@(Name)` attributes the action to a named actor. `@(A > B)` means A assists and B rolls. `@(A+B)` means a joint roll.
++ `?` asks a question of the oracle. A likelihood MAY follow in parentheses at the end of the question.
+
+=== D.3 Resolutions
+<d.3-resolutions>
++ `d:` records a roll or rule that gives a #strong[verdict];: success or failure, yes or no, or a degree of either. Its outcome MUST follow `->` on the same line, unless the total is itself the result (for example, a generated stat).
++ A `d:` line SHOULD follow the order `[Label] <dice>[+mod]=<total> [vs <target>] -> <outcome>`. Every part except `d:` and the outcome MAY be omitted. Dice expressions follow the Dice Notation Add-on where more than `NdS±N` is needed; individual die results MAY follow the expression in brackets, before `=`.
++ Roll context MAY appear before the dice expression as `+[…]` (what helps) and `-[…]` (what hinders). Brackets after the dice expression are reserved for individual die results.
++ Comparison operators MUST state a true comparison: `≥`/`>=` for meeting or beating a target, `<` for falling short. `vs` is neutral.
++ `tbl:` records a random result that gives #strong[content];. A `tbl:` line with `->` is a result; a `tbl:` line without `->` is a table definition. The roll on a `tbl:` result MAY be omitted.
++ `->` on its own line records an oracle answer. A parenthesis directly after the answer, without a label, is a roll reference.
++ The answer codes `Y`, `N`, `Ya`, `Yb`, `Na`, `Nb`, `Yx`, `Nx` MAY replace the written answer.
+
+=== D.4 Consequences
+<d.4-consequences>
++ `=>` records a consequence. Several `=>` lines MAY follow one resolution.
+
+=== D.5 Tags
+<d.5-tags>
++ A tag has the form `[Type:Name|value|value…]`. `Name` MUST be present for every type.
++ A value MAY be grouped as `category:v,v`.
++ A tag MAY span several lines: `[Type:Name` on the first line, one `| value` per following line, and `]` on its own line.
++ Tags #strong[accumulate];: a later tag for the same element adds its values to those already known. `-value` removes a value. `old>new` (or `old→new`) replaces one. A value written as `category:value` replaces whatever that category held; `category:+v` and `category:-v` add or remove one entry in it. A number written as `Stat N` sets it; `Stat+N` and `Stat-N` adjust it. A count is written `×N`, is set by a new `×N` and adjusted by `×+N` or `×-N`. Counts MUST NOT be part of the name.
++ `[#Type:Name]` refers to an element defined earlier and changes nothing.
++ Core types are `PC`, `N`, `L`, `Thread`, `E`, `Clock`, `Track` and `Timer`. `Clock` and `Track` take `X/Y` after the name; `Timer` takes `X`; `E` takes no counter. A progress counter is set by restating it and adjusted with `+N` or `-N` after the name (`[Clock:Alert+1]`). A thread holds one state, changed with `old>new`. Add-ons MAY define further types.
++ Values are identified by what they are, not by their position: a labelled number (`HP 6`), a count (`×12`), a category (`status:cleared`) or a plain value. Add-on tags SHOULD NOT depend on the order of their values.
++ A tag's name identifies one element. For tags that track something owned, such as a purse or a party's stores, the name is the owner: `[Wealth:Kael|Gold 45]`.
+
+=== D.6 Structure
+<d.6-structure>
++ A scene header is a scene identifier, optionally followed by context in `*…*`. Identifiers: `S#` (scene), `S#a` (flashback from scene `#`), `S#.#` (montage beat), `T#-S#` (scene in parallel storyline `T#`).
++ In digital files, the campaign title is a level-1 heading, sessions are level-2 headings and scenes are level-3 headings. Campaign metadata SHOULD be YAML front matter.
++ A storyline's first scene header MAY end with `@(Name)` to declare its POV character.
+
+=== D.7 Meta notes
+<d.7-meta-notes>
++ A meta note is `(label: text)`. A bare `(text)` is also a meta note but SHOULD carry a label.
++ Labels are free. The suggested set is in §4.5.
++ A correction MUST NOT replace the original entry; it SHOULD be recorded as a `(retcon: …)` note after it.
+
+=== D.8 Compatibility
+<d.8-compatibility>
++ A log valid under any earlier 1.x version remains valid. Deprecated forms (Appendix E.3) MUST be read with their current meaning.
++ Add-ons MUST NOT redefine the core symbols in D.1.
+
+== E. History and Migration
+<e.-history-and-migration>
+=== E.1 Why "Lonelog"?
+<e.1-why-lonelog>
+This system started life as #strong[Solo TTRPG Notation];, a name that was descriptive but unwieldy. Nearly 5,000 downloads later, it was clear the concept resonated with the community. But real-world use brought valuable lessons about what worked, what caused friction, and where the notation could evolve.
+
+The rename to #strong[Lonelog] reflects three insights:
+
+- #strong[A name that sticks.] "Solo TTRPG Notation" got abbreviated a dozen different ways. #emph[Lonelog] is compact and evocative: #emph[Lone] (solo play) + #emph[log] (session record).
+- #strong[A name you can find.] Search "solo ttrpg notation" and you'll drown in generic results. Search "lonelog" and you get #emph[this system];. #strong[Markdown] succeeded as both a format and a brand; it isn't called "Text Formatting Notation."
+- #strong[A name built to last.] As the system matures, a clear identity makes it easier for the community to share resources, tools, and session logs under one banner.
+
+The core philosophy hasn't changed: separate mechanics from fiction, stay compact at the table, scale from one-shots to long campaigns, and work in both markdown and paper notebooks.
+
+=== E.2 Migrating from Solo TTRPG Notation v2.0
+<e.2-migrating-from-solo-ttrpg-notation-v2.0>
+#table(
+  columns: (28.89%, 35.56%, 35.56%),
+  align: (auto,auto,auto,),
+  table.header([v2.0 Symbol], [Lonelog Symbol], [Why the Change],),
+  table.hline(),
+  [`>`], [`@`], [Avoids conflict with Markdown blockquotes],
+  [`->` (oracle only)], [`->` (all resolutions)], [Unified for both dice and oracle results],
+  [`=>` (overloaded)], [`=>` (consequences only)], [No longer doubles as dice outcome],
+)
+In v2.0, `=>` was used for both dice outcomes and consequences. Lonelog uses `->` for all resolutions and keeps `=>` for consequences only.
+
+Your old logs are still readable, and you don't need to convert them. If you want consistency across a campaign, use find and replace in your text editor:
+
++ Replace `>` at the start of a line with `@`.
++ Where `=>` follows a roll and gives its result (Success, Fail, a hit), replace it with `->`. Leave `=>` where it describes what happens in the story.
+
+=== E.3 Deprecated Forms
+<e.3-deprecated-forms>
+These forms appear in logs written for earlier versions. They remain valid and keep their meaning, but current examples use the form on the right.
+
+#table(
+  columns: (36.36%, 42.42%, 21.21%),
+  align: (auto,auto,auto,),
+  table.header([Deprecated], [Current form], [Since],),
+  table.hline(),
+  [`d: 2≤4 -> Fail` (≤ meaning failure)], [`d: 2<4 -> Fail`], [v1.7],
+  [`d: 5≥4 S` (flag without `->`)], [`d: 5≥4 -> S`], [v1.7],
+  [`d: Label 2d6 [tags] = 8`], [`d: Label +[tags] 2d6=8`], [v1.7],
+  [`[E:Name X/Y]`], [`[Clock:Name X/Y]`], [v1.7],
+  [`gen: Name -> result`], [`tbl: Name -> result`], [v1.7],
+  [`=> result [tbl]`], [`tbl: Name -> result`], [v1.7],
+  [`T1+T2-S#`], [`S#` with `(note: storylines merge)`], [v1.7],
+  [`(reminder: …)`, `(house rule: …)`], [`(todo: …)`, `(house: …)`], [v1.7],
+)
+v1.7 also tightened how tags are written and updated. These older tag forms stay readable too:
+
+- `[N:Bandits×6]` --- a count inside the name. Now: `[N:Bandits|×6]`, so the element keeps its name as the count changes.
+- A one-at-a-time state rewritten as a plain value, like `[N:Guard|alert]` followed by `[N:Guard|unconscious]`. Read the later value as replacing the earlier one. Now: `[N:Guard|status:unconscious]`, or `[N:Guard|alert>unconscious]`.
+- A thread restated with a new state, like `[Thread:Escape|Closed]`. Now: `[Thread:Escape|Open>Closed]`.
+- Arithmetic on the name, like `[Inv:Torch-1]` or `[Wealth:Gold+15]`. Now the change is a value: `[Inv:Torch|×-1]`, `[Wealth:Kael|Gold+15]`.
+- A tag with no name, like `[Wealth:Gold 45]` or `[Party:Gold 150]`. Now the name is the owner: `[Wealth:Kael|Gold 45]`, `[Party:Crew|Gold 150]`.
+- Fields that depend on their position, like `[R:3|cleared|library]`. Read each value for what it is. Now: `[R:3|status:cleared|library]`.
+- `->` used as an arrow in prose or inside a tag. Now `->` marks outcomes only; inside a tag, a change is `old>new`.
 
 = Credits & License
 <credits-license>
@@ -2919,11 +3076,13 @@ This notation is inspired by the #link("https://alfredvalley.itch.io/the-valley-
 
 - matita for the `+`/`-` method to track changes in tags
 - flyincaveman for the suggestion on the use of the `@` symbol for character actions (in the tradition of the early ASCII rpgs)
-- r/solorpgplay and r/Solo\_Roleplaying for the positive reception of this notation and the useful feedbacks.
+- r/solorpgplay and r/Solo\_Roleplaying for the positive reception of this notation and the useful feedback.
 - Enrico Fasoli for playtesting and feedback
 
 #strong[Version History:]
 
+- v 1.7.0: Consolidation release. Three equivalent forms for oracle answers, with likelihood on the question (§3.2.2). A standard `d:` line and truthful comparison operators: `<` replaces `≤` for failure, outcome abbreviations after `->`, and answer codes for compact logs (§3.2). Roll context moves before the dice as `+[…]`/`-[…]` (§4.1.9). `d:` gives a verdict, `tbl:` gives content, and `gen:` is folded into `tbl:` (§3.2.2, §4.3). `[E:]` marks events; counters use `[Clock:]` (§4.1.3). Tags accumulate, with `-tag` and `old>new` for changes, `category:value` for states that replace each other, `×N` for counts, and `+N`/`-N` to advance progress tags (§4.1, §4.2). Parallel storylines with POV declaration (§5.3.3). Suggested meta-note labels and retcons (§4.5). Line position and compact form (§3). New Appendix D (Specification Summary) and Appendix E (History and Migration). Rebuilt Appendix A; corrected system examples in §9; restructured and shortened throughout. No v1.6 log becomes invalid.
+- v 1.6.0: Added Lead/Assist `@(A > B)` and Joint Action `@(A+B)` syntax to §3.1.1, upstreamed from Partylog. Updated Appendix A.1.
 - v 1.5.0: Updated §3.2.2 --- `d:` is now the preferred notation for oracle dice rolls, consistent with mechanics resolution. `->` alone demoted to shorthand. Clarified when to use `d:`, `tbl:`, and `gen:` for oracle resolution.
 - v 1.4.1: Added §2.3 Indentation --- clarified that indentation is optional, carries no structural meaning, and is encouraged as a readability aid.
 - v 1.4.0: Added §3.1.1 Multiple Actors --- `@(Name)` convention for multi-PC and companion play, promoted from the Combat Add-on.

@@ -674,7 +674,7 @@
 #show: doc => worldbuilders(
   title: "Lonelog: Dice Notation Add-on",
   subtitle: "A Standard Grammar for Recording Dice Expressions",
-  version: "1.0.0",
+  version: "1.1.0",
   authors: ("Roberto Bisceglie", ),
   date: none,
   abstract: none,
@@ -737,15 +737,28 @@ This section covers the dice expressions that come up most often in solo RPG pla
 
 == How dice expressions fit into a log entry
 <how-dice-expressions-fit-into-a-log-entry>
-In a `d:` field, the dice expression records #emph[what was rolled] and `=N` records the #emph[numeric total];. The `->` field is reserved for the interpreted outcome --- a state, not a number.
+Core Lonelog (§3.2.1) gives the `d:` line its order: `d: [Label] <dice>[+mod]=<total> [vs <target>] -> <outcome>`. This add-on fills in the `<dice>` part. The dice expression records #emph[what was rolled] and `=N` records the #emph[numeric total];. The `->` field is reserved for the interpreted outcome --- a state, not a number.
 
 ```
 d: Strike 2d6+2=9 -> Hit
-d: Pick the lock d20+Lockpicking=17 vs DC 15 -> Success
+d: Pick the lock d20+3=17 vs DC 15 -> Success
 d: Overcome 4dF+2=3 -> Success with Style
 ```
 
-The bracketed breakdown `[4, 3]` is optional. Include it when the individual results matter --- a lucky max roll, a dropped die that changed the outcome --- or leave it out when the total is all you need.
+#strong[Individual results] go in brackets directly after the expression, before `=`:
+
+```
+d: Strike 2d6+2[4, 3]=9 -> Hit
+d: Ability 4d6dl1[6, 4d, 5, 3]=15 -> STR 15
+```
+
+The breakdown is optional. Include it when the individual results matter --- a lucky max roll, a dropped die that changed the outcome --- or leave it out when the total is all you need.
+
+#strong[Roll context] (core §4.1.9), the tags that help or hinder a roll, goes #emph[before] the expression as `+[…]` and `-[…]`. Brackets before the dice are context; brackets after them are results:
+
+```
+d: Strike +[flanking] -[wounded] 2d6+2[4, 3]=9 -> Hit
+```
 
 #pagebreak()
 == Rolling Dice
@@ -817,7 +830,7 @@ In a log:
 d: Ability score 4d6dl1=15
 ```
 
-The breakdown (`[6, 4d, 5, 3]`) is optional --- useful when you want to record which die was dropped, but not required.
+The breakdown (`4d6dl1[6, 4d, 5, 3]=15`) is optional --- useful when you want to record which die was dropped, but not required.
 
 #strong[Note:] `k` (keep) and `d` (drop) are the same operation expressed from opposite directions. `4d6kh3` and `4d6dl1` both give you the top 3 dice from a pool of 4.
 
@@ -838,7 +851,7 @@ d: Damage 2d6! =13
 ```
 
 #quote(block: true)[
-#strong[Note:] When an expression ends with `!` or another modifier that accepts a compare point, write a space before `=` to distinguish the result from a compare point operator. `2d6!=13` would be parsed as "explode on any roll not equal to 13"; `2d6! =13` records a result of 13.
+#strong[Note:] Whenever an expression contains a compare point or ends with a modifier that accepts one (`!`, `r`, `u`, `cs`, `cf`, or a pool target like `>=7`), write a space before the `=` that records the result. `2d6!=13` would be parsed as "explode on any roll not equal to 13"; `2d6! =13` records a result of 13. The same goes for pools: `10d6=6 =2` means "count the sixes; there were two".
 ]
 
 You can change the trigger with a compare point:
@@ -865,10 +878,11 @@ Some systems count how many dice beat a target rather than summing results. Atta
 10d6=6     count dice showing exactly 6
 ```
 
-In a log, the result is the success count:
+In a log, the result is the success count. Because the expression contains a compare point, put a space before the `=` that records it:
 
 ```
-d: Attack 5d10>=7=3 -> Hit
+d: Attack 5d10>=7 =3 -> Hit
+d: Sixes 10d6=6 =2 -> Two hits
 ```
 
 To count failures as negative successes, add an `f` compare point immediately after:
@@ -882,7 +896,7 @@ To count failures as negative successes, add an `f` compare point immediately af
 <roll-descriptions>
 Attach a label to a dice expression for clarity, especially when logging multiple rolls on one line.
 
-Use `//` or `#` for inline descriptions:
+Use `//` for inline descriptions:
 
 ```
 4d6dl1 // Strength
@@ -890,6 +904,8 @@ Use `//` or `#` for inline descriptions:
 
 d: 4d6dl1 // STR=15, 4d6dl1 // DEX=12, 4d6dl1 // CON=9
 ```
+
+For a single roll, the label at the start of the `d:` line does the same job and is easier to read: `d: Strength 4d6dl1=15`. Descriptions earn their place when several expressions share one line.
 
 == Common Patterns by System Type
 <common-patterns-by-system-type>
@@ -917,8 +933,8 @@ d: Clash 2d6+2=9 -> Weak Hit
 #strong[Advantage / Disadvantage:]
 
 ```
-d: Persuade 2d20kh1+4=16
-d: Sneak    2d20kl1+6=15
+d: Persuade 2d20kh1+4=16 vs DC 15 -> Success
+d: Sneak    2d20kl1+6=15 vs DC 16 -> Fail
 ```
 
 #pagebreak()
@@ -928,451 +944,24 @@ d: Sneak    2d20kl1+6=15
 d: Overcome 4dF+2=3 -> Success with Style
 ```
 
-#strong[Savage Worlds trait roll] (note the space before `=` --- expressions ending in `!` need it):
+#strong[Savage Worlds trait roll] --- the trait die and the Wild Die both ace, and you keep the higher. Note the space before `=`:
 
 ```
-d: Fighting d8!+2d6! =12 -> Hit
+d: Fighting {d8!, d6!}kh1 =12 -> Hit
 ```
 
 #strong[Percentile oracle:]
 
 ```
-d: Mythic 2d10=47 -> Yes, but...
-```
-
-#pagebreak()
-= Part II: Complete Reference
-<part-ii-complete-reference>
-= 1. Dice Types
-<dice-types>
-#strong[Note:] A single die type has a minimum quantity of `1` and a maximum quantity of `999`. Valid: `d8`, `1d10`, `999d6`. Invalid: `0d10`, `1000d6`, `-1d20`.
-
-== Standard
-<standard>
-#strong[Notation:] `d{n}`
-
-A standard die has a positive integer number of sides.
-
-```
-d6    roll a single 6-sided die
-4d10  roll a 10-sided die 4 times and sum the results
-```
-
-== Percentile
-<percentile>
-#strong[Notation:] `d%`
-
-Rolls a whole number between 1 and 100. Shorthand for `d100`.
-
-```
-4d%    equivalent to 4d100
-```
-
-#pagebreak()
-== Fudge / Fate
-<fudge-fate>
-#strong[Notation:] `dF` / `dF.2` / `dF.1`
-
-Six-sided dice marked with `-`, `+`, and blank faces, corresponding to `-1`, `+1`, and `0`.
-
-- `dF` or `dF.2` --- standard: two of each face
-- `dF.1` --- variant: four blanks, one `+`, one `-`
-
-```
-dF    standard Fudge die; equivalent to dF.2
-dF.1  variant Fudge die
-4dF   roll four standard Fudge dice and sum
-```
-
-= 2. Modifiers
-<modifiers>
-Modifiers alter the dice pool after rolling. Multiple modifiers can be combined; they execute in a fixed order (listed below) regardless of the order written.
-
-```
-5d10!k2    explode first (order 3), then keep highest 2 (order 6)
-5d10k2!    equivalent — order is always by modifier priority
-```
-
-#pagebreak()
-== Min
-<min>
-#strong[Notation:] `min{n}` | #strong[Order:] 1
-
-Any roll below the minimum is treated as the minimum value.
-
-```
-4d6min3: [3^, 4, 3, 3^] = 13
-```
-
-#strong[Note:] Statistically, rolling the minimum becomes more likely than any other single value. `d6min3` gives a 50% chance of rolling 3.
-
-== Max
-<max>
-#strong[Notation:] `max{n}` | #strong[Order:] 2
-
-Any roll above the maximum is treated as the maximum value.
-
-```
-4d6max3: [3v, 3v, 3, 2] = 11
-```
-
-#pagebreak()
-== Exploding
-<exploding>
-#strong[Notation:] `!` / `!{cp}` | #strong[Order:] 3
-
-When a die rolls its maximum value, it is re-rolled and the new roll is added to the total. The re-roll can also explode.
-
-```
-2d6!: [4, 6!, 6!, 2] = 18
-```
-
-The second die rolled 6 and exploded; the re-roll also rolled 6 and exploded again.
-
-Use a compare point to change the trigger:
-
-```
-2d6!=5    explode on 5
-2d6!>4    explode on 5 or 6
-4d10!<=3  explode on 1, 2, or 3
-```
-
-#quote(block: true)[
-#strong[Note:] The `!=` (not equal) operator conflicts with the exploding notation. Use `<>` instead:
-
-```
-2d6!!=4   wrong — this means "compound on 4", not "explode on not-4"
-2d6!<>4   correct — explode on any value that is not 4
-```
-]
-
-#strong[Note:] To prevent infinite loops, modifiers are limited to 1000 iterations per die. `1d10!>0` returns at most 1001 rolls.
-
-=== Compounding
-<compounding>
-#strong[Notation:] `!!` / `!!{cp}`
-
-Like exploding, but re-rolls are added to the original die's total rather than listed separately.
-
-```
-2d6!:  [4, 6!, 6!, 2] = 18   exploding: separate rolls
-2d6!!: [4, 14!!]       = 18   compounding: combined into one
-```
-
-=== Penetrating
-<penetrating>
-#strong[Notation:] `!p` / `!!p` / `!p{cp}` / `!!p{cp}`
-
-Like exploding, but each re-roll has 1 subtracted from it. From the HackMaster Basic rules.
-
-```
-2d6!p: [6!p, 5!p, 5!p, 3, 1] = 20
-```
-
-Actual rolls were `[6, 6, 6, 4, 1]`; each exploded re-roll has 1 subtracted.
-
-#pagebreak()
-== Re-roll
-<re-roll>
-#strong[Notation:] `r` / `ro` / `r{cp}` / `ro{cp}` | #strong[Order:] 4
-
-Re-rolls a die until it rolls above the minimum value, discarding the previous roll (unlike exploding, which keeps all rolls).
-
-```
-d6r      re-roll 1s indefinitely
-d6ro     re-roll once on a 1, even if the re-roll is also 1
-2d6r=5   re-roll any die showing 5, indefinitely
-4d10r<=3 re-roll any die showing 1, 2, or 3
-```
-
-== Unique
-<unique>
-#strong[Notation:] `u` / `uo` / `u{cp}` / `uo{cp}` | #strong[Order:] 5
-
-Re-rolls any die whose result duplicates another in the pool.
-
-```
-2d10u    re-roll duplicates until all results are unique
-2d10uo   re-roll duplicates once; may still have duplicates
-4d6u=5   only re-roll duplicates that show 5
-```
-
-#strong[Note:] If the number of dice exceeds the number of sides (e.g.~`5d3u`), unique results are impossible for all dice. The modifier is limited to 1000 iterations to prevent infinite loops.
-
-== Keep
-<keep>
-#strong[Notation:] `k{n}` / `kh{n}` / `kl{n}` | #strong[Order:] 6
-
-Keeps only the highest or lowest N results; all others are discarded. The opposite of Drop.
-
-`k` alone defaults to highest.
-
-```
-4d10kh2  keep the highest 2
-4d10k2   equivalent to above
-4d10kl1  keep the lowest 1
-```
-
-Discarded dice are marked with `d` in tool output:
-
-```
-6d8k3: [3d, 6, 7, 2d, 5, 4d] = 18
-```
-
-== Drop
-<drop>
-#strong[Notation:] `d{n}` / `dh{n}` / `dl{n}` | #strong[Order:] 7
-
-Drops the highest or lowest N results. The opposite of Keep.
-
-`d` alone defaults to lowest.
-
-```
-4d10dl2    drop the lowest 2
-4d10d2     equivalent to above
-4d10dh1    drop the highest
-4d10dh1dl2 drop both the highest and lowest 2
-```
-
-#quote(block: true)[
-#strong[Note:] Both modifiers look at the full dice pool, including dice already flagged by the other modifier. Using them together can override each other unexpectedly.
-
-```
-3d10k1dh1: [7d, 1d, 2d] = 0   drops everything
-3d10k1d1:  [6d, 1d, 9]  = 9   keeps only the highest
-```
-]
-
-== Target Success / Dice Pool
-<target-success-dice-pool>
-#strong[Notation:] `{cp}` | #strong[Order:] 8
-
-Counts how many dice meet a condition rather than summing values. Append a compare point directly to the die notation.
-
-```
-5d10>=8              count dice showing 8 or higher
-2d6=6: [4, 6*] = 1  one success
-4d3>1: [1, 3*, 2*, 1] = 2
-```
-
-Successful dice are marked with `*`.
-
-#pagebreak()
-#quote(block: true)[
-#strong[Note:] A target compare point immediately following a modifier that uses compare points is interpreted as the modifier's compare point, not a success target. Specify the target first:
-
-```
-2d6!>3    explode on any roll greater than 3
-2d6>3!    explode on 6; greater than 3 is a success
-```
-]
-
-== Target Failure / Dice Pool
-<target-failure-dice-pool>
-#strong[Notation:] `f{cp}` | #strong[Order:] 8
-
-Must follow a Target Success modifier directly. Each failure subtracts 1 from the success count.
-
-```
-4d6>4f<3: [2_, 5*, 4, 5*] = 1
-```
-
-Failed dice are marked with `_`.
-
-== Critical Success
-<critical-success>
-#strong[Notation:] `cs` / `cs{cp}` | #strong[Order:] 9
-
-Marks a die as a critical success. Aesthetic only --- does not change the numeric result.
-
-```
-2d20cs: [4, 20**] = 24
-4d10cs>7            rolls greater than 7 are critical successes
-```
-
-Critical success dice are marked with `**`.
-
-== Critical Failure
-<critical-failure>
-#strong[Notation:] `cf` / `cf{cp}` | #strong[Order:] 10
-
-Marks a die as a critical failure. Aesthetic only.
-
-```
-2d20cf: [4, 1__] = 5
-4d10cf<3           rolls less than 3 are critical failures
-```
-
-Critical failure dice are marked with `__`.
-
-== Sorting
-<sorting>
-#strong[Notation:] `s` / `sa` / `sd` | #strong[Order:] 11
-
-Sorts the dice results before display. Ascending by default.
-
-```
-4d6:   [4, 3, 5, 1]
-4d6s:  [1, 3, 4, 5]   ascending (default)
-4d6sa: [1, 3, 4, 5]   ascending (explicit)
-4d6sd: [5, 4, 3, 1]   descending
-```
-
-== Compare Points
-<compare-points>
-A compare point is an operator followed by a number. Used by Exploding, Re-roll, Unique, Target Success, Target Failure, Critical Success, and Critical Failure modifiers.
-
-#strong[Operators:]
-
-#table(
-  columns: 2,
-  align: (auto,auto,),
-  table.header([Operator], [Meaning],),
-  table.hline(),
-  [`=`], [equal to],
-  [`!=`], [not equal to],
-  [`<>`], [also not equal to (use with exploding)],
-  [`<`], [less than],
-  [`>`], [greater than],
-  [`<=`], [less than or equal to],
-  [`>=`], [greater than or equal to],
-)
-```
-d6!=3    explode on any roll not equal to 3
-d10!>=5  explode on 5, 6, 7, 8, 9, or 10
-d4r<3    re-roll anything less than 3
-```
-
-#quote(block: true)[
-#strong[Note:] Both mean "not equal to" and are interchangeable in most contexts. However, `!=` conflicts with the exploding notation --- `2d6!!=4` is parsed as "compound on 4", not "explode on not-4". Use `<>` when combining not-equal with exploding:
-
-```
-2d6!<>4   correct: explode on any value that is not 4
-```
-]
-
-= 3. Group Rolls
-<group-rolls>
-Group rolls evaluate multiple sub-expressions and apply modifiers to the group as a whole, rather than to individual dice. Sub-expressions are comma-separated and enclosed in `{}`.
-
-```
-{4d6, 2d10, d4}: {[2, 6, 4, 2], [7, 4], [1]} = 26
-```
-
-Without a modifier, sub-roll totals are summed. A single sub-roll in `{}` is functionally equivalent to the expression without braces.
-
-== Keep and Drop with Groups
-<keep-and-drop-with-groups>
-When applied to a group with multiple sub-rolls, `k` and `d` keep or drop entire sub-rolls by their total value.
-
-```
-{4d10, 5d6, 2d10}k2   keep the 2 sub-rolls with the highest totals
-{4d10, 5d6, 2d10}d2   drop the 2 sub-rolls with the lowest totals
-```
-
-When applied to a single sub-roll, they keep or drop individual die results within the expression:
-
-```
-{4d10*(2+5d6)}k2   keep the highest 2 individual rolls across all 9 dice
-```
-
-== Target Success / Failure with Groups
-<target-success-failure-with-groups>
-Compares each sub-roll's #emph[total] against the compare point rather than individual dice.
-
-```
-{3d20+5}>40: {([11, 7, 19]+5)*} = 1
-
-{4d6+2d8, 3d20+3, 5d10+1}>40: {[4,3,3,2]+[2,6], ([17,5,20]+3)*, ([7,9,6,10,8]+1)*} = 2
-```
-
-== Sorting with Groups
-<sorting-with-groups>
-Sorts both individual dice within each sub-roll and sub-rolls by their total.
-
-```
-{4d6/2, 3d4+3, 2d10}s    ascending
-{4d6/2, 3d4+3, 2d10}sd   descending
-```
-
-#pagebreak()
-= 4. Roll Descriptions
-<roll-descriptions-1>
-A textual label can be attached to any dice expression or group roll. Labels are not parsed as notation.
-
-== Inline Descriptions
-<inline-descriptions>
-Use `//` or `#` after the expression:
-
-```
-4d6dl1 // Strength score
-2d6!   # Damage roll
-{4d6, 2d10, d4} // Fire, frost, falling
-```
-
-In a Lonelog `d:` field:
-
-```
-d: 4d6dl1 // STR=14, 4d6dl1 // DEX=11
-```
-
-== Block Descriptions
-<block-descriptions>
-Use `[ ... ]` or `/* ... */` for multi-word or multi-line labels:
-
-```
-4d6 /* Ice damage */
-2d10 [ Fire damage ]
-{5d6+5} /* You can even
-write on multiple lines */
-```
-
-#pagebreak()
-Any dice notation inside a description block is not parsed:
-
-```
-4d6 /* Ice damage 5d10+7 */   only 4d6 is rolled
-```
-
-= 5. Math
-<math>
-== Arithmetic Operators
-<arithmetic-operators>
-Standard operators apply to roll totals:
-
-#table(
-  columns: 3,
-  align: (auto,auto,auto,),
-  table.header([Operator], [Meaning], [Example],),
-  table.hline(),
-  [`+`], [add], [`2d6+3`],
-  [`-`], [subtract], [`d20-2`],
-  [`*`], [multiply], [`d6*5`],
-  [`/`], [divide], [`2d10/d20`],
-  [`%`], [modulus (remainder)], [`d15%2`],
-  [`^` or `**`], [exponent], [`3d20^4`],
-)
-Operators can also determine how many dice to roll or how many sides they have:
-
-```
-(4-2)d10   roll a d10 twice (4-2=2)
-3d(2*6)    roll a 12-sided die (2*6=12) three times
-```
-
-== Parentheses
-<parentheses>
-Parentheses group expressions and define order of operations:
-
-```
-1d6+2*3:   [4]+2*3 = 10    multiplication first
-(1d6+2)*3: ([4]+2)*3 = 18  addition first
+? Is the gate guarded? (50/50)
+d: d%=47 vs 50 -> Yes
 ```
 
 #pagebreak()
 = Quick Reference
 <quick-reference>
 == Dice Types
-<dice-types-1>
+<dice-types>
 #table(
   columns: 2,
   align: (auto,auto,),
@@ -1384,7 +973,7 @@ Parentheses group expressions and define order of operations:
   [`dF.1`], [Variant Fudge die],
 )
 == Modifiers
-<modifiers-1>
+<modifiers>
 #table(
   columns: 3,
   align: (auto,auto,auto,),
@@ -1466,13 +1055,446 @@ A: The grammar applies wherever you record a dice result. It's most meaningful i
 A: Yes. Any positive integer is a valid number of sides: `d3`, `d7`, `d13`, `d100`. The standard dice shapes are just the most common cases.
 
 #strong[Q: How do I record a roll result in my log --- just the expression, or the full breakdown?] \
-A: The expression and total are always sufficient: `d: Attack 2d6+2=9`. The bracketed individual results (`[4, 3]+2`) are optional --- include them when the breakdown is meaningful (a die that exploded, a dropped result that mattered), skip them when it isn't.
+A: The expression and total are always sufficient: `d: Attack 2d6+2=9 -> Hit`. The bracketed individual results (`d: Attack 2d6+2[4, 3]=9 -> Hit`) are optional --- include them when the breakdown is meaningful (a die that exploded, a dropped result that mattered), skip them when it isn't. The reference examples in the appendix show breakdowns in the style of a dice roller's output (`2d6!: [4, 6!, 6!, 2] = 18`); in a log line, move the brackets after the expression as shown here.
 
 #strong[Q: The `d` modifier letter conflicts with the `d` in `NdS`. How does a parser tell them apart?] \
 A: By position. In `4d6`, the `d` separates quantity from sides. In `4d6d1`, the second `d` follows a complete die expression and is therefore the Drop modifier. Context disambiguates them.
 
 #strong[Q: What about dice that aren't rolled --- oracle tables, card draws, etc.?] \
-A: This notation covers dice only. Oracle results and non-dice mechanics are recorded using core Lonelog's `?` and `d:` fields with free-form text. The dice grammar is a layer on top of core notation, not a replacement for it.
+A: This notation covers dice only. Oracle answers, table results and non-dice mechanics are recorded with core Lonelog's `?`, `d:`, `tbl:` and `->` fields in free-form text. The dice grammar is a layer on top of core notation, not a replacement for it.
+
+#pagebreak()
+= Appendix: Complete Grammar Reference
+<appendix-complete-grammar-reference>
+This appendix is the full dice-roller grammar the add-on is built on. Most logs never need it: Part I covers what solo play actually uses. Come here when your system does something unusual, or when you are building a tool.
+
+== A.1 Dice Types
+<a.1-dice-types>
+#strong[Note:] A single die type has a minimum quantity of `1` and a maximum quantity of `999`. Valid: `d8`, `1d10`, `999d6`. Invalid: `0d10`, `1000d6`, `-1d20`.
+
+=== Standard
+<standard>
+#strong[Notation:] `d{n}`
+
+A standard die has a positive integer number of sides.
+
+```
+d6    roll a single 6-sided die
+4d10  roll a 10-sided die 4 times and sum the results
+```
+
+=== Percentile
+<percentile>
+#strong[Notation:] `d%`
+
+Rolls a whole number between 1 and 100. Shorthand for `d100`.
+
+```
+4d%    equivalent to 4d100
+```
+
+#pagebreak()
+=== Fudge / Fate
+<fudge-fate>
+#strong[Notation:] `dF` / `dF.2` / `dF.1`
+
+Six-sided dice marked with `-`, `+`, and blank faces, corresponding to `-1`, `+1`, and `0`.
+
+- `dF` or `dF.2` --- standard: two of each face
+- `dF.1` --- variant: four blanks, one `+`, one `-`
+
+```
+dF    standard Fudge die; equivalent to dF.2
+dF.1  variant Fudge die
+4dF   roll four standard Fudge dice and sum
+```
+
+== A.2 Modifiers
+<a.2-modifiers>
+Modifiers alter the dice pool after rolling. Multiple modifiers can be combined; they execute in a fixed order (listed below) regardless of the order written.
+
+```
+5d10!k2    explode first (order 3), then keep highest 2 (order 6)
+5d10k2!    equivalent — order is always by modifier priority
+```
+
+#pagebreak()
+=== Min
+<min>
+#strong[Notation:] `min{n}` | #strong[Order:] 1
+
+Any roll below the minimum is treated as the minimum value.
+
+```
+4d6min3: [3^, 4, 3, 3^] = 13
+```
+
+#strong[Note:] Statistically, rolling the minimum becomes more likely than any other single value. `d6min3` gives a 50% chance of rolling 3.
+
+=== Max
+<max>
+#strong[Notation:] `max{n}` | #strong[Order:] 2
+
+Any roll above the maximum is treated as the maximum value.
+
+```
+4d6max3: [3v, 3v, 3, 2] = 11
+```
+
+#pagebreak()
+=== Exploding
+<exploding>
+#strong[Notation:] `!` / `!{cp}` | #strong[Order:] 3
+
+When a die rolls its maximum value, it is re-rolled and the new roll is added to the total. The re-roll can also explode.
+
+```
+2d6!: [4, 6!, 6!, 2] = 18
+```
+
+The second die rolled 6 and exploded; the re-roll also rolled 6 and exploded again.
+
+Use a compare point to change the trigger:
+
+```
+2d6!=5    explode on 5
+2d6!>4    explode on 5 or 6
+4d10!<=3  explode on 1, 2, or 3
+```
+
+#quote(block: true)[
+#strong[Note:] The `!=` (not equal) operator conflicts with the exploding notation. Use `<>` instead:
+
+```
+2d6!!=4   wrong — this means "compound on 4", not "explode on not-4"
+2d6!<>4   correct — explode on any value that is not 4
+```
+]
+
+#strong[Note:] To prevent infinite loops, modifiers are limited to 1000 iterations per die. `1d10!>0` returns at most 1001 rolls.
+
+=== Compounding
+<compounding>
+#strong[Notation:] `!!` / `!!{cp}`
+
+Like exploding, but re-rolls are added to the original die's total rather than listed separately.
+
+```
+2d6!:  [4, 6!, 6!, 2] = 18   exploding: separate rolls
+2d6!!: [4, 14!!]       = 18   compounding: combined into one
+```
+
+=== Penetrating
+<penetrating>
+#strong[Notation:] `!p` / `!!p` / `!p{cp}` / `!!p{cp}`
+
+Like exploding, but each re-roll has 1 subtracted from it. From the HackMaster Basic rules.
+
+```
+2d6!p: [6!p, 5!p, 5!p, 3, 1] = 20
+```
+
+Actual rolls were `[6, 6, 6, 4, 1]`; each exploded re-roll has 1 subtracted.
+
+#pagebreak()
+=== Re-roll
+<re-roll>
+#strong[Notation:] `r` / `ro` / `r{cp}` / `ro{cp}` | #strong[Order:] 4
+
+Re-rolls a die until it rolls above the minimum value, discarding the previous roll (unlike exploding, which keeps all rolls).
+
+```
+d6r      re-roll 1s indefinitely
+d6ro     re-roll once on a 1, even if the re-roll is also 1
+2d6r=5   re-roll any die showing 5, indefinitely
+4d10r<=3 re-roll any die showing 1, 2, or 3
+```
+
+=== Unique
+<unique>
+#strong[Notation:] `u` / `uo` / `u{cp}` / `uo{cp}` | #strong[Order:] 5
+
+Re-rolls any die whose result duplicates another in the pool.
+
+```
+2d10u    re-roll duplicates until all results are unique
+2d10uo   re-roll duplicates once; may still have duplicates
+4d6u=5   only re-roll duplicates that show 5
+```
+
+#strong[Note:] If the number of dice exceeds the number of sides (e.g.~`5d3u`), unique results are impossible for all dice. The modifier is limited to 1000 iterations to prevent infinite loops.
+
+=== Keep
+<keep>
+#strong[Notation:] `k{n}` / `kh{n}` / `kl{n}` | #strong[Order:] 6
+
+Keeps only the highest or lowest N results; all others are discarded. The opposite of Drop.
+
+`k` alone defaults to highest.
+
+```
+4d10kh2  keep the highest 2
+4d10k2   equivalent to above
+4d10kl1  keep the lowest 1
+```
+
+Discarded dice are marked with `d` in tool output:
+
+```
+6d8k3: [3d, 6, 7, 2d, 5, 4d] = 18
+```
+
+=== Drop
+<drop>
+#strong[Notation:] `d{n}` / `dh{n}` / `dl{n}` | #strong[Order:] 7
+
+Drops the highest or lowest N results. The opposite of Keep.
+
+`d` alone defaults to lowest.
+
+```
+4d10dl2    drop the lowest 2
+4d10d2     equivalent to above
+4d10dh1    drop the highest
+4d10dh1dl2 drop both the highest and lowest 2
+```
+
+#quote(block: true)[
+#strong[Note:] Both modifiers look at the full dice pool, including dice already flagged by the other modifier. Using them together can override each other unexpectedly.
+
+```
+3d10k1dh1: [7d, 1d, 2d] = 0   drops everything
+3d10k1d1:  [6d, 1d, 9]  = 9   keeps only the highest
+```
+]
+
+=== Target Success / Dice Pool
+<target-success-dice-pool>
+#strong[Notation:] `{cp}` | #strong[Order:] 8
+
+Counts how many dice meet a condition rather than summing values. Append a compare point directly to the die notation.
+
+```
+5d10>=8              count dice showing 8 or higher
+2d6=6: [4, 6*] = 1  one success
+4d3>1: [1, 3*, 2*, 1] = 2
+```
+
+Successful dice are marked with `*`.
+
+#pagebreak()
+#quote(block: true)[
+#strong[Note:] A target compare point immediately following a modifier that uses compare points is interpreted as the modifier's compare point, not a success target. Specify the target first:
+
+```
+2d6!>3    explode on any roll greater than 3
+2d6>3!    explode on 6; greater than 3 is a success
+```
+]
+
+=== Target Failure / Dice Pool
+<target-failure-dice-pool>
+#strong[Notation:] `f{cp}` | #strong[Order:] 8
+
+Must follow a Target Success modifier directly. Each failure subtracts 1 from the success count.
+
+```
+4d6>4f<3: [2_, 5*, 4, 5*] = 1
+```
+
+Failed dice are marked with `_`.
+
+=== Critical Success
+<critical-success>
+#strong[Notation:] `cs` / `cs{cp}` | #strong[Order:] 9
+
+Marks a die as a critical success. Aesthetic only --- does not change the numeric result.
+
+```
+2d20cs: [4, 20**] = 24
+4d10cs>7            rolls greater than 7 are critical successes
+```
+
+Critical success dice are marked with `**`.
+
+=== Critical Failure
+<critical-failure>
+#strong[Notation:] `cf` / `cf{cp}` | #strong[Order:] 10
+
+Marks a die as a critical failure. Aesthetic only.
+
+```
+2d20cf: [4, 1__] = 5
+4d10cf<3           rolls less than 3 are critical failures
+```
+
+Critical failure dice are marked with `__`.
+
+=== Sorting
+<sorting>
+#strong[Notation:] `s` / `sa` / `sd` | #strong[Order:] 11
+
+Sorts the dice results before display. Ascending by default.
+
+```
+4d6:   [4, 3, 5, 1]
+4d6s:  [1, 3, 4, 5]   ascending (default)
+4d6sa: [1, 3, 4, 5]   ascending (explicit)
+4d6sd: [5, 4, 3, 1]   descending
+```
+
+=== Compare Points
+<compare-points>
+A compare point is an operator followed by a number. Used by Exploding, Re-roll, Unique, Target Success, Target Failure, Critical Success, and Critical Failure modifiers.
+
+#strong[Operators:]
+
+#table(
+  columns: 2,
+  align: (auto,auto,),
+  table.header([Operator], [Meaning],),
+  table.hline(),
+  [`=`], [equal to],
+  [`!=`], [not equal to],
+  [`<>`], [also not equal to (use with exploding)],
+  [`<`], [less than],
+  [`>`], [greater than],
+  [`<=`], [less than or equal to],
+  [`>=`], [greater than or equal to],
+)
+```
+d6!=3    explode on any roll not equal to 3
+d10!>=5  explode on 5, 6, 7, 8, 9, or 10
+d4r<3    re-roll anything less than 3
+```
+
+#quote(block: true)[
+#strong[Note:] Both mean "not equal to" and are interchangeable in most contexts. However, `!=` conflicts with the exploding notation --- `2d6!!=4` is parsed as "compound on 4", not "explode on not-4". Use `<>` when combining not-equal with exploding:
+
+```
+2d6!<>4   correct: explode on any value that is not 4
+```
+]
+
+== A.3 Group Rolls
+<a.3-group-rolls>
+Group rolls evaluate multiple sub-expressions and apply modifiers to the group as a whole, rather than to individual dice. Sub-expressions are comma-separated and enclosed in `{}`.
+
+```
+{4d6, 2d10, d4}: {[2, 6, 4, 2], [7, 4], [1]} = 26
+```
+
+Without a modifier, sub-roll totals are summed. A single sub-roll in `{}` is functionally equivalent to the expression without braces.
+
+=== Keep and Drop with Groups
+<keep-and-drop-with-groups>
+When applied to a group with multiple sub-rolls, `k` and `d` keep or drop entire sub-rolls by their total value.
+
+```
+{4d10, 5d6, 2d10}k2   keep the 2 sub-rolls with the highest totals
+{4d10, 5d6, 2d10}d2   drop the 2 sub-rolls with the lowest totals
+```
+
+When applied to a single sub-roll, they keep or drop individual die results within the expression:
+
+```
+{4d10*(2+5d6)}k2   keep the highest 2 individual rolls across all 9 dice
+```
+
+=== Target Success / Failure with Groups
+<target-success-failure-with-groups>
+Compares each sub-roll's #emph[total] against the compare point rather than individual dice.
+
+```
+{3d20+5}>40: {([11, 7, 19]+5)*} = 1
+
+{4d6+2d8, 3d20+3, 5d10+1}>40: {[4,3,3,2]+[2,6], ([17,5,20]+3)*, ([7,9,6,10,8]+1)*} = 2
+```
+
+=== Sorting with Groups
+<sorting-with-groups>
+Sorts both individual dice within each sub-roll and sub-rolls by their total.
+
+```
+{4d6/2, 3d4+3, 2d10}s    ascending
+{4d6/2, 3d4+3, 2d10}sd   descending
+```
+
+#pagebreak()
+== A.4 Roll Descriptions
+<a.4-roll-descriptions>
+A textual label can be attached to any dice expression or group roll. Labels are not parsed as notation.
+
+=== Inline Descriptions
+<inline-descriptions>
+Use `//` after the expression:
+
+```
+4d6dl1 // Strength score
+2d6!   // Damage roll
+{4d6, 2d10, d4} // Fire, frost, falling
+```
+
+In a Lonelog `d:` field:
+
+```
+d: 4d6dl1 // STR=14, 4d6dl1 // DEX=11
+```
+
+The rpg-dice-roller grammar also accepts `#` for inline descriptions. #strong[Lonelog logs don't use it];, because `#` marks reference tags in core (`[#N:Jonah]`).
+
+=== Block Descriptions
+<block-descriptions>
+Use `/* ... */` for multi-word or multi-line labels:
+
+```
+4d6 /* Ice damage */
+{5d6+5} /* You can even
+write on multiple lines */
+```
+
+The rpg-dice-roller grammar also accepts `[ ... ]` for block descriptions. #strong[Lonelog logs don't use it];, because brackets after a dice expression hold its individual results, and brackets before it hold roll context.
+
+#pagebreak()
+Any dice notation inside a description block is not parsed:
+
+```
+4d6 /* Ice damage 5d10+7 */   only 4d6 is rolled
+```
+
+== A.5 Math
+<a.5-math>
+=== Arithmetic Operators
+<arithmetic-operators>
+Standard operators apply to roll totals:
+
+#table(
+  columns: 3,
+  align: (auto,auto,auto,),
+  table.header([Operator], [Meaning], [Example],),
+  table.hline(),
+  [`+`], [add], [`2d6+3`],
+  [`-`], [subtract], [`d20-2`],
+  [`*`], [multiply], [`d6*5`],
+  [`/`], [divide], [`2d10/d20`],
+  [`%`], [modulus (remainder)], [`d15%2`],
+  [`^` or `**`], [exponent], [`3d20^4`],
+)
+Operators can also determine how many dice to roll or how many sides they have:
+
+```
+(4-2)d10   roll a d10 twice (4-2=2)
+3d(2*6)    roll a 12-sided die (2*6=12) three times
+```
+
+=== Parentheses
+<parentheses>
+Parentheses group expressions and define order of operations:
+
+```
+1d6+2*3:   [4]+2*3 = 10    multiplication first
+(1d6+2)*3: ([4]+2)*3 = 18  addition first
+```
 
 #pagebreak()
 = Credits & License
@@ -1481,7 +1503,7 @@ A: This notation covers dice only. Oracle results and non-dice mechanics are rec
 
 This add-on extends #link("https://zeruhur.itch.io/lonelog")[Lonelog] by Roberto Bisceglie.
 
-The dice notation grammar and reference documentation in Part II is adapted from the #link("https://dice-roller.github.io/documentation/")[rpg-dice-roller] specification by GreenImp Media Limited, used under the MIT License. The original MIT license and copyright notice are reproduced below.
+The dice notation grammar and the reference in the appendix are adapted from the #link("https://dice-roller.github.io/documentation/")[rpg-dice-roller] specification by GreenImp Media Limited, used under the MIT License. The original MIT license and copyright notice are reproduced below.
 
 #quote(block: true)[
 MIT License \
@@ -1497,6 +1519,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #strong[Version History:]
 
+- v1.1.0: The complete grammar moves to an appendix; the space before a result's `=` applies to every expression with a compare point; Savage Worlds example corrected (trait die and Wild Die, keep the higher). Aligned with Lonelog v1.7. Individual results go in brackets directly after the expression; roll context goes before it. `#` and `[ ... ]` descriptions are not used in Lonelog logs. Example fixes.
 - v1.0.0: Initial release
 
 This work is licensed under the #strong[Creative Commons Attribution-ShareAlike 4.0 International License];.

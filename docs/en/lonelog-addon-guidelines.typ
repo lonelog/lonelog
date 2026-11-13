@@ -674,7 +674,7 @@
 #show: doc => worldbuilders(
   title: "Lonelog: Community Add-on Guidelines",
   subtitle: "How to Write Add-ons That Work with the Core",
-  version: "1.1.0",
+  version: "1.2.0",
   authors: ("Roberto Bisceglie", ),
   date: none,
   abstract: none,
@@ -703,7 +703,7 @@ These are the constraints that define a Lonelog add-on as distinct from a fork o
 
 === 1.1 Do Not Replace Core Symbols
 <do-not-replace-core-symbols>
-The five core symbols are the shared language of all Lonelog logs:
+The five core symbols, together with `tbl:` from the optional layers, are the shared language of all Lonelog logs:
 
 #table(
   columns: 2,
@@ -712,14 +712,17 @@ The five core symbols are the shared language of all Lonelog logs:
   table.hline(),
   [`@`], [Player action],
   [`?`], [Oracle question],
-  [`d:`], [Mechanics roll],
+  [`d:`], [Roll or rule that gives a verdict],
+  [`tbl:`], [Random result that gives content],
   [`->`], [Resolution outcome],
   [`=>`], [Consequence],
 )
-An add-on may introduce new #strong[tags];, #strong[structural blocks];, and #strong[formatting conventions];. It may not introduce a new symbol that duplicates, overrides, or conflicts with any of the five above.
+An add-on may introduce new #strong[tags];, #strong[structural blocks];, and #strong[formatting conventions];. It may not introduce a new symbol that duplicates, overrides, or conflicts with any of the above.
 
 #strong[Compliant:] Introducing `[F:Enemy|HP 8]` to tag foes in combat. \
-#strong[Non-compliant:] Introducing `!` as a new symbol for attacks, bypassing `@` and `d:`.
+#strong[Non-compliant:] Introducing `>>` as a new symbol for attacks, bypassing `@` and `d:`.
+
+`!` is already taken: Partylog uses it for GM and world events in group play. An add-on may use `!` in that same sense, never for anything else.
 
 If you find yourself wanting a sixth core symbol, that's a signal to reconsider the design. The existing five are almost always sufficient when used with new tags or structural conventions.
 
@@ -729,7 +732,7 @@ The core spec defines these tag prefixes:
 
 - `N:` --- NPCs
 - `L:` --- Locations
-- `E:` --- Events
+- `E:` --- Events: notable things that happened (no counter)
 - `PC:` --- Player character
 - `Thread:` --- Story threads
 - `Clock:`, `Track:`, `Timer:` --- Progress elements
@@ -737,16 +740,30 @@ The core spec defines these tag prefixes:
 - `Inv:`, `Wealth:` --- Resource tracking (Resource Add-on)
 - `R:` --- Rooms (Dungeon Crawling Add-on)
 - `F:` --- Combatant foes (Combat Add-on)
+- `Unit:` --- Units (Solo Wargaming Add-on)
+- `Faction:`, `Party:` --- Factions and party-level state (Partylog, Lorelog)
 
 Do not reuse these prefixes for different purposes. If you need a new tag type, use a prefix that isn't in this list and document it clearly in your add-on's quick reference.
 
-#strong[Compliant:] `[R:Room4|active]` for room states (Dungeon Crawling Add-on). #strong[Non-compliant:] `[L:Room4|active]` --- this repurposes the Location tag for a different semantic meaning.
+#strong[Compliant:] `[R:Room4|status:active]` for room states (Dungeon Crawling Add-on). #strong[Non-compliant:] `[L:Room4|active]` --- this repurposes the Location tag for a different semantic meaning.
 
 #strong[Watch for collision between tags and structural markers.] The Dungeon Crawling Add-on uses `[R:]` for rooms; the Combat Add-on originally used `R#` for rounds --- the same letter, causing ambiguity in combined logs. The solution was to change round markers to `Rd#`. When introducing any new marker or tag prefix, check for collisions not just with existing tags but with structural conventions (round markers, roster lines, etc.) across the full add-on ecosystem.
 
 When uncertain whether a prefix conflicts, check the full add-on ecosystem before finalizing your choice.
 
-=== 1.3 Include Required Metadata
+=== 1.3 Respect Core Syntax Rules
+<respect-core-syntax-rules>
+Some characters and positions have a fixed meaning in core Lonelog (see core Appendix D). Don't give them a second one:
+
+- #strong[`#`] marks a reference tag (`[#N:Jonah]`). Don't use it for comments or descriptions.
+- #strong[Brackets around a dice expression] are taken: before the dice, `+[…]`/`-[…]` is roll context; after the dice, `[…]` holds individual results.
+- #strong[Tags accumulate.] Your tags should follow core's update rules: a later tag adds values, `-value` removes one, `old>new` replaces one, `category:value` replaces a category's state, `Stat N` sets a number and `Stat±N` adjusts it, and counts are `×N` values, never part of the name. If your tag needs different behavior, say so explicitly.
+- #strong[`d:` gives a verdict, `tbl:` gives content.] If your add-on records a new kind of draw or roll, place it on that line, not by the mechanism that produced it.
+- #strong[Fields don't depend on order.] Every value in your tags should say what it is: a labelled number (`HP 6`), a count (`×12`), a category (`status:cleared`) or a plain value. Tags that track something owned are named after the owner (`[Wealth:Kael|Gold 45]`).
+- #strong[`->` marks an outcome only.] Don't use it as an arrow in prose, tags or action text.
+- #strong[Meta notes are `(label: text)`.] You may suggest new labels for your domain; don't redefine the core ones (`note:`, `retcon:`, …).
+
+=== 1.4 Include Required Metadata
 <include-required-metadata>
 Every add-on must open with a YAML front matter block that includes these fields:
 
@@ -758,7 +775,7 @@ author: [Your name or handle]
 version: [Semantic version, e.g. 1.0.0]
 license: CC BY-SA 4.0
 lang: en
-parent: Lonelog [version this add-on targets, e.g. v1.1.0]
+parent: Lonelog [version this add-on targets, e.g. v1.7.0]
 requires: Core Notation (§3)
 ---
 ```
@@ -767,7 +784,7 @@ The `requires` field must list the core sections your add-on depends on. If you 
 
 The `parent` field pins your add-on to a specific core version. When the core updates, add-on authors can assess whether their add-on needs updating.
 
-=== 1.4 Use CC BY-SA 4.0 (or Compatible)
+=== 1.5 Use CC BY-SA 4.0 (or Compatible)
 <use-cc-by-sa-4.0-or-compatible>
 Official and community add-ons should use the same license as the core: #strong[Creative Commons Attribution-ShareAlike 4.0 International];. This keeps the ecosystem open --- anyone can use, adapt, and share add-ons as long as they attribute and share alike.
 
@@ -785,6 +802,7 @@ Before adding anything new, ask: can an existing mechanism handle this?
 - Need to track enemy health? The `[N:]` tag already takes freeform properties: `[N:Goblin|HP 4]`.
 - Need a countdown? `[Timer:]` already exists.
 - Need to record a roll? `d:` is already there.
+- Need random content from a table, deck or generator? That's `tbl:`.
 
 The best add-ons add as little as possible to achieve their goal. Every new tag or convention is something players have to learn and remember. Earn that cognitive load.
 
@@ -861,7 +879,7 @@ For #strong[analog notebook] equivalents, use dashed separators:
 
 ```
 [DUNGEON STATUS]
-[R:1|cleared|entry hall]
+[R:1|status:cleared|entry hall]
 [/DUNGEON STATUS]
 ```
 
@@ -869,7 +887,7 @@ For #strong[analog notebook] equivalents, use dashed separators:
 
 ```
 === Dungeon Status ===
-[R:1|cleared|entry hall]
+[R:1|status:cleared|entry hall]
 ```
 
 Every structural block must have an explicit closing tag. Open-ended blocks (no closing delimiter) are not compliant.
@@ -885,6 +903,8 @@ Examples are the most important part of any add-on. They should:
 
 Avoid examples that are so simple they don't reveal anything about how the notation behaves under real conditions.
 
+#strong[Don't put tags inside table cells.] A tag like `[F:Thug|HP 6]` contains `|`, which ends a Markdown table cell. Escaping it as `\|` works on GitHub, but Pandoc (and so the PDF and EPUB builds) prints the backslash. Use a list instead: #raw("- `[F:Thug|HP 6]` — a foe with 6 HP");.
+
 #pagebreak()
 == 4. Community Practices
 <community-practices>
@@ -896,7 +916,7 @@ Use semantic versioning: `major.minor.patch`.
 - #strong[Minor] (1.0.0 → 1.1.0): New optional features, expanded examples, backward-compatible additions
 - #strong[Major] (1.0.0 → 2.0.0): Changes that break compatibility with previous versions of the add-on
 
-When your add-on's `parent` version changes (e.g., Lonelog updates from v1.1.0 to v1.2.0), review your add-on and update the `parent` field. If the core change affects your add-on's behavior, treat it as at least a minor version bump.
+When your add-on's `parent` version changes (e.g., Lonelog updates from v1.6.0 to v1.7.0), review your add-on and update the `parent` field. If the core change affects your add-on's behavior, treat it as at least a minor version bump.
 
 === 4.2 Naming
 <naming>
@@ -923,8 +943,14 @@ When sharing add-ons on Reddit, itch.io, or other platforms: - Link to the core 
 <quick-compliance-checklist>
 Before publishing or sharing your add-on, verify:
 
-#strong[Non-negotiables:] - \[ \] No new symbols that conflict with `@`, `?`, `d:`, `->`, `=>` - \[ \] No tag prefixes that conflict with existing core or add-on tags - \[ \] YAML front matter present with all required fields - \[ \] `parent` field specifies the core version targeted - \[ \] License is CC BY-SA 4.0 (or compatible)
+#strong[Non-negotiables:] - \[ \] No new symbols that conflict with `@`, `?`, `d:`, `tbl:`, `->`, `=>`, or with Partylog's `!` - \[ \] No second meaning for `#`, for brackets around dice expressions, or for core meta-note labels - \[ \] New tags follow core's update rules (accumulate, `-value`, `old>new`, `category:value` for states, `×N` for counts), or document why not - \[ \] No tag prefixes that conflict with existing core or add-on tags - \[ \] YAML front matter present with all required fields - \[ \] `parent` field specifies the core version targeted - \[ \] License is CC BY-SA 4.0 (or compatible)
 
 #strong[Strong recommendations:] - \[ \] Shows both digital and analog examples - \[ \] Includes at least one integration example with core Lonelog - \[ \] Provides compact and expanded variants for major features - \[ \] Ends with a quick reference table - \[ \] Writing tone matches Lonelog's voice (practical, non-prescriptive, explanatory)
 
 #strong[Structure:] - \[ \] Overview explains the problem and when to use the add-on - \[ \] "What This Add-on Adds" table present - \[ \] Best practices section with Do/Don't examples - \[ \] FAQ addresses likely edge case questions - \[ \] Structural blocks use `[BLOCK]` / `[/BLOCK]` syntax (not `===` or `---` as primary format)
+
+#pagebreak()
+#strong[Version History:]
+
+- v1.2.0: Aligned with Lonelog v1.7: `tbl:` listed with the core symbols, new §1.3 on reserved syntax, updated checklist.
+- v1.1.0: Previous release

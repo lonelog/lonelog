@@ -674,7 +674,7 @@
 #show: doc => worldbuilders(
   title: "Lonelog: Dungeon Crawling Add-on",
   subtitle: "Optional Room Tracking for Dungeon Exploration",
-  version: "1.1.0",
+  version: "1.2.0",
   authors: ("Roberto Bisceglie", ),
   date: none,
   abstract: none,
@@ -705,17 +705,12 @@ If the dungeon is more narrative backdrop than mechanical challenge, or if you'r
 #pagebreak()
 === What This Add-on Adds
 <what-this-add-on-adds>
-#table(
-  columns: (35.71%, 32.14%, 32.14%),
-  align: (auto,auto,auto,),
-  table.header([Addition], [Purpose], [Example],),
-  table.hline(),
-  [`[R:ID\|status]`], [Track a room's current exploration state], [`[R:3\|cleared]`],
-  [`[R:ID\|status\|desc]`], [Room tag with optional description], [`[R:3\|cleared\|library]`],
-  [`exits DIR:ID`], [Record connections between rooms (optional)], [`exits N:R2, E:R3`],
-  [`[#R:ID]`], [Reference a previously established room], [`[#R:3]`],
-  [`[DUNGEON STATUS]` / `[/DUNGEON STATUS]`], [Session-opening snapshot of all room states], [Multiple `[R:]` tags grouped],
-)
+- `[R:ID|status:state]` --- Track a room's current exploration state. Example: `[R:3|status:cleared]`
+- `[R:ID|status:state|desc]` --- Room tag with optional description. Example: `[R:3|status:cleared|library]`
+- `exits:DIR ID` --- Record connections between rooms (optional). Example: `exits:N R2, E R3`
+- `[#R:ID]` --- Reference a previously established room. Example: `[#R:3]`
+- `[DUNGEON STATUS]` / `[/DUNGEON STATUS]` --- Session-opening snapshot of all room states. Example: Multiple `[R:]` tags grouped
+
 #strong[No new core symbols.] This add-on introduces no additions to `@`, `?`, `d:`, `->`, or `=>`.
 
 #pagebreak()
@@ -737,37 +732,38 @@ The Room tag `[R:]` tracks a room's current state. It works like any other Lonel
 #strong[Format:]
 
 ```
-[R:ID|status|description|exits DIR:ID, DIR:ID]
+[R:ID|status:state|description|exits:DIR ID, DIR ID]
 ```
 
-#strong[Fields:]
+#strong[Fields] --- the ID comes first; the rest can come in any order, because each one says what it is:
 
-- `ID` --- unique identifier for the room, typically a number (`1`, `2`, `3`) matching your map
-- `status` --- current exploration state (see below)
-- `description` --- optional brief label to jog your memory
-- `exits` --- optional connections to adjacent rooms
+- `ID` --- unique identifier for the room, typically a number (`1`, `2`, `3`) matching your map. The tag's `R` prefix is part of the name you say and write elsewhere: `[R:3]` is room #strong[R3];, in exits, in prose and on a Maplog map.
+- `level:` --- optional, for multi-level dungeons: `[R:8|level:2]`
+- `status:` --- current exploration state (see below)
+- description --- optional brief label to jog your memory, written as a plain value
+- `exits:` --- optional connections to adjacent rooms
+
+`status:` and `exits:` are categories (core §4.1): writing one again replaces what it held. That's what lets a room go from unexplored to cleared without ending up both.
 
 ==== 1.1 Room Status
 <room-status>
 Status tells you the current state of a room at a glance. Use whatever terms fit your game:
 
-```
-[R:1|unexplored]          Haven't entered yet
-[R:1|active]              Currently exploring
-[R:1|cleared]             Enemies defeated or threats resolved
-[R:1|cleared, looted]     Cleared and treasure taken
-[R:1|locked]              Can't get in yet
-[R:1|trapped]             Known hazard present
-[R:1|safe]                Verified clear, usable as refuge
-[R:1|collapsed]           No longer accessible
-```
+- `[R:1|status:unexplored]` --- Haven't entered yet
+- `[R:1|status:active]` --- Currently exploring
+- `[R:1|status:cleared]` --- Enemies defeated or threats resolved
+- `[R:1|status:cleared, looted]` --- Cleared and treasure taken
+- `[R:1|status:locked]` --- Can't get in yet
+- `[R:1|status:trapped]` --- Known hazard present
+- `[R:1|status:safe]` --- Verified clear, usable as refuge
+- `[R:1|status:collapsed]` --- No longer accessible
 
 Combine statuses when it makes sense: `cleared, looted` tells you both that the fight is over #emph[and] there's nothing left to grab.
 
 #strong[Example --- minimal:]
 
 ```
-[R:4|active]
+[R:4|status:active]
 ```
 
 #strong[Example --- expanded:]
@@ -780,7 +776,7 @@ S5 *North corridor*
 d: d6=5 -> No
 => The door swings open easily.
 
-[R:4|active|storage room, dusty shelves|exits S:R2, E:R5]
+[R:4|status:active|storage room, dusty shelves|exits:S R2, E R5]
 
 @ Search the shelves
 d: Investigation d6=5 vs TN 4 -> Success
@@ -791,29 +787,29 @@ d: Investigation d6=5 vs TN 4 -> Success
 d: d6=6 -> No, and...
 => The room is completely undisturbed. Years of dust.
 
-[R:4|cleared, looted]
+[R:4|status:cleared, looted]
 ```
 
 ==== 1.2 Updating Room Status
 <updating-room-status>
-When a room's state changes, restate the tag with the new status:
+When a room's state changes, write the new status. It replaces the old one:
 
 ```
-[R:1|unexplored]
+[R:1|status:unexplored]
 
 ... you enter and fight ...
 
-[R:1|cleared]
+[R:1|status:cleared]
 
 ... you search ...
 
-[R:1|cleared, looted]
+[R:1|status:cleared, looted]
 ```
 
-Or use inline shorthand for a single status addition:
+To add one state without rewriting the rest, put `+` inside the category; `-` takes one away:
 
 ```
-[R:1|+looted]
+[R:1|status:+looted]
 ```
 
 ==== 1.3 Room Descriptions
@@ -821,15 +817,15 @@ Or use inline shorthand for a single status addition:
 The description field is optional and brief---just enough to jog your memory:
 
 ```
-[R:1|cleared|guard room]
-[R:2|active|library, candles still lit]
-[R:3|unexplored|sounds of water]
+[R:1|status:cleared|guard room]
+[R:2|status:active|library, candles still lit]
+[R:3|status:unexplored|sounds of water]
 ```
 
 For richer descriptions, use regular Lonelog narrative after the tag:
 
 ```
-[R:4|active|ritual chamber]
+[R:4|status:active|ritual chamber]
 => The air hums with energy. A circle of runes glows faintly on the floor.
 ```
 
@@ -837,44 +833,48 @@ For richer descriptions, use regular Lonelog narrative after the tag:
 <reference-tags>
 Use `#` to reference a room you've already described, exactly as with NPCs and locations in core Lonelog:
 
+The first mention establishes the room:
+
 ```
-[R:3|cleared|armory|exits N:R2, W:R4]    (first mention)
+[R:3|status:cleared|armory|exits:N R2, W R4]
+```
 
-... later ...
+Later, a reference points back to it:
 
-[#R:3]                                    (reference back to it)
+```
+[#R:3]
 ```
 
 #pagebreak()
 == 2. Room Connections
 <room-connections>
-To record which rooms connect where, use the `exits` keyword inside the tag:
+To record which rooms connect where, use the `exits:` category inside the tag. Each exit is a direction and a room, separated by a space:
 
 ```
-[R:1|cleared|guard room|exits N:R2, E:R3, S:R4]
+[R:1|status:cleared|guard room|exits:N R2, E R3, S R4]
 ```
 
 Read this as: "Room 1 is cleared, it's a guard room, with exits north to Room 2, east to Room 3, and south to Room 4."
 
 #strong[Directional shortcuts:] `N`, `S`, `E`, `W`, `NE`, `NW`, `SE`, `SW`, `U` (up), `D` (down).
 
-If direction doesn't matter, just list the connections:
+If direction doesn't matter, just list the rooms:
 
 ```
-[R:5|unexplored|exits R4, R6, R7]
+[R:5|status:unexplored|exits:R4, R6, R7]
 ```
 
-#strong[You don't have to record exits at all.] If you're keeping a visual map, the exits live there and you only need the Room tag for status. The `exits` keyword is for when you want a fully text-based record, or when you discover a specific connection mid-play:
+#strong[You don't have to record exits at all.] If you're keeping a visual map, the exits live there and you only need the Room tag for status. `exits:` is for when you want a fully text-based record, or when you discover a specific connection mid-play. Writing `exits:` again replaces the whole list, so add a single new exit with `+`:
 
 ```
 => I find a hidden passage behind the bookshelf!
-[R:3|exits E:R7(secret)]
+[R:3|exits:+E R7 secret]
 ```
 
 #strong[Example --- minimal:]
 
 ```
-[R:6|unexplored|exits R5, R8]
+[R:6|status:unexplored|exits:R5, R8]
 ```
 
 #strong[Example --- expanded:]
@@ -883,7 +883,7 @@ If direction doesn't matter, just list the connections:
 @ Check the far wall for exits
 d: Perception d6=6 vs TN 4 -> Success
 => A concealed door—well-disguised but not locked.
-[R:6|active|crypt|exits W:R5, N:R8, E:R9(secret)]
+[R:6|status:active|crypt|exits:W R5, N R8, E R9 secret]
 (note: update map with R9)
 ```
 
@@ -896,8 +896,8 @@ When you sit down for a new session mid-dungeon, you need a snapshot: which room
 
 ```
 [DUNGEON STATUS]
-[R:1|status|description]
-[R:2|status|description]
+[R:1|status:state|description]
+[R:2|status:state|description]
 ...
 [/DUNGEON STATUS]
 ```
@@ -910,11 +910,11 @@ When you sit down for a new session mid-dungeon, you need a snapshot: which room
 
 ```
 [DUNGEON STATUS]
-[R:1|cleared, looted|entry cave|exits N:R2, E:R3]
-[R:2|cleared|guard room|exits S:R1, W:R5]
-[R:3|active|library|exits W:R1]
-[R:4|unexplored]
-[R:5|locked|heavy door|exits E:R2]
+[R:1|status:cleared, looted|entry cave|exits:N R2, E R3]
+[R:2|status:cleared|guard room|exits:S R1, W R5]
+[R:3|status:active|library|exits:W R1]
+[R:4|status:unexplored]
+[R:5|status:locked|heavy door|exits:E R2]
 [/DUNGEON STATUS]
 ```
 
@@ -945,7 +945,7 @@ R5: locked (heavy door)
 Use a Room tag directly in your scene header for compact context:
 
 ```
-S5 [R:4|active] *Storage room, dusty shelves*
+S5 [R:4|status:active] *Storage room, dusty shelves*
 ```
 
 This tells you exactly where the scene takes place without a separate tag line. Some players prefer this to separate scene descriptions and room tags.
@@ -961,7 +961,7 @@ tbl: d20=14 -> "Large room, two exits"
 ? What's inside?
 tbl: d100=67 -> "Library with a trapped chest"
 
-[R:6|active|library, trapped chest|exits W:R3, N:R7]
+[R:6|status:active|library, trapped chest|exits:W R3, N R7]
 ```
 
 The generation rolls tell you #emph[how] you discovered the room. The Room tag tells you #emph[what it is now];.
@@ -984,25 +984,38 @@ S7 [R:4] *Checking the altar*
 @ Search the altar
 d: Investigation d6=6 vs TN 4 -> Success
 => Secret compartment! [Thread:Cult Ritual|Open]
-[R:4|cleared, looted]
+[R:4|status:cleared, looted]
 
-(note: mark R4 as cleared on map)
+(note: add the altar to map)
 ```
 
-If you want a #strong[fully text-based] dungeon log with no separate map, the `exits` keyword lets you reconstruct the layout from your notes. But this is the exception, not the recommendation.
+If you want a #strong[fully text-based] dungeon log with no separate map, `exits:` lets you reconstruct the layout from your notes. But this is the exception, not the recommendation.
 
 #pagebreak()
+==== 4.4 Exploration Turns
+<exploration-turns>
+Many dungeon games run on exploration turns: each turn uses up light, and every so often something wanders by. Core Lonelog covers all of it, with nothing new to learn:
+
+- #strong[The turn number] goes in the scene context: `S4 *R3, crypt, turn 3*`.
+- #strong[Light] is a timer: `[Timer:Torch 6]` when you light it, `[Timer:Torch-1]` each turn.
+- #strong[Wandering monster checks] are verdicts: `d: Wandering d6=5 -> No`.
+- #strong[Long counts] that matter, such as turns until the dungeon reacts, are clocks: `[Clock:Alert+1]`.
+
+```
+S4 *R3, crypt, turn 3*
+[Timer:Torch-1]
+d: Wandering d6=1 -> Yes
+tbl: Wandering Monster d8=4 -> Giant rats
+```
+
+If you also use the Resource Tracking Add-on, a torch burning out is `[Inv:Torch|×-1]`.
+
 == Cross-Add-on Interactions
 <cross-add-on-interactions>
-#table(
-  columns: (26.19%, 35.71%, 38.1%),
-  align: (auto,auto,auto,),
-  table.header([Situation], [Add-on(s) Used], [Key Tags/Blocks],),
-  table.hline(),
-  [Combat breaks out in a room], [Dungeon Crawling + Combat], [`[R:]`, `[COMBAT]`, `[F:]`],
-  [Tracking torches and rations per room], [Dungeon Crawling + Resource Tracking], [`[R:]`, `[Inv:Name\|#]`],
-  [Combat while tracking resources], [All three add-ons], [`[R:]`, `[COMBAT]`, `[Inv:]`],
-)
+- Combat breaks out in a room --- Dungeon Crawling + Combat --- `[R:]`, `[COMBAT]`, `[F:]`
+- Tracking torches and rations per room --- Dungeon Crawling + Resource Tracking --- `[R:]`, `[Inv:Name|#]`
+- Combat while tracking resources --- All three add-ons --- `[R:]`, `[COMBAT]`, `[Inv:]`
+
 #strong[Combined example --- Dungeon Crawling + Combat:]
 
 ```
@@ -1012,18 +1025,19 @@ S6 *Approaching the barracks*
 d: Stealth d6=4 vs TN 4 -> Success
 => I creep forward unseen.
 
-[R:5|active|barracks, stench of sweat|exits S:R3, W:R6, N:R7]
+[R:5|status:active|barracks, stench of sweat|exits:S R3, W R6, N R7]
 
 ? How many guards?
 tbl: d6=3 -> "Three enemies"
 => Two eating, one sharpening a blade.
 
 [COMBAT]
-[PC:Alex|HP 12|Engaged]
-[F:Guard 1|HP 5|Close|eating]
-[F:Guard 2|HP 5|Close|eating]
-[F:Guard 3|HP 5|Close|alert]
+[PC:Alex|HP 12|pos:Engaged]
+[F:Guard 1|HP 5|pos:Close|eating]
+[F:Guard 2|HP 5|pos:Close|eating]
+[F:Guard 3|HP 5|pos:Close|alert]
 
+Rd1
 @ Ambush the alert guard first
 d: d20+4=18 vs AC 12 -> Hit, 1d8=7
 => [F:Guard 3|dead]
@@ -1038,13 +1052,13 @@ d: d20+4=12 vs AC 12 -> Hit, 1d8=3 => [F:Guard 2|dead]
 
 [/COMBAT]
 => Room clear before they could raise an alarm.
-[R:5|cleared]
+[R:5|status:cleared]
 
 @ Search the barracks
 tbl: d20=8 -> "Rations and a crude map"
 => A rough map scratched on hide. Shows rooms to the west!
-[R:5|cleared, looted]
-[R:6|unexplored|marked on orc map]
+[R:5|status:cleared, looted]
+[R:6|status:unexplored|marked on orc map]
 (note: update my map with R6)
 ```
 
@@ -1057,23 +1071,22 @@ Classic dungeon crawl procedures map naturally to this add-on. Turn-based explor
 
 ```
 [DUNGEON STATUS]
-[R:1|cleared, looted|entry hall|exits N:R2, E:R3]
-[R:2|cleared|guard room|exits S:R1, W:R5]
-[R:3|active|crypt|exits W:R1, D:R8]
+[R:1|status:cleared, looted|entry hall|exits:N R2, E R3]
+[R:2|status:cleared|guard room|exits:S R1, W R5]
+[R:3|status:active|crypt|exits:W R1, D R8]
 [/DUNGEON STATUS]
 
-S4 *R3 – Crypt, turn 3*
+S4 *R3, crypt, turn 3*
+[Timer:Torch-1]
 
 @ Search the sarcophagi
-d: 1-in-6 secret door check: d6=2 -> None found
-? Wandering monster check
-d: d6=5 -> No
+d: Secret door 1-in-6 d6=2 -> None found
+d: Wandering d6=5 -> No
 
 @ Light the wall sconces and examine the inscriptions
 d: INT check d20=8 vs DC 12 -> Fail
 => The script is too archaic—I can't make sense of it.
-[R:3|cleared]
-(note: torch supply -1 for this turn)
+[R:3|status:cleared]
 ```
 
 === Ironsworn / Starforged
@@ -1081,20 +1094,20 @@ d: INT check d20=8 vs DC 12 -> Fail
 Ironsworn's Delve mechanic uses themed sectors rather than numbered rooms. Map sectors to Room IDs and use the `Delve the Depths` move result to determine what you find. Progress tracks work naturally alongside Room status.
 
 ```
-[Track:Iron Barrow|Progress 2/10]
+[Track:Iron Barrow 2/10]
 
 [DUNGEON STATUS]
-[R:1|cleared|Threshold – rusted gate|exits N:R2]
-[R:2|active|Shadow – collapsed corridor]
+[R:1|status:cleared|Threshold – rusted gate|exits:N R2]
+[R:2|status:active|Shadow – collapsed corridor]
 [/DUNGEON STATUS]
 
 @ Delve the Depths (Shadow theme)
 d: d6+2=7 vs d10=4, d10=9 -> Weak Hit
-tbl: Shadow Feature: d100=44 -> "Symbols of a forsaken god"
+tbl: Shadow Feature d100=44 -> "Symbols of a forsaken god"
 => I find ritual markings. Progress, but at a cost.
-[Track:Iron Barrow|Progress+2|4/10]
-[R:2|cleared|Shadow – forsaken markings|exits N:R3]
-[R:3|unexplored]
+[Track:Iron Barrow+2]
+[R:2|status:cleared|Shadow – forsaken markings|exits:N R3]
+[R:3|status:unexplored]
 [Thread:The Forsaken God|Open]
 ```
 
@@ -1107,13 +1120,13 @@ Dungeon World generates dungeon content through fictional framing and GM moves r
 d: 2d6+1=10 -> 10+ Hit: ask three questions
 
 ? What here is useful or valuable?
-=> A sealed chest on the altar dais.
+-> A sealed chest on the altar dais.
 ? What is about to happen?
-=> The shadows in the corner are moving.
+-> The shadows in the corner are moving.
 ? Who made this place?
-=> Cult sigils everywhere—same as the ones on the road.
+-> Cult sigils everywhere—same as the ones on the road.
 
-[R:4|active|ritual chamber, living shadows]
+[R:4|status:active|ritual chamber, living shadows]
 [Thread:The Cult's Purpose|Open]
 ```
 
@@ -1123,17 +1136,18 @@ d: 2d6+1=10 -> 10+ Hit: ask three questions
 #strong[Do: Use Room tags for state, your map for space]
 
 ```
-✔ [R:4|cleared, looted]
-  (note: mark R4 cleared on map)
+✔ [R:4|status:cleared, looted|exits:N R7]
+  (note: add the door to R7 on map)
 ```
 
 #strong[Don't: Try to replace your map with exit chains]
 
+A chain of exits is harder to navigate than a sketch:
+
 ```
-✗ [R:1|cleared|exits N:R2, E:R3]
-  [R:2|cleared|exits S:R1, N:R4, E:R5]
-  [R:3|active|exits W:R1, N:R6, E:R7, SE:R8]
-  (This is harder to navigate than a sketch)
+✗ [R:1|status:cleared|exits:N R2, E R3]
+  [R:2|status:cleared|exits:S R1, N R4, E R5]
+  [R:3|status:active|exits:W R1, N R6, E R7, SE R8]
 
 ✔ Draw the map. Use Room tags only for state.
 ```
@@ -1144,7 +1158,7 @@ d: 2d6+1=10 -> 10+ Hit: ask three questions
 ✔ @ Search the room after the fight
   d: Investigation d6=5 vs TN 4 -> Success
   => I find a key and some coin.
-  [R:3|cleared, looted]
+  [R:3|status:cleared, looted]
 ```
 
 #strong[Don't: Leave status ambiguous and reconstruct later]
@@ -1161,10 +1175,10 @@ d: 2d6+1=10 -> 10+ Hit: ask three questions
 ```
 ✔ === Session 4 ===
   [DUNGEON STATUS]
-  [R:1|cleared, looted|entry]
-  [R:2|cleared|barracks]
-  [R:3|unexplored]
-  [R:4|locked|iron door]
+  [R:1|status:cleared, looted|entry]
+  [R:2|status:cleared|barracks]
+  [R:3|status:unexplored]
+  [R:4|status:locked|iron door]
   [/DUNGEON STATUS]
 ```
 
@@ -1181,7 +1195,7 @@ d: 2d6+1=10 -> 10+ Hit: ask three questions
 #strong[Do: Keep descriptions brief in the tag, expand in prose]
 
 ```
-✔ [R:7|active|throne room]
+✔ [R:7|status:active|throne room]
   => The ceiling is forty feet high. A cracked obsidian throne
   dominates the far wall. Something has nested in it recently.
 ```
@@ -1199,17 +1213,12 @@ d: 2d6+1=10 -> 10+ Hit: ask three questions
 <quick-reference>
 === New Tags
 <new-tags>
-#table(
-  columns: (21.74%, 39.13%, 39.13%),
-  align: (auto,auto,auto,),
-  table.header([Tag], [Purpose], [Example],),
-  table.hline(),
-  [`[R:ID\|status]`], [Room with status only], [`[R:3\|cleared]`],
-  [`[R:ID\|status\|desc]`], [Room with description], [`[R:3\|cleared\|library]`],
-  [`[R:ID\|status\|desc\|exits]`], [Room with connections], [`[R:3\|cleared\|library\|exits W:R1]`],
-  [`[R:ID\|+status]`], [Add a status inline], [`[R:3\|+looted]`],
-  [`[#R:ID]`], [Reference an established room], [`[#R:3]`],
-)
+- `[R:ID|status:state]` --- Room with status only. Example: `[R:3|status:cleared]`
+- `[R:ID|status:state|desc]` --- Room with description. Example: `[R:3|status:cleared|library]`
+- `[R:ID|status:state|desc|exits:DIR ID]` --- Room with connections. Example: `[R:3|status:cleared|library|exits:W R1]`
+- `[R:ID|status:+state]` --- Add one status without replacing the others. Example: `[R:3|status:+looted]`
+- `[#R:ID]` --- Reference an established room. Example: `[#R:3]`
+
 === Status Terms
 <status-terms>
 #table(
@@ -1233,7 +1242,7 @@ d: 2d6+1=10 -> 10+ Hit: ask three questions
   align: (auto,auto,auto,),
   table.header([Block], [Opens When], [Closes When],),
   table.hline(),
-  [`[DUNGEON STATUS]` / `[/DUNGEON STATUS]`], [Session start when resuming a dungeon], [Replaced by updated block next session],
+  [`[DUNGEON STATUS]` / `[/DUNGEON STATUS]`], [Session start when resuming a dungeon], [`[/DUNGEON STATUS]` after the last room; write a fresh block next session],
 )
 === Directional Shortcuts
 <directional-shortcuts>
@@ -1243,8 +1252,8 @@ d: 2d6+1=10 -> 10+ Hit: ask three questions
 <complete-example>
 ```
 [DUNGEON STATUS]
-[R:1|cleared, looted|entry cave|exits N:R2, E:R3]
-[R:2|unexplored] [R:3|unexplored]
+[R:1|status:cleared, looted|entry cave|exits:N R2, E R3]
+[R:2|status:unexplored] [R:3|status:unexplored]
 [/DUNGEON STATUS]
 
 S7 *North passage*
@@ -1252,13 +1261,13 @@ S7 *North passage*
 @ Approach R2 quietly
 d: Stealth d6=4 vs TN 4 -> Success
 
-[R:2|active|barracks|exits S:R1, W:R4]
+[R:2|status:active|barracks|exits:S R1, W R4]
 ? Enemies?
 d: d6=2 -> Yes
 => Two guards, armed.
 ...combat...
-[R:2|cleared, looted]
-[R:4|unexplored|marked on guard's map]
+[R:2|status:cleared, looted]
+[R:4|status:unexplored|marked on guard's map]
 ```
 
 #pagebreak()
@@ -1266,17 +1275,17 @@ d: d6=2 -> Yes
 <faq>
 #strong[Q: Do I need a separate map, or can I use exits to track layout?] A: A visual map is almost always better for layout and navigation. Use exits in your Room tags only when you want a fully text-based record, or when you discover a specific connection (like a secret door) that's worth noting in the log. For everything else, draw the map.
 
-#strong[Q: What Room ID system should I use?] A: Numbers are simplest (`R1`, `R2`, `R3`) and match naturally to a numbered map. You can also use codes that reflect structure (`R1-A`, `R1-B` for sub-rooms, or `L1-1`, `L1-2` for level-and-room). Use whatever helps you connect tags to your map at a glance.
+#strong[Q: What Room ID system should I use?] A: Numbers are simplest: `[R:1]`, `[R:2]`, `[R:3]` are rooms R1, R2, R3, matching a numbered map. Sub-rooms can take letters (`[R:1A]`, `[R:1B]`). For several levels, keep the numbers and add a `level:` category, `[R:8|level:2]`, which matches the level tags (`L2`) Maplog writes on a map. Use whatever helps you connect tags to your map at a glance.
 
 #strong[Q: Can I use this alongside the Combat Add-on?] A: Yes---they're designed to work together. When combat breaks out in a room, open a `[COMBAT]` block inside the scene. When it ends, close it and update the Room tag status. The Cross-Add-on Interactions section has a full example.
 
-#strong[Q: What if I'm using a published dungeon with its own room numbering?] A: Use the published room numbers as your IDs. `[R:12|cleared|Goblin Warrens p.4]` works perfectly---the published map handles layout, the tag handles state.
+#strong[Q: What if I'm using a published dungeon with its own room numbering?] A: Use the published room numbers as your IDs. `[R:12|status:cleared|Goblin Warrens p.4]` works perfectly---the published map handles layout, the tag handles state.
 
 #strong[Q: How does the Dungeon Status Block work in an analog notebook?] A: Write it with dashed separators: `--- DUNGEON STATUS ---`. List one room per line with status and a brief label. Cross out or update entries as rooms change. At the start of each new session, write a fresh status block with current information rather than patching the old one.
 
 #strong[Q: Do I need to tag every room I pass through?] A: Only rooms where something worth tracking happens. If you walk through an empty corridor, you don't need a tag---just describe it in prose. Tag rooms when their status has meaning: when you clear them, find something, lock them, or need to return later.
 
-#strong[Q: What about dungeon features that aren't rooms---corridors, traps, doors?] A: Use core Lonelog notation. Doors and traps are events (`[E:]`) or temporary context in prose. Corridors usually don't need persistent tracking. The Room tag is specifically for spaces with ongoing state that matters across multiple scenes or sessions.
+#strong[Q: What about dungeon features that aren't rooms---corridors, traps, doors?] A: Use core Lonelog notation. A trap that springs or a door that gives way is an event (`[E:Trap Sprung]`); otherwise, keep them as temporary context in prose. Corridors usually don't need persistent tracking. The Room tag is specifically for spaces with ongoing state that matters across multiple scenes or sessions.
 
 #pagebreak()
 == Credits & License
@@ -1289,6 +1298,8 @@ Written to address the #link("https://www.reddit.com/r/Solo_Roleplaying/comments
 
 #strong[Version History:]
 
+- v 1.2.0: `[R:3]` is room R3 everywhere; `level:` category for multi-level dungeons; new §4.4 on exploration turns with core notation (timers, wandering checks); Dungeon World answers use `->`. Aligned with Lonelog v1.7: `status:` and `exits:` are categories, so a new status replaces the old one and fields can come in any order; exits are written `exits:N R2, E R7 secret`; `[E:]` marks events that happened; table result format; standard `[Track:]` counters; explanations moved out of code blocks.
+- v 1.1.1: Map reminders note what to draw, not room state; state stays in the Room tag
 - v 1.1.0: Block tags unified with `[BLOCK]`/`[/BLOCK]` convention; design principles updated
 - v 1.0.0: Rewritten as a compliant add-on (previously "Dungeon Crawling Module")
 
