@@ -7,8 +7,10 @@ name: Release
 #   3. optionally push the files to itch.io with butler.
 #
 # itch.io is off until you set the repository variable ITCH_PUSH=true and the
-# secret BUTLER_API_KEY (from https://itch.io/user/settings/api-keys).
-# What goes where is listed in .github/itch-targets.json.
+# secret BUTLER_API_KEY (an API key of the lonelog itch.io account, from
+# https://itch.io/user/settings/api-keys). What goes to which itch page is
+# listed in .github/itch-targets.json; it can include files the GitHub
+# Release leaves out (other languages, Partylog).
 
 on:
   push:
@@ -68,6 +70,16 @@ jobs:
           name: dist
           path: dist
 
+      # Every rendered download, all languages, for itch.io. Independent of
+      # what the GitHub Release packages (RELEASE_LANGS, lonelog* only).
+      - uses: actions/upload-artifact@v4
+        with:
+          name: rendered
+          path: |
+            _site/docs/*/*.pdf
+            _site/docs/*/*.epub
+            _site/docs/*/*.odt
+
   release:
     needs: build
     runs-on: ubuntu-latest
@@ -112,8 +124,8 @@ jobs:
     steps:
       - uses: actions/download-artifact@v4
         with:
-          name: dist
-          path: dist
+          name: rendered
+          path: rendered
 
       - name: Install butler
         run: |
@@ -126,7 +138,7 @@ jobs:
           BUTLER_API_KEY: ${{ secrets.BUTLER_API_KEY }}
         run: |
           set -euo pipefail
-          src="dist/lonelog-${{ matrix.target.lang }}-$TAG/${{ matrix.target.file }}"
+          src="rendered/${{ matrix.target.lang }}/${{ matrix.target.file }}"
           test -f "$src" || { echo "::error::$src was not rendered"; exit 1; }
           butler push "$src" "${{ matrix.target.game }}:${{ matrix.target.channel }}" \
             --userversion "${{ needs.build.outputs.version }}"
