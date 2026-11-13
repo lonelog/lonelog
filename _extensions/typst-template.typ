@@ -191,6 +191,10 @@
     fill: color-black
   )
 
+  // No justification in cells: narrow columns otherwise open wide gaps
+  // between words (and inside inline code)
+  show table.cell: set par(justify: false)
+
   show figure.where(kind: table): set block(
     width: 100%,
     breakable: true
@@ -212,11 +216,15 @@
     )
   }
 
-  // Inline code styling - Consolas 11pt, #188038 highlight
+  // Inline code styling - Consolas, #188038 highlight. Same size as the
+  // surrounding text: 11pt in body text, 10pt in table cells. (Typst draws
+  // raw text at 0.8em, so 1.25em brings it back to the text size.)
   show raw.where(block: false): it => {
+    // Never break a line inside the -> and => arrows
+    show regex("[-=]>"): box
     text(
       font: font-code,
-      size: 11pt,
+      size: 1.25em,
       fill: color-inline-code
     )[#it]
   }
