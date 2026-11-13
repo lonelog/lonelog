@@ -2022,8 +2022,8 @@ Alongside the add-ons, three **companion notations** share Lonelog's symbols for
 | Notation | For |
 |----------|-----|
 | Partylog | Group play with a GM, or several players at one table; adds `!` for GM and world events |
-| Lorelog | Worldbuilding logs: history, factions and places built before or between sessions |
-| Maplog | Drawing maps during play; the state of things stays in the Lonelog log |
+| Lorelog (draft) | Worldbuilding logs: history, factions and places built before or between sessions |
+| Maplog (draft) | Drawing maps during play; the state of things stays in the Lonelog log |
 
 Community-created add-ons follow the same conventions. See the **Community Add-on Guidelines** for how to write one, and the Lonelog itch.io page for the community library.
 

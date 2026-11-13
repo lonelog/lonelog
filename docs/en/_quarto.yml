@@ -1,6 +1,11 @@
 project:
   type: default
   output-dir: ../../output/en
+  render:
+    - "*.md"
+    - "!lorelog.md"   # draft, not released
+    - "!maplog.md"    # draft, not released
+    - "!readme.md"    # site page, not a release document
 
 filters:
   - _extensions/pagebreak.lua  # Converts --- to pagebreaks in Typst

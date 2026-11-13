@@ -3,6 +3,7 @@ title: Maplog
 subtitle: "A Visual Notation for Mapping During Play"
 author: Roberto Bisceglie
 version: 0.2.2
+status: Draft
 license: CC BY-SA 4.0
 lang: en
 tbl-colwidths: false
