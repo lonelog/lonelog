@@ -49,7 +49,7 @@ Each add-on's frontmatter has `parent: Lonelog vX.Y.Z` (currently v1.7.0) and `r
 
 ### Companion Notations
 
-Separate notations that share Lonelog's symbols: **`partylog.md`** (group play; adds `!` for GM and world events), **`lorelog.md`** (worldbuilding logs) and **`maplog.md`** (drawing maps during play). Lorelog and Maplog are drafts: the `render:` list in the root `_quarto.yml` excludes them, so they stay off the site and out of releases until their status changes.
+Separate notations that share Lonelog's symbols: **`partylog.md`** (group play; adds `!` for GM and world events), **`lorelog.md`** (world facts and lore: facts, rumors, secrets and open questions) and **`maplog.md`** (drawing maps during play). Lorelog and Maplog are drafts: the `render:` list in the root `_quarto.yml` excludes them, so they stay off the site and out of releases until their status changes.
 
 ### Site pages
 
