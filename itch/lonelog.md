@@ -4,21 +4,23 @@ tagline: A Standard Notation for Solo RPG Session Logging
 url: https://lonelog.itch.io/lonelog
 ---
 
-**The problem with solo RPG notes? They break your flow.**
+**Keep a solo RPG log you can still read next month.**
 
-You're deep in a scene—dice rolling, oracles answering, tension building—and suddenly you're drowning in scattered notes. Journals get messy. Pure prose buries the mechanics. Bullet points turn cryptic by next week.
+Solo play leaves a lot to write down: what your character tried, what you asked the oracle, what the dice said, and what happened next. Written as prose, the mechanics get buried. Written as bullet points, the notes make no sense a week later.
 
-**Lonelog** is a lightweight notation system that captures the rhythm of solo play without interrupting it.
+Lonelog is a notation for those notes. Its core is five symbols:
 
-- **Five symbols. One language.** Action, question, roll, result, consequence—the core notation mirrors how you actually play. Learn it in minutes, use it forever.
-- **Works with everything.** Ironsworn. Thousand Year Old Vampire. Mythic GME. Your favorite homebrew. Any system, any oracle, one consistent format.
-- **Scales to your style.** Running a quick one-shot? Stick to the basics. Managing a sprawling campaign with dozens of NPCs and tangled plot threads? Layer in progress clocks, location tags, and story trackers as you need them.
-- **Paper or pixels.** The notation works equally well in markdown editors and spiral notebooks. Your choice.
-- **Find anything, fast.** Consistent tags mean you can locate that crucial NPC detail from twelve sessions ago in seconds.
+@ an action you take  
+? a question for the oracle  
+d: a roll  
+-> the result of the roll or the oracle  
+=> what happens because of it
 
-Record what matters. Share what you played. Pick up exactly where you left off.
+It works with any system and any oracle: Ironsworn, Thousand Year Old Vampire, Mythic GME or your own homebrew. A one-shot needs nothing more than the five symbols. A long campaign can add tags for characters and places, progress clocks and plot threads when it needs them.
 
-Your solo adventures, finally speaking the same language.
+The notation is plain text, so it works the same in a Markdown editor and in a paper notebook. Tags are written the same way every time, so a search for an NPC finds what happened to them twelve sessions ago.
+
+The full text is free at lonelog.org under a CC BY-SA 4.0 license.
 
 ## Web SRD
 
